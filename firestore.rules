@@ -1,0 +1,22 @@
+rules_version = '2';
+
+// Regras do Firestore para o site Will Rec.
+// Cole isso em: Firebase Console > Firestore Database > Regras.
+//
+// Qualquer visitante pode CRIAR um lead (é o formulário público do site),
+// mas ninguém pode ler, editar ou apagar leads pelo app — só você, direto
+// pelo painel do Firebase Console (Firestore Database > coleção "leads").
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /leads/{leadId} {
+      allow create: if request.resource.data.keys().hasAll(['nome', 'contato', 'criadoEm'])
+                    && request.resource.data.nome is string
+                    && request.resource.data.nome.size() > 0
+                    && request.resource.data.nome.size() < 200
+                    && request.resource.data.contato is string
+                    && request.resource.data.contato.size() > 0
+                    && request.resource.data.contato.size() < 100;
+      allow read, update, delete: if false;
+    }
+  }
+}

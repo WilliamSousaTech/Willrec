@@ -1,0 +1,20 @@
+{
+  "name": "willrec-orcamento",
+  "version": "1.0.0",
+  "description": "Site mobile-first de orçamento inteligente para Will Rec — videomaker freelancer em Teresina-PI",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilliamSousaTech/willrec-orcamento.git"
+  },
+  "keywords": ["videomaker", "orcamento", "ia", "teresina"],
+  "author": "William Sousa (Will Rec)",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^2.8.0"
+  }
+}
