@@ -521,3 +521,20 @@ if (revealTargets.length && 'IntersectionObserver' in window) {
 } else {
     revealTargets.forEach(el => el.classList.add('in-view'));
 }
+
+// ═══════════════════════════════════════════════════════════════
+// PORTFÓLIO V7.1 — setas + teclado + toque
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const scroller = document.querySelector('.folio-scroll');
+  const prev = document.querySelector('.folio-prev');
+  const next = document.querySelector('.folio-next');
+  if (!scroller) return;
+  const step = () => Math.min(scroller.clientWidth * 0.78, 330) + 14;
+  prev?.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }));
+  next?.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }));
+  scroller.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); scroller.scrollBy({ left: -step(), behavior: 'smooth' }); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); scroller.scrollBy({ left: step(), behavior: 'smooth' }); }
+  });
+})();

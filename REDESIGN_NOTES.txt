@@ -1,0 +1,21 @@
+WILL REC — REDESIGN PREMIUM
+
+Direção visual:
+- Landing page inspirada na referência enviada: premium, cinematográfica, minimalista, escura e sofisticada.
+- Desktop, tablet e smartphone tratados como experiências responsivas próprias.
+- Hero em composição de imagem dominante + conteúdo editorial + card flutuante.
+
+Regra das duas fotos do Hero:
+- Foto maior: images/site/willrec-hero-background.webp — usada exclusivamente como fundo do Hero.
+- Foto menor, com a mão em primeiro plano: images/site/willrec-phone-card.webp — usada exclusivamente dentro do card flutuante do Hero.
+- Não repetir nenhuma dessas duas fotos visualmente em outras seções.
+- Não gerar imagens adicionais para o Hero.
+- Não substituir essas duas fotos por imagens de stock ou genéricas.
+
+Regra geral de imagens:
+- As imagens de portfólio continuam sendo únicas e associadas às suas respectivas categorias.
+- Evitar usar a mesma fotografia em duas seções diferentes.
+- Seções que não precisam de fotografia devem permanecer com tipografia, cards, números ou espaço negativo em vez de receber uma foto repetida.
+
+Preservação:
+- Funcionalidades, rotas, formulários, integrações, orçamento inteligente, links e chatbot existentes devem continuar funcionando.
