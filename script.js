@@ -10,6 +10,18 @@ const CONFIG = {
     WHATSAPP_NUMBER: '5586995419670',
     WHATSAPP_DEFAULT_MSG: 'Olá, Will! Vim pelo site e quero saber mais sobre seus serviços.',
     DRIVE_LINK: 'https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link',
+    // Link da pasta de CADA categoria do portfólio. Cole entre as aspas; vazio = abre o acervo geral (DRIVE_LINK).
+    DRIVE_LINKS: {
+        'shows-de-humor': '',            // Shows de Humor
+        'bastidores': '',            // Bastidores
+        'comerciais': '',            // Comerciais
+        'documentario': '',            // Documentário
+        'concessionarias': '',            // Concessionárias
+        'eventos-culturais': '',            // Eventos Culturais
+        'casamentos': '',            // Casamentos
+        'barbearias-e-estetica': '',            // Barbearias e Estética
+        'institucionais': '',            // Institucionais
+    },
 };
 
 // ════════════════════════════════════════════════════════════════════
@@ -455,7 +467,10 @@ if (root) render();
 document.querySelectorAll('[data-wa-link]').forEach(a => {
     a.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(CONFIG.WHATSAPP_DEFAULT_MSG)}`;
 });
-document.querySelectorAll('[data-drive-link]').forEach(a => { a.href = CONFIG.DRIVE_LINK; });
+document.querySelectorAll('[data-drive-link]').forEach(a => {
+    const key = a.dataset.driveLink;
+    a.href = (key && CONFIG.DRIVE_LINKS[key]) || CONFIG.DRIVE_LINK;
+});
 
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();

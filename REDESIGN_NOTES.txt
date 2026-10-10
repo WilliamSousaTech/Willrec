@@ -82,3 +82,32 @@ AUTOPLAY SEMPRE LIGADO (v7)
   Os vídeos começam a carregar ~600px antes de aparecer na tela. Se o celular bloquear o autoplay
   (modo economia de bateria do iPhone), tentam de novo a cada toque/rolagem; o botão Pausar do reel
   e o play sobre o vídeo do Will continuam disponíveis para quem quiser parar.
+
+
+VÍDEOS SEM TOQUE NO iPHONE + CARREGAMENTO MAIS RÁPIDO (v8)
+  Problema: iPhone em "Modo de Baixo Consumo" bloqueia autoplay de <video> (mesmo mudo). Não há como burlar.
+  Solução (documentada pela Apple, "Delivering Video Content for Safari"): o Safari aceita <img src="video.mp4">
+  e anima como um GIF leve, sem o bloqueio. js/autoplay.js detecta o bloqueio no carregamento (tenta tocar um
+  mp4 de 1,5 KB); se bloqueado, o reel e o vídeo do Will trocam <video> por <img>. Sem bloqueio, nada muda.
+  Só se nem isso funcionar (navegador sem suporte) aparece o botão de play do vídeo do Will.
+
+  Peso: cada card agora toca um clipe de 10 s (media/reel/NOME-card.mp4, 720x1280, H.264 CRF 25) — a mesma
+  qualidade de antes, ~28 MB no total para os 9 (antes 57 MB) e só baixa o que está perto da tela.
+  O vídeo completo (NOME-preview.mp4, 540p) só carrega quando a pessoa clica; 4K via FULL_BASE em js/reel.js.
+
+
+AVALIAÇÃO — ITENS RESOLVIDOS (v10)
+  1. Nomes: 07 = Evento Corporativo · 08 = Aniversário · 09 = Político.
+  2. Portfólio por categoria: cada cartão agora lê o link de CONFIG.DRIVE_LINKS em script.js (uma linha por
+     categoria). Cole o link da pasta entre as aspas; vazio = abre o acervo geral. (Antes o script sobrescrevia
+     todos os cartões com o mesmo link.)
+  3. Firebase: firestore.rules ficou mais firme (só aceita os 7 campos que o site envia, com tipo/tamanho
+     limitados e data do servidor). Para ativar: console.firebase.google.com > criar projeto > Firestore Database >
+     criar banco > Regras (colar firestore.rules e Publicar) > Configurações do projeto > Seus apps > Web (</>) >
+     copiar o objeto para firebase-config.js. Sem isso o site funciona igual; o lead segue pelo WhatsApp.
+  4. Velocidade: cache de imagens/fontes/vídeos (vercel.json e _headers para Netlify), vídeos do reel carregam
+     só perto da tela, cards com clipes de 10 s. Medir em celular real: pagespeed.web.dev com a URL publicada.
+  5. SEO local: título e descrição com "Videomaker em Teresina-PI", dados estruturados ProfessionalService
+     (telefone, endereço Teresina-PI, área atendida, catálogo de serviços), og:image 1200x630 (images/og-willrec.jpg),
+     robots.txt e sitemap.xml. Depois de publicar: cadastrar o site no Google Search Console e enviar o sitemap;
+     criar/ajustar o Perfil da Empresa no Google (é o que mais pesa em "videomaker em Teresina").

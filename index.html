@@ -3,36 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>WILLREC — Videomaker em Teresina-PI</title>
+<title>Videomaker em Teresina-PI — Eventos, Reels e Comerciais | WILLREC</title>
 <meta name="description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais em Teresina-PI. Responda 6 perguntas e receba uma faixa de preço na hora, com IA.">
 <meta name="theme-color" content="#050505">
+<meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
+<meta name="geo.region" content="BR-PI">
+<meta name="geo.placename" content="Teresina">
 <script>document.documentElement.classList.add("js")</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://willrec.vercel.app/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="WILLREC">
+<meta property="og:url" content="https://willrec.vercel.app/">
 <meta property="og:title" content="Will Rec — Videomaker Mobile em Teresina-PI">
 <meta property="og:description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais. Orçamento inteligente com IA em segundos.">
-<meta property="og:image" content="https://willrec.vercel.app/images/og-willrec.webp">
+<meta property="og:image" content="https://willrec.vercel.app/images/og-willrec.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:locale" content="pt_BR">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Will Rec, videomaker mobile em Teresina-PI, gravando com gimbal e smartphone">
 
 <!-- Twitter/X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Will Rec — Videomaker Mobile em Teresina-PI">
 <meta name="twitter:description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais. Orçamento inteligente com IA em segundos.">
-<meta name="twitter:image" content="https://willrec.vercel.app/images/og-willrec.webp">
+<meta name="twitter:image" content="https://willrec.vercel.app/images/og-willrec.jpg">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Will Rec",
-  "description": "Videomaker mobile freelancer em Teresina-PI. Cobertura de eventos, Reels e Stories em tempo real, vídeos comerciais e institucionais.",
-  "url": "https://willrec.vercel.app/",
-  "image": "https://willrec.vercel.app/images/og-willrec.webp",
-  "areaServed": "Teresina, PI",
-  "priceRange": "R$150-R$650"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://willrec.vercel.app/#site",
+      "url": "https://willrec.vercel.app/",
+      "name": "WILLREC",
+      "inLanguage": "pt-BR"
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://willrec.vercel.app/#negocio",
+      "name": "Will Rec",
+      "alternateName": "WILLREC",
+      "description": "Videomaker mobile freelancer em Teresina-PI. Cobertura de eventos, Reels e Stories em tempo real, vídeos comerciais e institucionais.",
+      "url": "https://willrec.vercel.app/",
+      "image": "https://willrec.vercel.app/images/og-willrec.webp",
+      "telephone": "+55 86 99541-9670",
+      "priceRange": "R$150-R$650",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Teresina",
+        "addressRegion": "PI",
+        "addressCountry": "BR"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Teresina" },
+        { "@type": "State", "name": "Piauí" }
+      ],
+      "knowsAbout": ["Videomaker", "Cobertura de eventos", "Reels e Stories", "Vídeo comercial", "Vídeo institucional", "Captação mobile"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Serviços de vídeo",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cobertura de eventos e shows" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reels e Stories em tempo real" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Vídeos comerciais" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Vídeos institucionais" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Casamentos" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Documentários" } }
+        ]
+      },
+      "isPartOf": { "@id": "https://willrec.vercel.app/#site" }
+    }
+  ]
 }
 </script>
 
@@ -176,84 +222,84 @@
         <div class="reel-view" data-reel-view role="region" aria-label="Reel de vídeos. Arraste para os lados ou clique para abrir em tela cheia.">
             <ul class="reel-track" data-reel-track>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="show" data-title="Show" data-meta="Full HD · 1:09" data-hevc="0" aria-label="Abrir vídeo em tela cheia: Show">
+                <button type="button" class="reel-btn" data-slug="show" data-preview="media/reel/show-preview.mp4" data-title="Show" data-meta="Full HD · 1:09" data-hevc="0" aria-label="Abrir vídeo em tela cheia: Show">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/show.webp" data-src="media/reel/show-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/show.webp" data-src="media/reel/show-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>01</b><strong>Show</strong><em>Full HD · 1:09</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="professor-caio" data-title="Professor Caio" data-meta="Full HD · 1:22" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Professor Caio">
+                <button type="button" class="reel-btn" data-slug="professor-caio" data-preview="media/reel/professor-caio-preview.mp4" data-title="Professor Caio" data-meta="Full HD · 1:22" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Professor Caio">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/professor-caio.webp" data-src="media/reel/professor-caio-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/professor-caio.webp" data-src="media/reel/professor-caio-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>02</b><strong>Professor Caio</strong><em>Full HD · 1:22</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="frutos-de-goias" data-title="Frutos de Goiás" data-meta="4K · 1:00" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Frutos de Goiás">
+                <button type="button" class="reel-btn" data-slug="frutos-de-goias" data-preview="media/reel/frutos-de-goias-preview.mp4" data-title="Frutos de Goiás" data-meta="4K · 1:00" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Frutos de Goiás">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/frutos-de-goias.webp" data-src="media/reel/frutos-de-goias-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/frutos-de-goias.webp" data-src="media/reel/frutos-de-goias-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>03</b><strong>Frutos de Goiás</strong><em>4K · 1:00</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="criativo" data-title="Criativo" data-meta="4K · 0:42" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Criativo">
+                <button type="button" class="reel-btn" data-slug="criativo" data-preview="media/reel/criativo-preview.mp4" data-title="Criativo" data-meta="4K · 0:42" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Criativo">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/criativo.webp" data-src="media/reel/criativo-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/criativo.webp" data-src="media/reel/criativo-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>04</b><strong>Criativo</strong><em>4K · 0:42</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="master-barbearia" data-title="Master Barbearia" data-meta="Full HD · 0:30" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Master Barbearia">
+                <button type="button" class="reel-btn" data-slug="master-barbearia" data-preview="media/reel/master-barbearia-preview.mp4" data-title="Master Barbearia" data-meta="Full HD · 0:30" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Master Barbearia">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/master-barbearia.webp" data-src="media/reel/master-barbearia-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/master-barbearia.webp" data-src="media/reel/master-barbearia-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>05</b><strong>Master Barbearia</strong><em>Full HD · 0:30</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="campus-party" data-title="Campus Party" data-meta="Full HD · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Campus Party">
+                <button type="button" class="reel-btn" data-slug="campus-party" data-preview="media/reel/campus-party-preview.mp4" data-title="Campus Party" data-meta="Full HD · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Campus Party">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/campus-party.webp" data-src="media/reel/campus-party-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/campus-party.webp" data-src="media/reel/campus-party-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
                     <span class="reel-cap"><b>06</b><strong>Campus Party</strong><em>Full HD · 0:37</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="projeto-07" data-title="Projeto 07" data-meta="4K · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 07">
+                <button type="button" class="reel-btn" data-slug="projeto-07" data-preview="media/reel/projeto-07-preview.mp4" data-title="Evento Corporativo" data-meta="4K · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Evento Corporativo">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-07.webp" data-src="media/reel/projeto-07-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-07.webp" data-src="media/reel/projeto-07-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
-                    <span class="reel-cap"><b>07</b><strong>Projeto 07</strong><em>4K · 0:37</em></span>
+                    <span class="reel-cap"><b>07</b><strong>Evento Corporativo</strong><em>4K · 0:37</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="projeto-08" data-title="Projeto 08" data-meta="4K · 1:18" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 08">
+                <button type="button" class="reel-btn" data-slug="projeto-08" data-preview="media/reel/projeto-08-preview.mp4" data-title="Aniversário" data-meta="4K · 1:18" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Aniversário">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-08.webp" data-src="media/reel/projeto-08-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-08.webp" data-src="media/reel/projeto-08-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
-                    <span class="reel-cap"><b>08</b><strong>Projeto 08</strong><em>4K · 1:18</em></span>
+                    <span class="reel-cap"><b>08</b><strong>Aniversário</strong><em>4K · 1:18</em></span>
                 </button>
             </li>
             <li class="reel-card">
-                <button type="button" class="reel-btn" data-slug="projeto-09" data-title="Projeto 09" data-meta="Full HD · 0:26" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 09">
+                <button type="button" class="reel-btn" data-slug="projeto-09" data-preview="media/reel/projeto-09-preview.mp4" data-title="Político" data-meta="Full HD · 0:26" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Político">
                     <span class="reel-frame">
-                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-09.webp" data-src="media/reel/projeto-09-preview.mp4"></video>
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-09.webp" data-src="media/reel/projeto-09-card.mp4"></video>
                         <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
                     </span>
-                    <span class="reel-cap"><b>09</b><strong>Projeto 09</strong><em>Full HD · 0:26</em></span>
+                    <span class="reel-cap"><b>09</b><strong>Político</strong><em>Full HD · 0:26</em></span>
                 </button>
             </li>
             </ul>
@@ -261,55 +307,55 @@
     </div>
     <div class="reel-bar reel-bar--folio"><span>Por categoria</span><i></i><span>Acervo no Drive</span></div>
     <div class="folio" data-folio aria-label="Trabalhos em destaque">
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Shows de Humor — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="shows-de-humor" target="_blank" rel="noopener" aria-label="Shows de Humor — ver no Drive">
             <img src="images/portfolio/show-humor.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">01</span>
             <span class="panel-rail" aria-hidden="true">Shows de Humor</span>
             <span class="panel-info"><strong>Shows de Humor</strong><small>Captação de palco</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Bastidores — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="bastidores" target="_blank" rel="noopener" aria-label="Bastidores — ver no Drive">
             <img src="images/portfolio/bastidores-show.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">02</span>
             <span class="panel-rail" aria-hidden="true">Bastidores</span>
             <span class="panel-info"><strong>Bastidores</strong><small>Making of</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Comerciais — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="comerciais" target="_blank" rel="noopener" aria-label="Comerciais — ver no Drive">
             <img src="images/portfolio/comercial-moto.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">03</span>
             <span class="panel-rail" aria-hidden="true">Comerciais</span>
             <span class="panel-info"><strong>Comerciais</strong><small>Empresas &amp; lojas locais</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Documentário — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="documentario" target="_blank" rel="noopener" aria-label="Documentário — ver no Drive">
             <img src="images/portfolio/documentario-pedal.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">04</span>
             <span class="panel-rail" aria-hidden="true">Documentário</span>
             <span class="panel-info"><strong>Documentário</strong><small>Registro &amp; lifestyle</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Concessionárias — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="concessionarias" target="_blank" rel="noopener" aria-label="Concessionárias — ver no Drive">
             <img src="images/portfolio/comercial-honda.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">05</span>
             <span class="panel-rail" aria-hidden="true">Concessionárias</span>
             <span class="panel-info"><strong>Concessionárias</strong><small>Motos &amp; showroom</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Eventos Culturais — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="eventos-culturais" target="_blank" rel="noopener" aria-label="Eventos Culturais — ver no Drive">
             <img src="images/portfolio/campus-party.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">06</span>
             <span class="panel-rail" aria-hidden="true">Eventos Culturais</span>
             <span class="panel-info"><strong>Eventos Culturais</strong><small>Shows &amp; festivais</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Casamentos — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="casamentos" target="_blank" rel="noopener" aria-label="Casamentos — ver no Drive">
             <img src="images/portfolio/casamento.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">07</span>
             <span class="panel-rail" aria-hidden="true">Casamentos</span>
             <span class="panel-info"><strong>Casamentos</strong><small>Cerimônia &amp; making of</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Barbearias e Estética — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="barbearias-e-estetica" target="_blank" rel="noopener" aria-label="Barbearias e Estética — ver no Drive">
             <img src="images/portfolio/barbearia.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">08</span>
             <span class="panel-rail" aria-hidden="true">Barbearias &amp; Estética</span>
             <span class="panel-info"><strong>Barbearias &amp; Estética</strong><small>Atendimento &amp; bastidores</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
         </a>
-        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Institucionais — ver no Drive">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link="institucionais" target="_blank" rel="noopener" aria-label="Institucionais — ver no Drive">
             <img src="images/portfolio/cenario-curso.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
             <span class="panel-idx">09</span>
             <span class="panel-rail" aria-hidden="true">Institucionais</span>

@@ -1,21 +1,29 @@
 rules_version = '2';
 
 // Regras do Firestore para o site Will Rec.
-// Cole isso em: Firebase Console > Firestore Database > Regras.
+// Cole isso em: Firebase Console > Firestore Database > Regras > Publicar.
 //
-// Qualquer visitante pode CRIAR um lead (é o formulário público do site),
-// mas ninguém pode ler, editar ou apagar leads pelo app — só você, direto
-// pelo painel do Firebase Console (Firestore Database > coleção "leads").
+// Qualquer visitante pode CRIAR um lead (é o formulário público do site), mas:
+//  - só com os campos que o site realmente envia (nada além disso),
+//  - com tipos e tamanhos limitados (evita lixo e documentos gigantes),
+//  - com data gerada pelo servidor (não dá para forjar).
+// Ninguém lê, edita ou apaga leads pelo app — só você, pelo painel do Firebase Console.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /leads/{leadId} {
       allow create: if request.resource.data.keys().hasAll(['nome', 'contato', 'criadoEm'])
+                    && request.resource.data.keys().hasOnly(['nome', 'contato', 'respostas', 'pacote', 'faixaPreco', 'fonte', 'criadoEm'])
                     && request.resource.data.nome is string
                     && request.resource.data.nome.size() > 0
                     && request.resource.data.nome.size() < 200
                     && request.resource.data.contato is string
                     && request.resource.data.contato.size() > 0
-                    && request.resource.data.contato.size() < 100;
+                    && request.resource.data.contato.size() < 100
+                    && (!('respostas' in request.resource.data) || request.resource.data.respostas is map)
+                    && (!('pacote' in request.resource.data) || (request.resource.data.pacote is string && request.resource.data.pacote.size() < 200))
+                    && (!('faixaPreco' in request.resource.data) || (request.resource.data.faixaPreco is string && request.resource.data.faixaPreco.size() < 100))
+                    && (!('fonte' in request.resource.data) || (request.resource.data.fonte is string && request.resource.data.fonte.size() < 40))
+                    && request.resource.data.criadoEm == request.time;
       allow read, update, delete: if false;
     }
   }

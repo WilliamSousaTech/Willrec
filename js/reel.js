@@ -5,6 +5,7 @@
 //  · clique abre em tela cheia com transição FLIP (o vídeo "cresce" a partir do card), som ligado.
 // Só toca o que está visível. Movimento reduzido → faixa estática, rolável, sem autoplay.
 import { $, $$, clamp, pad, REDUCE, FINE } from './util.js';
+import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 
 // Vídeos originais em máxima qualidade (4K) ficam num CDN, não no repositório (arquivos > 100 MB).
 // Ex.: 'https://cdn.seusite.com/reel/'  →  espera  <BASE>show.mp4, <BASE>criativo.mp4 ...
@@ -31,15 +32,19 @@ export function initReel() {
     li.dataset.i = i;
     return {
       slug: b.dataset.slug, title: b.dataset.title, meta: b.dataset.meta,
-      hevc: b.dataset.hevc === '1', preview: v.dataset.src, poster: v.getAttribute('poster') || ''
+      hevc: b.dataset.hevc === '1', preview: b.dataset.preview, clip: v.dataset.src, poster: v.getAttribute('poster') || ''
     };
   });
 
   // ── cards, clones (loop contínuo) e vídeos ────────────────────
-  const makeCard = el => ({
-    el, i: +el.dataset.i, video: $('video', el), frame: $('.reel-frame', el),
-    left: 0, w: 1, s: 1, p: 0, rx: 0, ry: 0, mx: 50, my: 40, shown: ''
-  });
+  const makeCard = el => {
+    const c = {
+      el, i: +el.dataset.i, video: $('video', el), frame: $('.reel-frame', el), img: null, imgFailed: false,
+      left: 0, w: 1, s: 1, p: 0, rx: 0, ry: 0, mx: 50, my: 40, shown: ''
+    };
+    c.video.__card = c;
+    return c;
+  };
   let cards = $$('.reel-card', track).map(makeCard);
   let motion = false, userPaused = false, cloned = false;
   const toggle = $('[data-reel-toggle]', root);
@@ -59,13 +64,34 @@ export function initReel() {
   const visibleVideos = new WeakSet();
   let lightboxOpen = false, loadIO = null, playIO = null;
   const canPlayNow = v => visibleVideos.has(v) && !lightboxOpen && !userPaused;
-  const tryPlay = v => { if (canPlayNow(v)) v.play().catch(() => {}); };
+  const tryPlay = v => {
+    if (!canPlayNow(v) || (v.__card && v.__card.img)) return;
+    v.play().then(() => setTimeout(() => { if (v.paused && v.readyState >= 2 && canPlayNow(v)) setBlocked(); }, 900),
+                  e => { if (e && e.name === 'NotAllowedError') setBlocked(); });
+  };
+
+  // autoplay bloqueado (iPhone em baixo consumo): o card passa a usar <img src="clipe.mp4"> (Safari anima sozinho)
+  const useImage = c => {
+    if (c.img || c.imgFailed) return;
+    const img = document.createElement('img');
+    img.className = 'reel-vid'; img.alt = ''; img.decoding = 'async'; img.draggable = false;
+    img.addEventListener('error', () => {            // navegador que não mostra mp4 em <img>: volta ao <video>
+      c.imgFailed = true; c.img = null; img.remove();
+      c.video.style.display = ''; c.frame.classList.remove('as-img');
+    });
+    c.img = img; img.src = c.video.dataset.src;
+    c.video.pause(); c.video.removeAttribute('src'); c.video.load();
+    c.video.style.display = 'none'; c.video.after(img); c.frame.classList.add('as-img');
+  };
+  onBlocked(() => cards.forEach(c => { if (c.video.getAttribute('src') || visibleVideos.has(c.video)) useImage(c); }));
+  probeAutoplay();
   const watchVideos = () => {
     if (!loadIO) {
       loadIO = new IntersectionObserver(es => es.forEach(e => {
         if (!e.isIntersecting) return;
         const v = e.target;
-        if (!v.getAttribute('src') && v.dataset.src) {
+        if (isBlocked() && v.__card) { useImage(v.__card); loadIO.unobserve(v); return; }
+        if (!v.getAttribute('src') && v.dataset.src && !(v.__card && v.__card.img)) {
           v.muted = true; v.defaultMuted = true; v.setAttribute('playsinline', '');   // iOS exige muted via propriedade
           v.preload = 'auto';
           v.addEventListener('loadeddata', () => tryPlay(v), { once: true });

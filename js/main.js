@@ -8,6 +8,7 @@ import { initGlow } from './glow-card.js';
 import { initFolio } from './portfolio.js';
 import { initReel } from './reel.js';
 import { initTechText } from './tech-text.js';
+import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 
 initTextEffect();
 initHero();
@@ -18,12 +19,14 @@ initFolio();
 initReel();
 initTechText();
 
-// Vídeo do Will: só carrega quando entra na tela e pausa quando sai (economiza dados e bateria).
-// Sempre toca sozinho ao chegar na seção. Só aparece o botão de play se o celular bloquear o autoplay
-// (ex.: modo economia de bateria) — aí o primeiro toque/rolagem tenta de novo.
+// Vídeo do Will: carrega ao chegar na seção, toca sozinho e pausa quando sai da tela.
+// Se o aparelho bloquear autoplay de vídeo (iPhone em baixo consumo), troca por <img src="video.mp4">:
+// o Safari anima isso sozinho, sem toque. Só se nem isso funcionar aparece o botão de play.
+probeAutoplay();
 $$('[data-lazy-video]').forEach(v => {
   const fig = v.closest('figure') || v.parentElement;
-  let loaded = false, allowed = true, userPaused = false, inView = false;
+  let loaded = false, userPaused = false, inView = false, img = null, imgFailed = false;
+  const mp4 = () => { const s = v.querySelector('source[type="video/mp4"]'); return s && (s.dataset.src || s.src); };
 
   const load = () => {
     if (loaded) return; loaded = true;
@@ -31,36 +34,49 @@ $$('[data-lazy-video]').forEach(v => {
     v.querySelectorAll('source[data-src]').forEach(s => { s.src = s.dataset.src; });
     v.load();
   };
-  const play = () => { load(); v.play().catch(() => {}); };
-  const sync = () => {
-    fig.classList.toggle('is-stopped', v.paused);
-    btn.setAttribute('aria-label', v.paused ? 'Reproduzir vídeo' : 'Pausar vídeo');
+  const useImage = () => {
+    if (img || imgFailed || !mp4()) return;
+    img = document.createElement('img'); img.className = 'media-img'; img.alt = ''; img.decoding = 'async'; img.draggable = false;
+    img.addEventListener('error', () => {                          // navegador sem suporte: volta ao vídeo + botão
+      imgFailed = true; img.remove(); img = null; v.style.display = ''; sync(true);
+    });
+    img.src = mp4();
+    v.pause(); v.style.display = 'none'; v.after(img); fig.classList.remove('is-stopped');
   };
+  const play = () => {
+    if (isBlocked()) return useImage();
+    load();
+    v.play().then(() => setTimeout(() => { if (v.paused && v.readyState >= 2 && inView && !userPaused) setBlocked(); }, 900),
+                  e => { if (e && e.name === 'NotAllowedError') setBlocked(); });
+  };
+  onBlocked(() => { if (inView) useImage(); });
 
+  // botão de play: só aparece se vídeo E imagem animada falharem
   const btn = document.createElement('button');
   btn.type = 'button'; btn.className = 'media-toggle';
   btn.innerHTML = '<span aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>';
   fig.appendChild(btn);
-  ['play', 'playing', 'pause', 'ended'].forEach(ev => v.addEventListener(ev, sync));
-  sync();
-
+  const sync = last => {
+    const stopped = !img && (userPaused || (last === true) || (isBlocked() && imgFailed));
+    fig.classList.toggle('is-stopped', stopped);
+    btn.setAttribute('aria-label', stopped ? 'Reproduzir vídeo' : 'Pausar vídeo');
+  };
+  ['play', 'playing', 'pause', 'ended'].forEach(ev => v.addEventListener(ev, () => sync()));
   btn.addEventListener('click', () => {
-    if (v.paused) { allowed = true; userPaused = false; play(); }
-    else { userPaused = true; v.pause(); }
+    if (v.paused) { userPaused = false; load(); v.play().catch(() => {}); sync(); }
+    else { userPaused = true; v.pause(); sync(); }
   });
 
   if (!('IntersectionObserver' in window)) return;
   new IntersectionObserver(es => es.forEach(e => {
     inView = e.isIntersecting;
-    if (inView) { if (allowed && !userPaused) play(); }
-    else v.pause();
-  }), { threshold: .25 }).observe(v);
+    if (inView) { if (!userPaused) play(); }
+    else if (!img) v.pause();
+  }), { threshold: .25, rootMargin: '300px 0px' }).observe(fig);
 
-  // alguns celulares só liberam o play depois de um toque em qualquer lugar
-  const retry = () => { if (inView && allowed && !userPaused && v.paused) play(); };
+  // mesmo sem imagem animada, alguns aparelhos liberam o play depois de um toque
+  const retry = () => { if (inView && !userPaused && !img && v.paused) play(); };
   ['touchstart', 'touchend', 'pointerdown', 'click'].forEach(t => addEventListener(t, retry, { passive: true }));
-  let lastRetry = 0;
-  addEventListener('scroll', () => { const n = performance.now(); if (n - lastRetry > 600) { lastRetry = n; retry(); } }, { passive: true });
 });
 
 // Barra superior ganha fundo depois do hero.
