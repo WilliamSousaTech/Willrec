@@ -78,7 +78,7 @@ premium/cinematográfica, foco em tipografia, composição e hierarquia.
 
 O Hero usa somente duas fotografias:
 - `images/site/willrec-hero-background.webp`: foto maior, exclusivamente como fundo.
-- `images/site/willrec-phone-card.webp`: foto menor, com a mão em primeiro plano, exclusivamente no card flutuante.
+- `A Hero usa imagens dedicadas para desktop e mobile (`images/site/hero-desktop-willrec.webp` e `images/site/hero-mobile-willrec.webp`) para preservar o enquadramento em cada breakpoint.
 
 Essas duas fotografias não são reutilizadas visualmente em outras seções. O restante
 do portfólio mantém suas imagens próprias, sem substituir categorias por repetições.

@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Will Rec — Videomaker Mobile em Teresina-PI | Orçamento Inteligente</title>
+<title>WILLREC — Videomaker em Teresina-PI</title>
 <meta name="description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais em Teresina-PI. Responda 6 perguntas e receba uma faixa de preço na hora, com IA.">
-<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#050505">
+<script>document.documentElement.classList.add("js")</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://willrec.vercel.app/">
 
@@ -13,14 +14,14 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Will Rec — Videomaker Mobile em Teresina-PI">
 <meta property="og:description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais. Orçamento inteligente com IA em segundos.">
-<meta property="og:image" content="images/site/hero-studio-willrec.png">
+<meta property="og:image" content="https://willrec.vercel.app/images/og-willrec.webp">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter/X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Will Rec — Videomaker Mobile em Teresina-PI">
 <meta name="twitter:description" content="Cobertura de eventos, Reels em tempo real e vídeos comerciais. Orçamento inteligente com IA em segundos.">
-<meta name="twitter:image" content="images/site/hero-studio-willrec.png">
+<meta name="twitter:image" content="https://willrec.vercel.app/images/og-willrec.webp">
 
 <script type="application/ld+json">
 {
@@ -29,7 +30,7 @@
   "name": "Will Rec",
   "description": "Videomaker mobile freelancer em Teresina-PI. Cobertura de eventos, Reels e Stories em tempo real, vídeos comerciais e institucionais.",
   "url": "https://willrec.vercel.app/",
-  "image": "https://willrec.vercel.app/images/site/hero-studio-willrec.png",
+  "image": "https://willrec.vercel.app/images/og-willrec.webp",
   "areaServed": "Teresina, PI",
   "priceRange": "R$150-R$650"
 }
@@ -37,316 +38,353 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/ArchivoBlack-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="images/hero/will1-plate.webp" as="image" fetchpriority="high">
+<link rel="preload" href="images/hero/will1-cutout.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a class="skip" href="#sobre">Pular para o conteúdo</a>
 
-<!-- ══════════════════ HEADER ══════════════════ -->
-<header id="header">
-    <div class="wrap hdr-inner">
-        <a href="#topo" class="logo">WILL<span>REC</span></a>
-        <nav class="hdr-nav" aria-label="Navegação principal">
-            <a href="#sobre">Sobre</a>
-            <a href="#servicos">Serviços</a>
-            <a href="#orcamento">Orçamento</a>
-            <a href="#portfolio">Portfólio</a>
-            <a href="#depoimentos">Depoimentos</a>
-            <a href="#contato">Contato</a>
-        </nav>
-        <div class="hdr-right">
-            <a href="#orcamento" class="btn-pill hdr-cta">Pedir Orçamento</a>
-            <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
-                <span class="ham-bar"></span><span class="ham-bar"></span><span class="ham-bar"></span>
-            </button>
-        </div>
-    </div>
+<!-- ══ BARRA SUPERIOR — marca + CTA (sem transform, dentro da área segura) ══ -->
+<header class="bar">
+    <a class="bar-brand" href="#inicio" aria-label="WILLREC — início">WILLREC</a>
+    <a class="btn btn-ghost bar-cta" href="#contato">Fale comigo <span aria-hidden="true">→</span></a>
 </header>
 
-<nav id="nav-overlay" aria-label="Menu principal">
-    <a href="#sobre" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">01</em><span class="nav-txt">Sobre</span></span></a>
-    <a href="#servicos" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">02</em><span class="nav-txt">Serviços</span></span></a>
-    <a href="#orcamento" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">03</em><span class="nav-txt">Orçamento</span></span></a>
-    <a href="#portfolio" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">04</em><span class="nav-txt">Portfólio</span></span></a>
-    <a href="#depoimentos" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">05</em><span class="nav-txt">Depoimentos</span></span></a>
-    <a href="#contato" data-nav-link class="nav-item"><span class="nav-row"><em class="nav-num">06</em><span class="nav-txt">Contato</span></span></a>
-    <div class="nav-overlay-foot">
-        <a href="https://instagram.com/willrec_oficial" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener">WhatsApp</a>
-    </div>
+<!-- ══ DOCK — navegação ══ -->
+<nav class="dock" aria-label="Navegação principal" data-dock>
+    <a class="dock-item" href="#inicio" data-section="inicio" data-label="Início" aria-label="Início"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span class="dock-tip" aria-hidden="true">Início</span></a>
+    <a class="dock-item" href="#sobre" data-section="sobre" data-label="Sobre" aria-label="Sobre"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="dock-tip" aria-hidden="true">Sobre</span></a>
+    <a class="dock-item" href="#servicos" data-section="servicos" data-label="Serviços" aria-label="Serviços"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4l-2 5M14 4l-2 5M20 4l-2 5"/></svg><span class="dock-tip" aria-hidden="true">Serviços</span></a>
+    <a class="dock-item" href="#orcamento" data-section="orcamento" data-label="Orçamento" aria-label="Orçamento"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg><span class="dock-tip" aria-hidden="true">Orçamento</span></a>
+    <a class="dock-item" href="#portfolio" data-section="portfolio" data-label="Portfólio" aria-label="Portfólio"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg><span class="dock-tip" aria-hidden="true">Portfólio</span></a>
+    <a class="dock-item" href="#contato" data-section="contato" data-label="Contato" aria-label="Contato"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="dock-tip" aria-hidden="true">Contato</span></a>
 </nav>
 
 <main id="topo">
 
-<!-- ══════════════════ HERO — REDESIGN PREMIUM ══════════════════ -->
-<section class="hero hero-premium hero-v8 hero-reference-redesign" id="inicio">
-    <div class="hero-reference-bg" aria-hidden="true">
-        <img src="images/site/hero-studio-willrec.png" class="hero-reference-bg-img" alt="" fetchpriority="high">
-        <div class="hero-reference-overlay"></div>
+<!-- ══ CENA 01–02 · HERO CINEMATOGRÁFICO (scroll = câmera) ══ -->
+<section class="hero" id="inicio" aria-labelledby="hero-title" data-hero>
+  <div class="stage" data-stage>
+    <div class="fig f-bg1" aria-hidden="true"><img src="images/hero/will1-plate.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"></div>
+    <div class="fig f-bg2" aria-hidden="true"><img src="images/hero/will2-plate.webp" alt="" width="1920" height="1072" fetchpriority="low" decoding="async"></div>
+
+    <div class="type">
+      <h1 id="hero-title" class="wordmark" data-te="letters" aria-label="WILLREC">WILLREC</h1>
     </div>
 
-    <div class="hero-floating-card" aria-hidden="true">
-        <div class="hero-floating-card-media">
-            <img src="images/site/willrec-phone-card.webp" alt="">
-        </div>
-        <div class="hero-floating-card-content">
-            <span class="hero-floating-label">WILL REC</span>
-            <strong>Olhar, ritmo e presença.</strong>
-            <span class="hero-floating-meta">Captação mobile · Teresina</span>
-        </div>
+    <div class="fig f-cut1"><img src="images/hero/will1-cutout.webp" alt="Will segurando um gimbal com smartphone, olhando para a tela" width="1536" height="1024" fetchpriority="high" decoding="async"></div>
+    <div class="fig f-cut2"><img src="images/hero/will2-cutout.webp" alt="Retrato de Will com o smartphone diante do rosto" width="1920" height="1072" fetchpriority="low" decoding="async"></div>
+
+    <div class="shade" aria-hidden="true"></div>
+
+    <div class="hud">
+      <p class="kicker" data-kicker data-te="fade"><span>Visão</span><span>Ritmo</span><span>Histórias</span></p>
+      <p class="tagline" data-tagline data-te="blur">Histórias reais.<br>Imagem que permanece.</p>
+      <p class="hud-scroll" data-hint><i></i>Role para explorar</p>
+      <p class="hud-count" aria-hidden="true"><b data-count>01</b> — 02</p>
     </div>
+  </div>
+</section>
 
-    <div class="hero-content hero-reference-content">
-        <div class="hero-reference-nav-space" aria-hidden="true"></div>
-
-        <div class="hero-copy">
-            <p class="hero-kicker"><span>WILL REC</span><b> / </b> MOBILE VIDEOMAKER</p>
-            <h1>EU NÃO GRAVO<br>SÓ O <span>MOMENTO.</span></h1>
-            <p class="hero-statement"><span>EU TRANSFORMO</span> MOMENTOS EM <strong>CONTEÚDO.</strong></p>
-            <p class="hero-desc">Eventos, marcas e Reels. Captação ágil, olhar cinematográfico e conteúdo pronto para publicar.</p>
-
-            <div class="hero-ctas">
-                <a href="#orcamento" class="btn-pill hero-primary">Pedir orçamento <span aria-hidden="true">↗</span></a>
-                <a href="#portfolio" class="hero-link">Ver portfólio <span aria-hidden="true">↓</span></a>
-            </div>
-
-            <div class="hero-mini-proof" aria-label="Destaques">
-                <span><b>01</b> CAPTAÇÃO MOBILE</span>
-                <span><b>02</b> REELS COMERCIAIS</span>
-                <span><b>03</b> EVENTOS EM TEMPO REAL</span>
-            </div>
+<!-- ══ CENA 03 · POR TRÁS DA CÂMERA ══ -->
+<section id="sobre" class="sec sobre">
+    <div class="wrap sobre-grid">
+        <div class="sobre-copy">
+            <p class="label" data-te="fade">Por trás da câmera</p>
+            <p class="lead" data-te="slide">Comecei com um celular na mão e a vontade de <em>contar histórias reais</em>, do jeito que elas acontecem.</p>
+            <p class="body-text" data-te="fade">Sou William Sousa, o Will Rec — videomaker mobile freelancer em Teresina desde 2025. Meu foco é estar presente no momento, encontrar os melhores takes e transformar o que acontece em conteúdo que continua vivo depois do evento.</p>
+            <dl class="facts" data-te="fade">
+                <div><dt>Desde 2025</dt><dd>Gravando histórias reais</dd></div>
+                <div><dt>100% Mobile</dt><dd>Captação + edição</dd></div>
+                <div><dt>Teresina + região</dt><dd>Eventos e marcas</dd></div>
+                <div><dt>+50 projetos</dt><dd>+20 clientes · 100% dedicação</dd></div>
+            </dl>
         </div>
-
-        <div class="hero-reference-bottom" aria-hidden="true">
-            <span>TERESINA • PI</span>
-            <span>DISPONÍVEL PARA PROJETOS</span>
-        </div>
+        <figure class="sobre-media" data-parallax="-0.06">
+            <video muted loop playsinline preload="none" poster="media/will-gimbal-poster.webp" data-lazy-video aria-label="Will gravando com gimbal e smartphone">
+                <source data-src="media/will-gimbal.webm" type="video/webm">
+                <source data-src="media/will-gimbal.mp4" type="video/mp4">
+            </video>
+            <figcaption>Will Rec em ação</figcaption>
+        </figure>
     </div>
 </section>
 
-<!-- ══════════════════ SOBRE ══════════════════ -->
-<section id="sobre">
-    <div class="wrap identity-layout">
-        <div class="identity-copy">
-            <p class="eyebrow">Meu Caminho</p>
-            <p class="sobre-lead">Comecei com um celular na mão e a vontade de <em>contar histórias reais</em>, do jeito que elas acontecem.</p>
-            <p class="sobre-text">Sou William Sousa, o Will Rec — videomaker mobile freelancer em Teresina desde 2025. Meu foco é estar presente no momento, encontrar os melhores takes e transformar o que acontece em conteúdo que continua vivo depois do evento.</p>
-            <div class="sobre-stats">
-                <div class="stat"><b>Desde 2025</b><span>Gravando histórias reais</span></div>
-                <div class="stat"><b>100% Mobile</b><span>Captação + edição</span></div>
-                <div class="stat"><b>Teresina + região</b><span>Eventos e marcas</span></div>
-            </div>
-        </div>
-        <div class="identity-visual reveal">
-            <img src="images/site/willrec-visual.jpeg" alt="Visual cinematográfico de produção audiovisual mobile" loading="lazy">
-            <div class="identity-visual-shade"></div>
-            <div class="identity-tag"><span></span> WILL REC</div>
-            <div class="identity-caption">VISÃO.<br>RITMO.<br><strong>HISTÓRIA.</strong></div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════ SERVIÇOS ══════════════════ -->
-<section id="servicos">
+<!-- ══ CENA 04 · SERVIÇOS ══ -->
+<section id="servicos" class="sec">
     <div class="wrap">
-        <p class="eyebrow">O Que Eu Faço</p>
-        <h2 class="section-title">Serviços</h2>
-        <p class="section-sub">Da captação mobile ao roteiro do anúncio — cada entrega pensada pro formato onde ela vai rodar.</p>
-        <div class="services-list">
-            <article class="service-card reveal">
-                <div class="service-icon"><svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
-                <h3>Cobertura de Eventos ao Vivo</h3>
-                <p>Shows, shows de humor com vários personagens, aniversários, casamentos, chá de revelação, eventos religiosos e institucionais — captação mobile do início ao fim.</p>
-            </article>
-            <article class="service-card reveal">
-                <div class="service-icon"><svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
-                <h3>Reels & Stories em Tempo Real</h3>
-                <p>Conteúdo publicado enquanto o evento ainda acontece — sua audiência acompanha ao vivo, não uma semana depois.</p>
-            </article>
-            <article class="service-card reveal">
-                <div class="service-icon"><svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-                <h3>Vídeos Comerciais & Institucionais</h3>
-                <p>Anúncios e vídeos institucionais para empresas e lojas locais, com direção de arte e exportação pronta pra cada rede.</p>
-            </article>
-            <article class="service-card reveal">
-                <div class="service-icon"><svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-                <h3>Roteiro & Direção de Conteúdo</h3>
-                <p>Direção de takes, roteiro e sugestão de trilha sonora — pra cada anúncio ter começo, meio e fim, não só imagens soltas.</p>
-            </article>
-            <article class="service-card reveal">
-                <div class="service-icon"><svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                <h3>Parcerias Recorrentes</h3>
-                <p>Acompanhamento mensal pra influenciadores, artistas e marcas que precisam de conteúdo constante — combinamos tudo direto no WhatsApp.</p>
-            </article>
+        <header class="sec-head">
+            <p class="label" data-te="fade">O que eu faço</p>
+            <h2 class="title" data-te="slide">Serviços</h2>
+            <p class="sub" data-te="fade">Da captação mobile ao roteiro do anúncio — cada entrega pensada pro formato onde ela vai rodar.</p>
+        </header>
+        <div class="svc-list">
+            <article class="svc glow" data-te="fade"><span class="svc-n">01</span><h3>Cobertura de Eventos ao Vivo</h3><p>Shows, shows de humor com vários personagens, aniversários, casamentos, chá de revelação, eventos religiosos e institucionais — captação mobile do início ao fim.</p></article>
+            <article class="svc glow" data-te="fade"><span class="svc-n">02</span><h3>Reels &amp; Stories em Tempo Real</h3><p>Conteúdo publicado enquanto o evento ainda acontece — sua audiência acompanha ao vivo, não uma semana depois.</p></article>
+            <article class="svc glow" data-te="fade"><span class="svc-n">03</span><h3>Vídeos Comerciais &amp; Institucionais</h3><p>Anúncios e vídeos institucionais para empresas e lojas locais, com direção de arte e exportação pronta pra cada rede.</p></article>
+            <article class="svc glow" data-te="fade"><span class="svc-n">04</span><h3>Roteiro &amp; Direção de Conteúdo</h3><p>Direção de takes, roteiro e sugestão de trilha sonora — pra cada anúncio ter começo, meio e fim, não só imagens soltas.</p></article>
+            <article class="svc glow" data-te="fade"><span class="svc-n">05</span><h3>Parcerias Recorrentes</h3><p>Acompanhamento mensal pra influenciadores, artistas e marcas que precisam de conteúdo constante — combinamos tudo direto no WhatsApp.</p></article>
         </div>
     </div>
 </section>
 
-<!-- ══════════════════ ORÇAMENTO INTELIGENTE ══════════════════ -->
-<section id="orcamento">
+<!-- ══ CENA 05 · ORÇAMENTO INTELIGENTE ══ -->
+<section id="orcamento" class="sec">
+    <div class="wrap orc">
+        <header class="sec-head">
+            <p class="label" data-te="fade">Orçamento inteligente</p>
+            <h2 class="title" data-te="slide">Quanto custa o <em>seu</em> vídeo?</h2>
+            <p class="sub" data-te="fade">Responda algumas perguntas rápidas e a IA calcula uma faixa de preço na hora, já considerando duração, distância, prazo e o que você precisa receber no final.</p>
+        </header>
+        <div class="quiz-card glow" id="quiz-root">
+            <noscript>Ative o JavaScript pra usar o orçamento inteligente, ou chame direto no <a href="#contato">WhatsApp</a>.</noscript>
+        </div>
+    </div>
+</section>
+
+<!-- ══ POR QUE WILL REC ══ -->
+<section id="diferenciais" class="sec">
     <div class="wrap">
-        <p class="eyebrow">Orçamento Inteligente</p>
-        <h2 class="section-title">Quanto custa o<br><em>seu</em> vídeo?</h2>
-        <p class="section-sub">Responda algumas perguntas rápidas e a IA calcula uma faixa de preço na hora, já considerando duração, distância, prazo e o que você precisa receber no final.</p>
-
-        <div class="quiz-card" id="quiz-root">
-            <noscript>Ative o JavaScript pra usar o orçamento inteligente, ou chame direto no <a href="#contato" style="color:var(--amber)">WhatsApp</a>.</noscript>
+        <header class="sec-head">
+            <p class="label" data-te="fade">Diferenciais</p>
+            <h2 class="title" data-te="slide">Por que <em>Will Rec</em>?</h2>
+            <p class="sub" data-te="fade">Não é só apontar a câmera. É entender o que faz alguém parar de rolar o feed.</p>
+        </header>
+        <div class="diff">
+            <div class="diff-row" data-te="fade"><span>01</span><h3>Criação + Tecnologia</h3><p>Sou desenvolvedor web e trabalho com IA aplicada — entrego roteiro, copy e direção estratégica, não só captação e edição.</p></div>
+            <div class="diff-row" data-te="fade"><span>02</span><h3>Conteúdo no ritmo do evento</h3><p>Reels e Stories no ar enquanto a festa ainda tá rolando — sua audiência sente que tá lá.</p></div>
+            <div class="diff-row" data-te="fade"><span>03</span><h3>A prova tá nesta página</h3><p>Esse orçamento que você acabou de calcular? Fui eu que programei, com IA. É o mesmo olhar técnico que entra em cada job.</p></div>
+            <div class="diff-row" data-te="fade"><span>04</span><h3>Rede de criadores</h3><p>Conexão com criadores e artistas locais de alcance relevante — seu conteúdo circula além do seu próprio perfil.</p></div>
         </div>
     </div>
 </section>
 
-<!-- ══════════════════ POR QUE WILL REC ══════════════════ -->
-<section id="diferenciais">
-    <svg class="diff-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-            <radialGradient id="lensGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#F97316" stop-opacity="0.16"/>
-                <stop offset="100%" stop-color="#F97316" stop-opacity="0"/>
-            </radialGradient>
-        </defs>
-        <circle cx="330" cy="60" r="150" fill="url(#lensGlow)"/>
-        <circle cx="330" cy="60" r="90" fill="none" stroke="#F97316" stroke-opacity="0.14" stroke-width="1"/>
-        <circle cx="330" cy="60" r="60" fill="none" stroke="#F97316" stroke-opacity="0.2" stroke-width="1"/>
-        <circle cx="330" cy="60" r="30" fill="none" stroke="#F97316" stroke-opacity="0.28" stroke-width="1"/>
-        <g stroke="#FFFFFF" stroke-opacity="0.06">
-            <rect x="0" y="150" width="24" height="16"/><rect x="0" y="180" width="24" height="16"/>
-            <rect x="0" y="210" width="24" height="16"/><rect x="0" y="240" width="24" height="16"/>
-            <rect x="0" y="270" width="24" height="16"/><rect x="0" y="300" width="24" height="16"/>
-            <rect x="0" y="330" width="24" height="16"/><rect x="0" y="360" width="24" height="16"/>
-        </g>
-    </svg>
-    <div class="wrap diff-content">
-        <p class="eyebrow">Diferenciais</p>
-        <h2 class="section-title">Por que <em>Will Rec</em>?</h2>
-        <p class="section-sub">Não é só apontar a câmera. É entender o que faz alguém parar de rolar o feed.</p>
-        <div class="diff-list">
-            <div class="diff-item reveal">
-                <span class="diff-num">01</span>
-                <div><h4>Criação + Tecnologia</h4><p>Sou desenvolvedor web e trabalho com IA aplicada — entrego roteiro, copy e direção estratégica, não só captação e edição.</p></div>
-            </div>
-            <div class="diff-item reveal">
-                <span class="diff-num">02</span>
-                <div><h4>Conteúdo no ritmo do evento</h4><p>Reels e Stories no ar enquanto a festa ainda tá rolando — sua audiência sente que tá lá.</p></div>
-            </div>
-            <div class="diff-item reveal">
-                <span class="diff-num">03</span>
-                <div><h4>A prova tá nesta página</h4><p>Esse orçamento que você acabou de calcular? Fui eu que programei, com IA. É o mesmo olhar técnico que entra em cada job.</p></div>
-            </div>
-            <div class="diff-item reveal">
-                <span class="diff-num">04</span>
-                <div><h4>Rede de criadores</h4><p>Conexão com criadores e artistas locais de alcance relevante — seu conteúdo circula além do seu próprio perfil.</p></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════ PORTFÓLIO ══════════════════ -->
-<section id="portfolio">
+<!-- ══ CENA 06 · PORTFÓLIO — foco por hover / toque ══ -->
+<section id="portfolio" class="sec folio-sec">
     <div class="wrap">
-        <p class="eyebrow">Trabalhos</p>
-        <h2 class="section-title">Portfólio</h2>
-        <p class="section-sub">Uma amostra do que já rodou por aí. O acervo completo fica no Drive.</p>
+        <header class="sec-head">
+            <p class="label" data-te="fade">Trabalhos</p>
+            <h2 class="title" data-te="slide">Portfólio</h2>
+            <p class="sub" data-te="fade">Uma amostra do que já rodou por aí. O acervo completo fica no Drive.</p>
+        </header>
     </div>
-    <div class="folio-controls" aria-label="Controles do portfólio">
-        <button class="folio-arrow folio-prev" type="button" aria-label="Trabalho anterior">‹</button>
-        <span class="folio-hint">Arraste para ver os trabalhos</span>
-        <button class="folio-arrow folio-next" type="button" aria-label="Próximo trabalho">›</button>
-    </div>
-    <div class="folio-scroll" tabindex="0" aria-label="Carrossel de trabalhos">
-        <!-- Substitua os href="#" abaixo pelo link real da sua pasta do Google Drive -->
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/show-humor.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Shows de Humor</span><small>Captação de palco</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/bastidores-show.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Bastidores</span><small>Making of</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/comercial-moto.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Comerciais</span><small>Empresas &amp; lojas locais</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/documentario-pedal.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Documentário</span><small>Registro &amp; lifestyle</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/comercial-honda.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Concessionárias</span><small>Motos &amp; showroom</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/campus-party.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Eventos Culturais</span><small>Shows &amp; festivais</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/casamento.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Casamentos</span><small>Cerimônia &amp; making of</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/barbearia.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Barbearias &amp; Estética</span><small>Atendimento &amp; bastidores</small></a>
-        <a class="folio-card reveal" style="background-image:url('images/portfolio/cenario-curso.webp')" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener"><svg class="folio-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><path d="M10 8l6 4-6 4V8z"/></svg><span>Institucionais</span><small>Vídeos corporativos</small></a>
-    </div>
-    <div class="wrap">
-        <div class="folio-dots" aria-hidden="true">
-            <span class="fdot active"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span><span class="fdot"></span>
+    <div class="reel" data-reel>
+        <div class="reel-bar" data-te="fade"><span>Reel</span><i></i><button type="button" class="reel-toggle" data-reel-toggle aria-label="Reproduzir o reel">Reproduzir</button><span><b data-reel-n>01</b> / 09</span></div>
+        <div class="reel-view" data-reel-view role="region" aria-label="Reel de vídeos. Arraste para os lados ou clique para abrir em tela cheia.">
+            <ul class="reel-track" data-reel-track>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="show" data-title="Show" data-meta="Full HD · 1:09" data-hevc="0" aria-label="Abrir vídeo em tela cheia: Show">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/show.webp" data-src="media/reel/show-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>01</b><strong>Show</strong><em>Full HD · 1:09</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="professor-caio" data-title="Professor Caio" data-meta="Full HD · 1:22" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Professor Caio">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/professor-caio.webp" data-src="media/reel/professor-caio-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>02</b><strong>Professor Caio</strong><em>Full HD · 1:22</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="frutos-de-goias" data-title="Frutos de Goiás" data-meta="4K · 1:00" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Frutos de Goiás">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/frutos-de-goias.webp" data-src="media/reel/frutos-de-goias-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>03</b><strong>Frutos de Goiás</strong><em>4K · 1:00</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="criativo" data-title="Criativo" data-meta="4K · 0:42" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Criativo">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/criativo.webp" data-src="media/reel/criativo-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>04</b><strong>Criativo</strong><em>4K · 0:42</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="master-barbearia" data-title="Master Barbearia" data-meta="Full HD · 0:30" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Master Barbearia">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/master-barbearia.webp" data-src="media/reel/master-barbearia-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>05</b><strong>Master Barbearia</strong><em>Full HD · 0:30</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="campus-party" data-title="Campus Party" data-meta="Full HD · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Campus Party">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/campus-party.webp" data-src="media/reel/campus-party-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>06</b><strong>Campus Party</strong><em>Full HD · 0:37</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="projeto-07" data-title="Projeto 07" data-meta="4K · 0:37" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 07">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-07.webp" data-src="media/reel/projeto-07-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>07</b><strong>Projeto 07</strong><em>4K · 0:37</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="projeto-08" data-title="Projeto 08" data-meta="4K · 1:18" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 08">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-08.webp" data-src="media/reel/projeto-08-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>08</b><strong>Projeto 08</strong><em>4K · 1:18</em></span>
+                </button>
+            </li>
+            <li class="reel-card">
+                <button type="button" class="reel-btn" data-slug="projeto-09" data-title="Projeto 09" data-meta="Full HD · 0:26" data-hevc="1" aria-label="Abrir vídeo em tela cheia: Projeto 09">
+                    <span class="reel-frame">
+                        <video muted loop playsinline preload="none" disablepictureinpicture poster="media/reel/projeto-09.webp" data-src="media/reel/projeto-09-preview.mp4"></video>
+                        <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>
+                    </span>
+                    <span class="reel-cap"><b>09</b><strong>Projeto 09</strong><em>Full HD · 0:26</em></span>
+                </button>
+            </li>
+            </ul>
         </div>
-        <div class="folio-more"><a href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link class="btn-pill outline" target="_blank" rel="noopener">Ver acervo completo no Drive</a></div>
+    </div>
+    <div class="reel-bar reel-bar--folio"><span>Por categoria</span><i></i><span>Acervo no Drive</span></div>
+    <div class="folio" data-folio aria-label="Trabalhos em destaque">
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Shows de Humor — ver no Drive">
+            <img src="images/portfolio/show-humor.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">01</span>
+            <span class="panel-rail" aria-hidden="true">Shows de Humor</span>
+            <span class="panel-info"><strong>Shows de Humor</strong><small>Captação de palco</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Bastidores — ver no Drive">
+            <img src="images/portfolio/bastidores-show.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">02</span>
+            <span class="panel-rail" aria-hidden="true">Bastidores</span>
+            <span class="panel-info"><strong>Bastidores</strong><small>Making of</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Comerciais — ver no Drive">
+            <img src="images/portfolio/comercial-moto.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">03</span>
+            <span class="panel-rail" aria-hidden="true">Comerciais</span>
+            <span class="panel-info"><strong>Comerciais</strong><small>Empresas &amp; lojas locais</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Documentário — ver no Drive">
+            <img src="images/portfolio/documentario-pedal.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">04</span>
+            <span class="panel-rail" aria-hidden="true">Documentário</span>
+            <span class="panel-info"><strong>Documentário</strong><small>Registro &amp; lifestyle</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Concessionárias — ver no Drive">
+            <img src="images/portfolio/comercial-honda.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">05</span>
+            <span class="panel-rail" aria-hidden="true">Concessionárias</span>
+            <span class="panel-info"><strong>Concessionárias</strong><small>Motos &amp; showroom</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Eventos Culturais — ver no Drive">
+            <img src="images/portfolio/campus-party.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">06</span>
+            <span class="panel-rail" aria-hidden="true">Eventos Culturais</span>
+            <span class="panel-info"><strong>Eventos Culturais</strong><small>Shows &amp; festivais</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Casamentos — ver no Drive">
+            <img src="images/portfolio/casamento.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">07</span>
+            <span class="panel-rail" aria-hidden="true">Casamentos</span>
+            <span class="panel-info"><strong>Casamentos</strong><small>Cerimônia &amp; making of</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Barbearias e Estética — ver no Drive">
+            <img src="images/portfolio/barbearia.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">08</span>
+            <span class="panel-rail" aria-hidden="true">Barbearias &amp; Estética</span>
+            <span class="panel-info"><strong>Barbearias &amp; Estética</strong><small>Atendimento &amp; bastidores</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+        <a class="panel" href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link target="_blank" rel="noopener" aria-label="Institucionais — ver no Drive">
+            <img src="images/portfolio/cenario-curso.webp" alt="" loading="lazy" decoding="async" width="900" height="1125">
+            <span class="panel-idx">09</span>
+            <span class="panel-rail" aria-hidden="true">Institucionais</span>
+            <span class="panel-info"><strong>Institucionais</strong><small>Vídeos corporativos</small><em>Ver no Drive <i aria-hidden="true">↗</i></em></span>
+        </a>
+    </div>
+    <div class="wrap folio-foot">
+        <p class="folio-count" aria-live="polite"><b data-folio-n>01</b> / 09</p>
+        <a href="https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link" data-drive-link class="btn btn-ghost" target="_blank" rel="noopener">Ver acervo completo no Drive</a>
     </div>
 </section>
 
-<!-- ══════════════════ FEEDBACKS REAIS ══════════════════ -->
-<section id="depoimentos">
-    <div class="wrap feedback-head">
-        <div>
-            <p class="eyebrow">Feedback Real</p>
-            <h2 class="section-title">O QUE VOLTA<br>DEPOIS DO JOB.</h2>
+<!-- ══ FEEDBACKS REAIS ══ -->
+<section id="depoimentos" class="sec">
+    <div class="wrap">
+        <header class="sec-head">
+            <p class="label" data-te="fade">Feedback real</p>
+            <h2 class="title" data-te="slide">O que volta<br>depois do job.</h2>
+            <p class="sub" data-te="fade">Resultado bom chama atenção. Quando o cliente faz questão de mandar mensagem depois, vira prova de que o conteúdo funcionou.</p>
+        </header>
+        <div class="fb">
+            <figure class="fb-shot fb-s1" data-te="fade" data-parallax="0.05">
+                <img src="images/site/feedback-campus-party.jpeg" alt="Feedback de cliente após cobertura de evento Campus Party" loading="lazy" decoding="async" width="864" height="1536">
+                <figcaption>01 · Evento + feedback</figcaption>
+            </figure>
+            <blockquote class="fb-q fb-q1" data-te="slide">
+                <p>“Todo mundo aqui comentando no meu privado que ficou fenomenal.”</p>
+                <footer>Feedback recebido após a cobertura do evento</footer>
+            </blockquote>
+            <blockquote class="fb-q fb-q2" data-te="slide">
+                <p>“Ficou tudo muito bom 🙌 ❤️ Você arrasa”</p>
+                <footer>Mensagem de cliente após a entrega</footer>
+            </blockquote>
+            <figure class="fb-shot fb-s2" data-te="fade" data-parallax="-0.05">
+                <img src="images/site/feedback-emocao.jpeg" alt="Feedback de cliente após registro de momento emocionante" loading="lazy" decoding="async" width="864" height="1536">
+                <figcaption>02 · Momento + feedback</figcaption>
+            </figure>
         </div>
-        <p class="section-sub">Resultado bom chama atenção. Quando o cliente faz questão de mandar mensagem depois, vira prova de que o conteúdo funcionou.</p>
-    </div>
-
-    <div class="wrap feedback-grid">
-        <article class="feedback-shot feedback-shot--event reveal">
-            <img src="images/site/feedback-campus-party.jpeg" alt="Feedback de cliente após cobertura de evento Campus Party">
-            <div class="feedback-shot-label"><span>01</span> EVENTO + FEEDBACK</div>
-        </article>
-
-        <article class="feedback-quote feedback-quote--large reveal">
-            <span class="quote-mark">“</span>
-            <p>Todo mundo aqui comentando no meu privado que ficou fenomenal.</p>
-            <small>Feedback recebido após a cobertura do evento</small>
-            <div class="feedback-line"></div>
-            <span class="feedback-meta">CONTEÚDO QUE GERA REAÇÃO</span>
-        </article>
-
-        <article class="feedback-shot feedback-shot--emotion reveal">
-            <img src="images/site/feedback-emocao.jpeg" alt="Feedback de cliente após registro de momento emocionante">
-            <div class="feedback-shot-label"><span>02</span> MOMENTO + FEEDBACK</div>
-        </article>
-
-        <article class="feedback-quote feedback-quote--compact reveal">
-            <span class="quote-mark">“</span>
-            <p>Ficou tudo muito bom 🙌<br><strong>❤️ Você arrasa</strong></p>
-            <small>Mensagem de cliente após a entrega</small>
-        </article>
-    </div>
-
-    <div class="wrap feedback-footer">
-        <span class="feedback-live"><i></i> MENSAGENS REAIS DE CLIENTES</span>
-        <p>Não são frases inventadas para preencher o site. São retornos de trabalhos que aconteceram de verdade.</p>
+        <p class="fb-note" data-te="fade">Mensagens reais de clientes — retornos de trabalhos que aconteceram de verdade.</p>
     </div>
 </section>
 
-<!-- ══════════════════ CONTATO ══════════════════ -->
-<section id="contato">
+<!-- ══ CENA 07 · CONTATO ══ -->
+<section id="contato" class="sec contato">
     <div class="wrap">
-        <p class="eyebrow" style="justify-content:center">Vamos Gravar?</p>
-        <h2 class="section-title">Bora fechar<br>o seu <em>orçamento</em></h2>
-        <p class="section-sub">Chama no WhatsApp pra combinar data, formato de entrega e detalhes — resposta rápida, direto com o Will.</p>
-        <div class="contato-ctas">
-            <a href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link class="btn-pill" target="_blank" rel="noopener">
-                <svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2 .9 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.62-.17 1.3z"/></svg>
-                Chamar no WhatsApp
-            </a>
+        <p class="label" data-te="fade">Vamos gravar?</p>
+        <h2 class="title title-xl" data-te="slide">Bora fechar<br>o seu <em>orçamento</em></h2>
+        <p class="sub" data-te="fade">Chama no WhatsApp pra combinar data, formato de entrega e detalhes — resposta rápida, direto com o Will.</p>
+        <div class="contato-row" data-te="fade">
+            <a href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link class="btn btn-solid" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2 .9 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.62-.17 1.3z"/></svg> Chamar no WhatsApp</a>
+            <ul class="socials" aria-label="Redes">
+                <li><a class="social" href="https://instagram.com/willrec_oficial" target="_blank" rel="noopener" aria-label="Instagram @willrec_oficial"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor" stroke="none"/></svg><span>@willrec_oficial</span><i aria-hidden="true">↗</i></a></li>
+                <li><a class="social" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener" aria-label="WhatsApp"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2 .9 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.62-.17 1.3z"/></svg><span>WhatsApp</span><i aria-hidden="true">↗</i></a></li>
+            </ul>
         </div>
-        <p class="contato-social">Instagram <a href="https://instagram.com/willrec_oficial" target="_blank" rel="noopener">@willrec_oficial</a></p>
     </div>
+</section>
+
+<!-- ══ ASSINATURA · WILLREC interativo (canvas) ══ -->
+<section class="sig" aria-label="Assinatura WILLREC">
+    <div class="sig-stage tech-text" data-tech-text data-text="WILLREC" data-size="300" data-weight="400" data-spacing="-0.04" data-color="#f4f1ea" data-accent="#ff6a2a" data-reach="230">WILLREC</div>
+    <p class="sig-hint" aria-hidden="true"><span class="sig-hint-fine">Passe o mouse e arraste as letras</span><span class="sig-hint-touch">Toque e arraste as letras</span></p>
 </section>
 
 </main>
 
-<footer>
+<footer class="foot">
     <p>© <span id="year"></span> Will Rec — Videomaker Mobile · Teresina-PI</p>
 </footer>
-
-<!-- WhatsApp flutuante — sempre visível -->
-<a href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link class="wa-float" target="_blank" rel="noopener" aria-label="Chamar no WhatsApp">
-    <span class="wa-float-pulse" aria-hidden="true"></span>
-    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2 .9 2.14.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.62-.17 1.3z"/></svg>
-</a>
 
 <!-- Firebase: configure suas chaves em firebase-config.js (opcional — ver README) -->
 <script src="firebase-config.js"></script>
 <script type="module" src="firebase-init.js"></script>
 <script type="module" src="script.js"></script>
+<script type="module" src="js/main.js"></script>
 
-<div class="mobile-action-bar" aria-label="Ações rápidas"><a href="#portfolio" class="mobile-action-secondary">Portfólio</a><a href="#orcamento" class="mobile-action-primary">Pedir orçamento <span>↗</span></a></div>
 </body>
 </html>

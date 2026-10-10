@@ -449,25 +449,9 @@ function render() {
 if (root) render();
 
 // ════════════════════════════════════════════════════════════════════
-// HEADER, MENU MOBILE, LINKS DE WHATSAPP/DRIVE, FOOTER
+// LINKS DE WHATSAPP/DRIVE E RODAPÉ
+// (header, dock, hero, portfólio e reveal agora vivem em js/)
 // ════════════════════════════════════════════════════════════════════
-const header = document.getElementById('header');
-const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 20);
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
-
-const hamburger = document.getElementById('hamburger');
-const navOverlay = document.getElementById('nav-overlay');
-function toggleNav(open) {
-    const isOpen = open ?? !navOverlay.classList.contains('active');
-    navOverlay.classList.toggle('active', isOpen);
-    hamburger.classList.toggle('is-open', isOpen);
-    hamburger.setAttribute('aria-expanded', String(isOpen));
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-hamburger?.addEventListener('click', () => toggleNav());
-navOverlay?.querySelectorAll('[data-nav-link]').forEach(a => a.addEventListener('click', () => toggleNav(false)));
-
 document.querySelectorAll('[data-wa-link]').forEach(a => {
     a.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(CONFIG.WHATSAPP_DEFAULT_MSG)}`;
 });
@@ -475,66 +459,3 @@ document.querySelectorAll('[data-drive-link]').forEach(a => { a.href = CONFIG.DR
 
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-// ════════════════════════════════════════════════════════════════════
-// PORTFÓLIO — bolinha ativa acompanha o scroll horizontal
-// ════════════════════════════════════════════════════════════════════
-const folioScroll = document.querySelector('.folio-scroll');
-const fdots = document.querySelectorAll('.fdot');
-if (folioScroll && fdots.length) {
-    const cards = folioScroll.querySelectorAll('.folio-card');
-    let ticking = false;
-    folioScroll.addEventListener('scroll', () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-            const center = folioScroll.scrollLeft + folioScroll.clientWidth / 2;
-            let closest = 0, minDist = Infinity;
-            cards.forEach((card, i) => {
-                const dist = Math.abs((card.offsetLeft + card.offsetWidth / 2) - center);
-                if (dist < minDist) { minDist = dist; closest = i; }
-            });
-            const activeIndex = Math.min(closest, fdots.length - 1);
-            fdots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
-            cards.forEach((card, i) => card.classList.toggle('is-active', i === activeIndex));
-            ticking = false;
-        });
-    }, { passive: true });
-    // Estado inicial: primeiro card já entra em destaque
-    cards[0]?.classList.add('is-active');
-}
-
-// ════════════════════════════════════════════════════════════════════
-// REVEAL AO ROLAR — fade-in sutil quando os elementos entram na tela
-// ════════════════════════════════════════════════════════════════════
-const revealTargets = document.querySelectorAll('.reveal');
-if (revealTargets.length && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry, i) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('in-view'), (i % 4) * 80);
-                io.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-    revealTargets.forEach(el => io.observe(el));
-} else {
-    revealTargets.forEach(el => el.classList.add('in-view'));
-}
-
-// ═══════════════════════════════════════════════════════════════
-// PORTFÓLIO V7.1 — setas + teclado + toque
-// ═══════════════════════════════════════════════════════════════
-(() => {
-  const scroller = document.querySelector('.folio-scroll');
-  const prev = document.querySelector('.folio-prev');
-  const next = document.querySelector('.folio-next');
-  if (!scroller) return;
-  const step = () => Math.min(scroller.clientWidth * 0.78, 330) + 14;
-  prev?.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }));
-  next?.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }));
-  scroller.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); scroller.scrollBy({ left: -step(), behavior: 'smooth' }); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); scroller.scrollBy({ left: step(), behavior: 'smooth' }); }
-  });
-})();

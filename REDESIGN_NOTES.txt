@@ -1,21 +1,84 @@
-WILL REC — REDESIGN PREMIUM
+WILLREC — REDESIGN v2 (notas técnicas)
+=======================================
 
-Direção visual:
-- Landing page inspirada na referência enviada: premium, cinematográfica, minimalista, escura e sofisticada.
-- Desktop, tablet e smartphone tratados como experiências responsivas próprias.
-- Hero em composição de imagem dominante + conteúdo editorial + card flutuante.
+CONCEITO
+  Scroll = câmera · Imagens = cenas · Tipografia = narrativa · Motion = transição · UI = controle.
+  Uma única experiência do começo ao fim: preto, branco e laranja (acento), Archivo Black + Inter.
 
-Regra das duas fotos do Hero:
-- Foto maior: images/site/willrec-hero-background.webp — usada exclusivamente como fundo do Hero.
-- Foto menor, com a mão em primeiro plano: images/site/willrec-phone-card.webp — usada exclusivamente dentro do card flutuante do Hero.
-- Não repetir nenhuma dessas duas fotos visualmente em outras seções.
-- Não gerar imagens adicionais para o Hero.
-- Não substituir essas duas fotos por imagens de stock ou genéricas.
+ESTRUTURA
+  index.html          conteúdo (preservado) + novo Hero em camadas
+  styles.css          design system único (tokens, componentes, hero, seções, quiz, responsivo)
+  js/main.js          ponto de entrada
+  js/text-effect.js   TextEffect  (fade · blur · slide · letters)
+  js/parallax.js      Parallax    (motor do Hero + [data-parallax])
+  js/dock.js          Dock        (magnificação spring + seção ativa)
+  js/glow-card.js     GlowCard    (brilho discreto que segue o cursor)
+  (SocialHover é CSS puro: .social)
+  js/portfolio.js     foco por hover (desktop) / item ativo por scroll-snap (toque)
+  script.js           quiz de orçamento + links WhatsApp/Drive (lógica intacta)
+  firebase-*.js, api/ , firestore.rules   INALTERADOS
 
-Regra geral de imagens:
-- As imagens de portfólio continuam sendo únicas e associadas às suas respectivas categorias.
-- Evitar usar a mesma fotografia em duas seções diferentes.
-- Seções que não precisam de fotografia devem permanecer com tipografia, cards, números ou espaço negativo em vez de receber uma foto repetida.
+HERO (camadas, de trás para frente)
+  plate 1 / plate 2  fundo SEM o Will (clean plate)  -> parallax lento
+  WILLREC (HTML)     atrás do personagem             -> o rosto nunca é coberto
+  recorte 1 / 2      Will com alpha                  -> parallax rápido
+  HUD                kicker VISÃO·RITMO·HISTÓRIAS, tagline, contador
+  Timeline: 0–.30 dolly · .32–.64 pan cena 1→2 · .64–.94 assenta. Só anima enquanto há scroll.
 
-Preservação:
-- Funcionalidades, rotas, formulários, integrações, orçamento inteligente, links e chatbot existentes devem continuar funcionando.
+ASSETS
+  images/hero/*-plate.webp  fundo sem o Will     images/hero/*-cutout.webp  recorte com alpha
+  media/will-gimbal.{webm,mp4}  vídeo (carrega ao entrar na tela, pausa ao sair)
+  images/_legacy/   imagens antigas do hero (não referenciadas; pode apagar)
+
+MOTION REDUZIDO: parallax desligado (--k:0), hero encurtado, conteúdo e navegação preservados.
+
+
+REEL (showreel de vídeos verticais) — seção Portfólio
+  js/reel.js          comportamento (faixa, magnificação, arraste, lightbox FLIP)
+  styles.css  §9      estilos (.reel-*)
+  index.html          os cards ficam no HTML (#portfolio > .reel) — é lá que se troca título/legenda
+  media/reel/         NOME-preview.mp4 (540p, toca nos cards) + NOME.webp (capa)
+
+  Interações: pausa e cresce ao passar o mouse (card sob o cursor ~+36%, vizinhos crescem menos),
+  inclina e acende seguindo o cursor, cursor "ABRIR/ARRASTE", arraste com inércia (mouse e toque),
+  roda horizontal, o scroll da página acelera a faixa, clique abre em tela cheia crescendo a partir
+  do card (com som), setas/teclado ← → trocam de vídeo, Esc fecha.
+
+  Trocar nome de um vídeo: no index.html, mude data-title do botão E o texto dentro de .reel-cap.
+  Qualidade máxima no clique: suba os originais (NOME.mp4) num CDN e preencha FULL_BASE no topo de
+  js/reel.js (arquivos acima de 100 MB não entram no GitHub). Vazio = usa a prévia 540p.
+  Movimento reduzido / economia de dados: sem autoplay; faixa vira rolável.
+
+
+ASSINATURA — WILLREC interativo (canvas), no fim da página, depois do Contato
+  js/tech-text.js     porte do componente TechText (React) para JS puro
+  styles.css  §10     estilos (.sig, .tech-text)
+  index.html          <div class="sig-stage tech-text" data-tech-text data-text="WILLREC" ...>
+
+  Interação: o contorno tracejado aparece na letra sob o cursor, um quadro com medidas segue a letra
+  em foco, as letras podem ser arrastadas e voltam por mola. Sem mouse, o brilho varre o texto sozinho.
+  Ajustes por atributo no HTML: data-text, data-size, data-spacing, data-color, data-accent, data-reach,
+  data-reveal (letter|area), data-specks, data-labels="false", data-draggable="false", data-sweep="false".
+  Movimento reduzido: sem varredura automática. Sem JS: o texto WILLREC aparece normal.
+
+
+REEL — correção mobile (v5)
+  Celulares com "reduzir movimento", economia de dados ou economia de bateria começavam com a faixa
+  parada. Agora a faixa fica rolável com o dedo e o botão REPRODUZIR (barra do reel) liga o movimento.
+  O mesmo botão vira PAUSAR quando está rodando. O foco por toque não pausa mais a faixa.
+  Se o celular bloquear o autoplay, o vídeo tenta tocar de novo no primeiro toque na tela.
+
+
+VÍDEO "WILL REC EM AÇÃO" (seção Sobre) — correção mobile (v6)
+  O carregador original não carregava o vídeo quando o celular estava com "reduzir movimento".
+  Agora: botão de play/pausa sobre o vídeo (toque em qualquer ponto), carrega sob demanda,
+  retoma sozinho com o primeiro toque se o celular bloquear o autoplay (modo economia de bateria),
+  e volta a pausar/retomar conforme a rolagem depois de ligado. Código em js/main.js + styles.css (.media-toggle).
+
+
+AUTOPLAY SEMPRE LIGADO (v7)
+  O reel (faixa + vídeos) e o vídeo "Will Rec em ação" agora tocam sozinhos em qualquer celular, inclusive
+  com "reduzir movimento"/economia de dados ligados (antes ficavam parados esperando um toque).
+  Os vídeos começam a carregar ~600px antes de aparecer na tela. Se o celular bloquear o autoplay
+  (modo economia de bateria do iPhone), tentam de novo a cada toque/rolagem; o botão Pausar do reel
+  e o play sobre o vídeo do Will continuam disponíveis para quem quiser parar.
