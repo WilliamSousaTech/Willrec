@@ -111,3 +111,7 @@ AVALIAÇÃO — ITENS RESOLVIDOS (v10)
      (telefone, endereço Teresina-PI, área atendida, catálogo de serviços), og:image 1200x630 (images/og-willrec.jpg),
      robots.txt e sitemap.xml. Depois de publicar: cadastrar o site no Google Search Console e enviar o sitemap;
      criar/ajustar o Perfil da Empresa no Google (é o que mais pesa em "videomaker em Teresina").
+
+
++3 VÍDEOS NO REEL (v11): Bar de Drinks, Casamento, Jr. Drinks & Coquetéis (agora 12 vídeos).
+  Títulos sugeridos pelo conteúdo — confirme/ajuste no index.html (data-title + texto da legenda).
