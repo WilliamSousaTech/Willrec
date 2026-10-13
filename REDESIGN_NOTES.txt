@@ -115,3 +115,19 @@ AVALIAÇÃO — ITENS RESOLVIDOS (v10)
 
 +3 VÍDEOS NO REEL (v11): Bar de Drinks, Casamento, Jr. Drinks & Coquetéis (agora 12 vídeos).
   Títulos sugeridos pelo conteúdo — confirme/ajuste no index.html (data-title + texto da legenda).
+
+
+CORREÇÃO DE TRAVAMENTO DO REEL + NOVA ORDEM (v12)
+  Sintoma: depois de um tempo os cards ficavam escuros, a faixa parava e a página recarregava sozinha.
+  Causas e correções (js/reel.js, styles.css):
+   · MEMÓRIA — cada vídeo que passava ficava carregado para sempre (36 decodificadores abertos). Agora só carregam
+     os cards perto da tela, só os visíveis tocam e os que ficam longe são descarregados. Fora da seção, tudo é
+     descarregado; durante o lightbox, os cards são liberados para o vídeo grande ter memória. (Máx. ~10 vídeos de 24.)
+   · FAIXA PARADA — o arraste no toque podia ficar "preso" e pausar para sempre; agora solta sozinho (fim de toque em
+     qualquer lugar, perda de foco e vigia de 0,7 s). Erro isolado não derruba mais o loop (try/catch) e há um vigia
+     que religa a faixa se ela parar. Proteção contra largura 0 (NaN).
+   · QUADRADO ESCURO — a capa agora fica sempre atrás e o vídeo só aparece depois de começar a tocar.
+   · LEVEZA — 24 cards em vez de 36; efeitos 3D só nos cards perto da tela; máscara e mix-blend (caros no celular)
+     trocados por degradês simples.
+  Ordem do reel: Bar de Drinks, Casamento, Jr. Drinks & Coquetéis, Evento Corporativo, Criativo, Master Barbearia,
+  Show, Professor Caio, Frutos de Goiás, Campus Party, Aniversário, Político.

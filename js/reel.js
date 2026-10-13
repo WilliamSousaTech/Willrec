@@ -39,30 +39,41 @@ export function initReel() {
   // ── cards, clones (loop contínuo) e vídeos ────────────────────
   const makeCard = el => {
     const c = {
-      el, i: +el.dataset.i, video: $('video', el), frame: $('.reel-frame', el), img: null, imgFailed: false,
+      el, i: +el.dataset.i, video: $('video', el), frame: $('.reel-frame', el), img: null, imgFailed: false, on: false, fx: false,
       left: 0, w: 1, s: 1, p: 0, rx: 0, ry: 0, mx: 50, my: 40, shown: ''
     };
     c.video.__card = c;
+    // o vídeo só aparece depois de começar a tocar; antes disso (ou se falhar) a capa fica à mostra, nunca um quadrado preto
+    c.video.addEventListener('playing', () => c.video.classList.add('is-live'));
+    ['emptied', 'error'].forEach(ev => c.video.addEventListener(ev, () => c.video.classList.remove('is-live')));
     return c;
   };
-  let cards = $$('.reel-card', track).map(makeCard);
-  let motion = false, userPaused = false, cloned = false;
+  const collect = () => $$('.reel-card', track).map(makeCard);
+  let cards = collect();
+  let motion = false, userPaused = false, cloned = false, sets = 1;
   const toggle = $('[data-reel-toggle]', root);
 
-  const buildClones = () => {
-    if (cloned) return; cloned = true;
-    for (let k = 0; k < 2; k++) originals.forEach(li => {
+  const addSet = () => {
+    originals.forEach(li => {
       const c = li.cloneNode(true);
       c.setAttribute('aria-hidden', 'true');
       $('.reel-btn', c).tabIndex = -1;
       track.appendChild(c);
     });
-    cards = $$('.reel-card', track).map(makeCard);
+    sets++;
+  };
+  // 2 conjuntos bastam (36 elementos viravam 24); só acrescenta outro se a tela for mais larga que a faixa
+  const buildClones = () => {
+    if (cloned) return; cloned = true;
+    addSet(); cards = collect(); measure();
+    while (W < viewW * 1.15 && sets < 4) { addSet(); cards = collect(); measure(); }
   };
 
-  // vídeos: carrega perto da tela e toca só quando visível
+  // vídeos: GESTÃO DE MEMÓRIA. Só os cards perto da tela carregam, só os visíveis tocam, e os que ficam longe são
+  // descarregados (src removido). Antes, cada vídeo que passava ficava carregado para sempre: depois de algumas voltas
+  // eram dezenas de decodificadores abertos, o celular esgotava a memória, os cards ficavam pretos e a página recarregava.
   const visibleVideos = new WeakSet();
-  let lightboxOpen = false, loadIO = null, playIO = null;
+  let lightboxOpen = false;
   const canPlayNow = v => visibleVideos.has(v) && !lightboxOpen && !userPaused;
   const tryPlay = v => {
     if (!canPlayNow(v) || (v.__card && v.__card.img)) return;
@@ -75,6 +86,7 @@ export function initReel() {
     if (c.img || c.imgFailed) return;
     const img = document.createElement('img');
     img.className = 'reel-vid'; img.alt = ''; img.decoding = 'async'; img.draggable = false;
+    img.addEventListener('load', () => img.classList.add('is-live'));
     img.addEventListener('error', () => {            // navegador que não mostra mp4 em <img>: volta ao <video>
       c.imgFailed = true; c.img = null; img.remove();
       c.video.style.display = ''; c.frame.classList.remove('as-img');
@@ -83,30 +95,37 @@ export function initReel() {
     c.video.pause(); c.video.removeAttribute('src'); c.video.load();
     c.video.style.display = 'none'; c.video.after(img); c.frame.classList.add('as-img');
   };
-  onBlocked(() => cards.forEach(c => { if (c.video.getAttribute('src') || visibleVideos.has(c.video)) useImage(c); }));
-  probeAutoplay();
-  const watchVideos = () => {
-    if (!loadIO) {
-      loadIO = new IntersectionObserver(es => es.forEach(e => {
-        if (!e.isIntersecting) return;
-        const v = e.target;
-        if (isBlocked() && v.__card) { useImage(v.__card); loadIO.unobserve(v); return; }
-        if (!v.getAttribute('src') && v.dataset.src && !(v.__card && v.__card.img)) {
-          v.muted = true; v.defaultMuted = true; v.setAttribute('playsinline', '');   // iOS exige muted via propriedade
-          v.preload = 'auto';
-          v.addEventListener('loadeddata', () => tryPlay(v), { once: true });
-          v.src = v.dataset.src;
-        }
-        loadIO.unobserve(v);
-      }), { rootMargin: '600px 700px' });
-      playIO = new IntersectionObserver(es => es.forEach(e => {
-        const v = e.target;
-        if (e.isIntersecting) { visibleVideos.add(v); tryPlay(v); }
-        else { visibleVideos.delete(v); v.pause(); }
-      }), { threshold: .2 });
-    }
-    cards.forEach(c => { loadIO.observe(c.video); playIO.observe(c.video); });
+  const loadVideo = c => {
+    if (isBlocked()) { useImage(c); return; }
+    const v = c.video;
+    if (c.img || v.getAttribute('src')) return;
+    v.muted = true; v.defaultMuted = true; v.setAttribute('playsinline', '');   // iOS exige muted via propriedade
+    v.preload = 'auto';
+    v.src = v.dataset.src;
   };
+  const unloadVideo = c => {
+    const v = c.video;
+    if (c.img) { c.img.remove(); c.img = null; c.frame.classList.remove('as-img'); v.style.display = ''; }
+    if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+    v.classList.remove('is-live');
+  };
+  onBlocked(() => cards.forEach(c => { if (c.on) useImage(c); }));
+  probeAutoplay();
+
+  // distância (px) do card até a borda da tela: negativo = aparece na tela
+  const edgeGap = c => { const center = c.left - x + c.w / 2; return Math.max(-(center + c.w / 2), center - c.w / 2 - viewW); };
+  const manage = () => {
+    if (lightboxOpen) return;
+    for (const c of cards) {
+      const gap = edgeGap(c);
+      if (gap < c.w * 1.1) { if (!c.on) { c.on = true; loadVideo(c); } }
+      else if (gap > c.w * 2.4 && c.on) { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); }
+      if (!c.on) continue;
+      if (gap < 0) { visibleVideos.add(c.video); if (c.video.paused && !c.img) tryPlay(c.video); }
+      else { visibleVideos.delete(c.video); if (!c.video.paused) c.video.pause(); }
+    }
+  };
+  const unloadAll = () => cards.forEach(c => { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); });
   // alguns celulares só liberam o play depois de um toque: tenta de novo a cada gesto
   const retryPlay = () => cards.forEach(c => { if (c.video.paused) tryPlay(c.video); });
   ['touchstart', 'touchend', 'pointerdown', 'click'].forEach(t => addEventListener(t, retryPlay, { passive: true }));
@@ -125,7 +144,9 @@ export function initReel() {
   // ── medidas ───────────────────────────────────────────────────
   let viewW = 1, W = 1, viewLeft = 0, viewTop = 0;
   const measure = () => {
-    viewW = view.clientWidth;
+    const vw = view.clientWidth;
+    if (!vw) return;
+    viewW = vw;
     const r = view.getBoundingClientRect(); viewLeft = r.left; viewTop = r.top;
     cards.forEach(c => { c.left = c.el.offsetLeft; c.w = c.el.offsetWidth; });
     W = cards.length > N ? cards[N].left - cards[0].left : track.scrollWidth;
@@ -157,8 +178,10 @@ export function initReel() {
     cursor.classList.toggle('is-card', onCard);
   };
 
-  const tick = t => {
-    raf = 0;
+  let lastManage = 0;
+  const frameStep = t => {
+    // arraste preso (o navegador às vezes não manda pointerup no toque): solta sozinho
+    if (drag && (t - drag.lastT > 1500 || (!drag.moved && t - drag.t0 > 700))) releaseDrag();
     const dt = clamp((t - last) / 1000, .001, .05); last = t;
 
     // scroll da página empurra a faixa (a câmera acelera)
@@ -173,7 +196,9 @@ export function initReel() {
       inertia *= Math.pow(.05, dt);
       if (Math.abs(inertia) < 2) inertia = 0;
     }
+    if (!(W > 0)) { measure(); return; }
     x = ((x % W) + W) % W;
+    if (!isFinite(x)) x = 0;
     track.style.transform = `translate3d(${(-x).toFixed(2)}px,0,0)`;
 
     // foco: cursor (quando existe) ou centro da tela
@@ -189,10 +214,11 @@ export function initReel() {
     let best = null, bestD = Infinity;
     for (const c of cards) {
       const center = c.left - x + c.w / 2;
-      if (center < -c.w * 1.6 || center > viewW + c.w * 1.6) { // fora da tela: volta ao normal sem custo
-        if (c.s !== 1) { c.s = 1; c.p = 0; c.rx = 0; c.ry = 0; c.el.style.cssText = ''; c.shown = ''; }
+      if (center < -c.w * 1.6 || center > viewW + c.w * 1.6) { // fora da tela: volta ao normal e sai da camada 3D
+        if (c.fx) { c.fx = false; c.el.classList.remove('fx'); c.s = 1; c.p = 0; c.rx = 0; c.ry = 0; c.el.style.cssText = ''; c.shown = ''; }
         continue;
       }
+      if (!c.fx) { c.fx = true; c.el.classList.add('fx'); }
       const d = center - focusX;
       const p = Math.exp(-((d / (c.w * 1.02)) ** 2)) * amp;
       const isHot = hovering && c === hotCard;
@@ -217,10 +243,16 @@ export function initReel() {
       cx += (cTx - cx) * Math.min(1, dt * 18); cy += (cTy - cy) * Math.min(1, dt * 18);
       cursor.style.transform = `translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`;
     }
-    if (visible) raf = requestAnimationFrame(tick);
+    if (t - lastManage > 250) { lastManage = t; manage(); }
+  };
+  const tick = t => {
+    raf = 0;
+    try { frameStep(t); } catch (err) { if (!isFinite(x)) x = 0; console.warn('[reel]', err); }   // um erro isolado nunca para a faixa
+    if (visible && motion) raf = requestAnimationFrame(tick);
   };
   const wake = () => { if (!raf && visible && motion) { last = performance.now(); lastScroll = scrollY; raf = requestAnimationFrame(tick); } };
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) { measure(); wake(); } }, { rootMargin: '120px 0px' }).observe(root);
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) { measure(); wake(); } else unloadAll(); }, { rootMargin: '200px 0px' }).observe(root);
+  setInterval(() => { if (visible && motion && !raf) wake(); }, 1500);   // vigia: se o loop parar por qualquer motivo, religa
 
   // ── ponteiro: hover, arraste, roda ────────────────────────────
   const cardOf = e => { const el = e.target.closest && e.target.closest('.reel-card'); return el ? cards.find(c => c.el === el) : null; };
@@ -271,17 +303,22 @@ export function initReel() {
   };
   view.addEventListener('pointerdown', e => {
     if (!motion || e.button !== 0) return;
-    drag = { id: e.pointerId, startX: e.clientX, lastX: e.clientX, lastT: performance.now(), v: 0, moved: false };
+    const now = performance.now();
+    drag = { id: e.pointerId, startX: e.clientX, lastX: e.clientX, lastT: now, t0: now, v: 0, moved: false };
     wake();
   });
   const endDrag = e => {
-    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag) return;
+    if (e && e.type && e.type.indexOf('pointer') === 0 && e.pointerId !== drag.id) return;
     if (drag.moved) { inertia = clamp(drag.v, -2600, 2600); suppressClick = true; setTimeout(() => { suppressClick = false; }, 0); }
     view.classList.remove('is-drag'); if (cursor) cursor.classList.remove('is-grab');
     drag = null;
   };
+  const releaseDrag = () => endDrag(null);
   view.addEventListener('pointerup', endDrag);
   view.addEventListener('pointercancel', endDrag);
+  ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(t => addEventListener(t, endDrag, { passive: true }));
+  addEventListener('blur', releaseDrag);
   view.addEventListener('click', e => { if (suppressClick) { e.preventDefault(); e.stopPropagation(); } }, true);
   view.addEventListener('wheel', e => {
     if (motion && Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); x += e.deltaX; wake(); }
@@ -350,7 +387,7 @@ export function initReel() {
   const open = i => {
     if (dlg.open) return;
     lightboxOpen = true; hovering = false; if (cursor) cursor.classList.remove('on');
-    $$('video', track).forEach(v => v.pause());
+    unloadAll();
     const from = (frameOf(i) || view).getBoundingClientRect();
     dlg.classList.remove('is-closing');
     dlg.showModal(); document.documentElement.classList.add('reel-lock');
@@ -368,7 +405,7 @@ export function initReel() {
     dlg.close(); document.documentElement.classList.remove('reel-lock');
     lv.pause(); lv.removeAttribute('src'); lv.load();
     lightboxOpen = false; cur = -1; hovering = false; hotCard = null;
-    cards.forEach(c => tryPlay(c.video));
+    manage();
     wake();
   };
   const close = () => {
@@ -403,7 +440,7 @@ export function initReel() {
     motion = true; userPaused = false;
     root.classList.add('is-motion');
     if (cursor) view.classList.add('has-cursor');
-    buildClones(); measure(); watchVideos(); syncToggle(); wake();
+    buildClones(); measure(); manage(); syncToggle(); wake();
   };
   if (toggle) toggle.addEventListener('click', () => {
     if (!motion) { start(); return; }
