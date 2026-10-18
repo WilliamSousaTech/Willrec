@@ -82,10 +82,8 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="preload" href="fonts/ArchivoBlack-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="images/hero/will1-plate.webp" as="image" fetchpriority="high">
 <link rel="preload" href="images/hero/will1-cutout.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
@@ -135,20 +133,49 @@
   </div>
 </section>
 
-<!-- ══ CENA 03 · POR TRÁS DA CÂMERA ══ -->
+<!-- ══ CENA 03 · SOBRE — a apresentação do Will aparece uma única vez ══ -->
 <section id="sobre" class="sec sobre">
-    <div class="wrap sobre-grid">
-        <div class="sobre-copy">
-            <p class="label" data-te="fade">Por trás da câmera</p>
-            <p class="lead" data-te="slide">Comecei com um celular na mão e a vontade de <em>contar histórias reais</em>, do jeito que elas acontecem.</p>
-            <p class="body-text" data-te="fade">Sou William Sousa, o Will Rec — videomaker mobile freelancer em Teresina desde 2025. Meu foco é estar presente no momento, encontrar os melhores takes e transformar o que acontece em conteúdo que continua vivo depois do evento.</p>
-            <dl class="facts" data-te="fade">
-                <div><dt>Desde 2025</dt><dd>Gravando histórias reais</dd></div>
-                <div><dt>100% Mobile</dt><dd>Captação + edição</dd></div>
-                <div><dt>Teresina + região</dt><dd>Eventos e marcas</dd></div>
-                <div><dt>+50 projetos</dt><dd>+20 clientes · 100% dedicação</dd></div>
-            </dl>
-        </div>
+    <div class="wrap qs-wrap">
+        <p class="label" data-te="fade">Por trás da câmera</p>
+        <article class="qs" data-qs aria-labelledby="qs-title">
+            <span class="qs-ghost qs-ghost--a" aria-hidden="true">REC</span>
+            <span class="qs-ghost qs-ghost--b" aria-hidden="true">WILL</span>
+
+            <div class="qs-photo">
+                <button type="button" class="qs-window" data-qs-window aria-label="Trocar de foto">
+                    <span class="qs-bar" aria-hidden="true"><span class="qs-shapes"><i></i><i></i><i></i></span><em data-qs-count>1 / 2</em></span>
+                    <span class="qs-shot">
+                        <img class="is-on" src="images/site/will-card-1.webp" width="720" height="900" loading="lazy" decoding="async" alt="Will Rec gravando com gimbal e smartphone">
+                        <img src="images/site/will-card-2.webp" width="720" height="900" loading="lazy" decoding="async" alt="Retrato do Will Rec segurando o smartphone">
+                        <span class="qs-rec" aria-hidden="true"><i></i>REC</span>
+                        <span class="qs-tag" aria-hidden="true">WILL | @WILLREC_OFICIAL</span>
+                        <span class="qs-glare" aria-hidden="true"></span>
+                        <span class="qs-flash" aria-hidden="true"></span>
+                    </span>
+                </button>
+                <span class="qs-star" data-qs-drag aria-hidden="true">
+                    <svg viewBox="0 0 100 100"><polygon points="50.0,2.0 55.0,12.3 62.4,3.6 64.5,14.9 74.0,8.4 73.1,19.9 83.9,16.1 80.1,26.9 91.6,26.0 85.1,35.5 96.4,37.6 87.7,45.0 98.0,50.0 87.7,55.0 96.4,62.4 85.1,64.5 91.6,74.0 80.1,73.1 83.9,83.9 73.1,80.1 74.0,91.6 64.5,85.1 62.4,96.4 55.0,87.7 50.0,98.0 45.0,87.7 37.6,96.4 35.5,85.1 26.0,91.6 26.9,80.1 16.1,83.9 19.9,73.1 8.4,74.0 14.9,64.5 3.6,62.4 12.3,55.0 2.0,50.0 12.3,45.0 3.6,37.6 14.9,35.5 8.4,26.0 19.9,26.9 16.1,16.1 26.9,19.9 26.0,8.4 35.5,14.9 37.6,3.6 45.0,12.3"/></svg><b>REC</b>
+                </span>
+                <span class="qs-spark" data-qs-drag aria-hidden="true">
+                    <svg viewBox="0 0 100 100"><path d="M50 0C54 30 70 46 100 50C70 54 54 70 50 100C46 70 30 54 0 50C30 46 46 30 50 0Z"/></svg>
+                </span>
+            </div>
+
+            <div class="qs-copy">
+                <h2 class="qs-title" id="qs-title" data-te="slide">Quem sou eu?</h2>
+                <p data-te="fade">Me chamo William Sousa, o Will Rec — videomaker mobile freelancer em Teresina desde 2025.</p>
+                <p data-te="fade">Comecei com um celular na mão e a vontade de contar <mark>histórias reais</mark>. Meu foco é estar presente no momento, encontrar os melhores takes e transformar o que acontece em conteúdo que continua vivo depois do evento.</p>
+                <ul class="qs-chips" aria-label="Resumo">
+                    <li data-qs-drag>100% mobile</li>
+                    <li data-qs-drag>Teresina + região</li>
+                    <li data-qs-drag>Desde 2025</li>
+                    <li data-qs-drag>+50 projetos</li>
+                </ul>
+                <p class="qs-hint" aria-hidden="true">Clique ou toque na foto para trocar · arraste os adesivos</p>
+            </div>
+        </article>
+    </div>
+    <div class="wrap sobre-reel">
         <figure class="sobre-media" data-parallax="-0.06">
             <video muted loop playsinline preload="none" poster="media/will-gimbal-poster.webp" data-lazy-video aria-label="Will gravando com gimbal e smartphone">
                 <source data-src="media/will-gimbal.webm" type="video/webm">

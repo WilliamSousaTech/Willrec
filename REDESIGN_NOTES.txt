@@ -131,3 +131,26 @@ CORREÇÃO DE TRAVAMENTO DO REEL + NOVA ORDEM (v12)
      trocados por degradês simples.
   Ordem do reel: Bar de Drinks, Casamento, Jr. Drinks & Coquetéis, Evento Corporativo, Criativo, Master Barbearia,
   Show, Professor Caio, Frutos de Goiás, Campus Party, Aniversário, Político.
+
+
+QUEM SOU EU? — cartão interativo na seção Sobre (v14)
+  js/quem-sou.js · styles.css §11 · index.html (#sobre > .qs) · fotos em images/site/will-card-1/2.webp
+  Inspirado no slide "Quem sou eu?": foto numa janelinha com barra laranja, estrela "REC", brilho de 4 pontas,
+  título grande inclinado e letras fantasma ao fundo. Interativo:
+   · clique/toque na foto troca de foto (com flash de câmera e contador 1/2);
+   · no mouse, a janela inclina seguindo o cursor e ganha brilho;
+   · estrela, brilho e etiquetas ("100% mobile"...) são adesivos arrastáveis; duplo clique devolve ao lugar.
+  Texto: só fatos que já estavam no site (William Sousa, videomaker mobile em Teresina desde 2025...).
+  Trocar texto/etiquetas: editar o HTML do bloco .qs. Trocar fotos: substituir os dois .webp (720x900).
+
+
+APRESENTAÇÃO UMA ÚNICA VEZ + FONTE LOCAL (v15)
+  Antes a apresentação do Will aparecia duas vezes na seção Sobre ("Por trás da câmera" e "Quem sou eu?" repetiam
+  o mesmo texto e os mesmos fatos). Agora a seção tem uma só apresentação:
+   · "Quem sou eu?" (cartão interativo) é a apresentação — o texto aparece uma vez e o título virou o h2 da seção;
+   · os fatos do bloco removido continuam como etiquetas do cartão (100% mobile · Teresina + região · Desde 2025 ·
+     +50 projetos);
+   · o vídeo "Will Rec em ação" virou uma faixa larga logo abaixo, sem texto repetido (index.html #sobre, styles.css).
+  Também: Inter agora é local (fonts/inter-latin-wght-normal.woff2) — sem pedir nada ao Google Fonts, menos bloqueio
+  de renderização; e o preço devolvido pela API passa por escapeHtml antes de ir para a tela (script.js).
+  media/reel/ NÃO está no ZIP de entrega (já estava vazio no v14): ao copiar por cima do seu projeto, mantenha a sua pasta.

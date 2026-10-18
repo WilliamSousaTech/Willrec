@@ -8,6 +8,7 @@ import { initGlow } from './glow-card.js';
 import { initFolio } from './portfolio.js';
 import { initReel } from './reel.js';
 import { initTechText } from './tech-text.js';
+import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 
 initTextEffect();
@@ -18,6 +19,7 @@ initGlow();
 initFolio();
 initReel();
 initTechText();
+initQuemSou();
 
 // Vídeo do Will: carrega ao chegar na seção, toca sozinho e pausa quando sai da tela.
 // Se o aparelho bloquear autoplay de vídeo (iPhone em baixo consumo), troca por <img src="video.mp4">:

@@ -299,7 +299,7 @@ function renderResult(quote) {
     const isConsulta = /consulta/i.test(quote.faixa_preco);
     const priceHtml = isConsulta
         ? `<div class="result-price consulta">Sob Consulta</div>`
-        : `<div class="result-price">${quote.faixa_preco.replace('-', '<span> – </span>')}</div>`;
+        : `<div class="result-price">${escapeHtml(quote.faixa_preco).replace('-', '<span> – </span>')}</div>`;
 
     const waHref = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(quote.mensagem_whatsapp)}`;
 
