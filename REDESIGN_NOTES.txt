@@ -154,3 +154,22 @@ APRESENTAÇÃO UMA ÚNICA VEZ + FONTE LOCAL (v15)
   Também: Inter agora é local (fonts/inter-latin-wght-normal.woff2) — sem pedir nada ao Google Fonts, menos bloqueio
   de renderização; e o preço devolvido pela API passa por escapeHtml antes de ir para a tela (script.js).
   media/reel/ NÃO está no ZIP de entrega (já estava vazio no v14): ao copiar por cima do seu projeto, mantenha a sua pasta.
+
+
+v16 — PREÇO POR REGRA, PORTFÓLIO LEVE, PAINEL PRIVADO
+  Orçamento: js/pricing.js é a única fonte de preço (navegador e servidor). O resultado aparece na hora; a IA só reescreve o
+   resumo (api/quote.js, timeout real de 4 s, valida que o texto não cita outro valor em R$). Comercial/Empresa agora é "sob
+   consulta" como Político (quiz: perfil → nome → WhatsApp). Casamento/aniversário + cobertura completa + dia inteiro: a partir de
+   R$500. A API valida as respostas contra as opções do quiz e não carrega mais os custos internos no prompt. api/quote-groq.js removido.
+  Reel: no celular os efeitos de lupa/inclinação/brilho ficam desligados (só a faixa anda); no desktop o brilho do card virou uma
+   camada fixa que só muda de opacidade (antes box-shadow/border/gradiente eram repintados a cada frame). No máximo 2 vídeos tocando
+   no celular (4 no desktop) e 3-4 carregados. Clipes de card: 540x960, 24 fps, ~1 MB (antes 720x1280, 30 fps, ~3-5 MB).
+  Portfólio: data/videos.json manda no reel, na grade "Ver todos os vídeos" (só capas; vídeo só carrega ao clicar) e nos links do
+   Drive (pasta por categoria + arquivo por vídeo). Tela cheia: YouTube (campo yt) → FULL_BASE → preview → clipe do card → aviso com
+   link do Drive. js/videos.js carrega e monta tudo. tools/otimizar-videos.sh gera card/capa/preview a partir dos originais.
+  Painel: /admin (Firebase Auth Google + Firestore, coleções jobs e leads). Ver LEIA-ME_PAINEL.md. Regras novas em firestore.rules.
+  media/reel/: este ZIP traz os 7 clipes e 9 capas recebidos (Show e Político só com capa; Evento Corporativo, Professor Caio e
+   Aniversário sem arquivos: aparecem na grade como cartão de texto e abrem o link do Drive). Ao receber os arquivos, ajuste
+   clip/poster no data/videos.json.
+  Auditoria v16: o Firebase deixou de carregar com a página (firebase-init.js agora só baixa o SDK ao salvar um pedido, depois do
+   resultado do orçamento); cabeçalhos de segurança básicos no vercel.json (nosniff, referrer, painel sem iframe); sitemap atualizado.

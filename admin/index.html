@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel · Will Rec</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+<!-- ENTRAR -->
+<main class="gate" id="gate" hidden>
+    <div class="gate-card">
+        <p class="kicker">Will Rec</p>
+        <h1>Painel</h1>
+        <p class="muted" id="gate-msg">Área privada. Entre com a sua conta Google.</p>
+        <button type="button" class="btn btn-solid" id="btn-login">Entrar com Google</button>
+        <p class="err" id="gate-err" hidden></p>
+    </div>
+</main>
+
+<!-- PAINEL -->
+<div class="app" id="app" hidden>
+    <header class="top">
+        <div class="top-in">
+            <p class="brand"><b>WILL</b>REC <span>painel</span></p>
+            <div class="top-r">
+                <button type="button" class="btn btn-ghost sm" id="btn-new">+ Trabalho</button>
+                <button type="button" class="link" id="btn-logout" title="Sair">Sair</button>
+            </div>
+        </div>
+        <nav class="tabs" role="tablist" aria-label="Seções">
+            <button role="tab" class="tab is-on" data-tab="agenda" aria-selected="true">Agenda</button>
+            <button role="tab" class="tab" data-tab="pedidos" aria-selected="false">Pedidos <i class="badge" id="badge-pedidos" hidden>0</i></button>
+            <button role="tab" class="tab" data-tab="dinheiro" aria-selected="false">Dinheiro</button>
+        </nav>
+    </header>
+
+    <main class="wrap">
+        <div class="alerts" id="alerts" aria-live="polite"></div>
+
+        <section id="tab-agenda" class="pane">
+            <ul class="jobs" id="jobs-next"></ul>
+            <p class="empty" id="jobs-empty" hidden>Nenhum trabalho marcado. Toque em <b>+ Trabalho</b> para criar o primeiro.</p>
+            <details class="past" id="past-wrap" hidden>
+                <summary>Anteriores <span id="past-count"></span></summary>
+                <ul class="jobs" id="jobs-past"></ul>
+            </details>
+        </section>
+
+        <section id="tab-pedidos" class="pane" hidden>
+            <p class="hint">Pedidos que chegaram pelo orçamento do site. Vire um trabalho quando fechar a data.</p>
+            <ul class="jobs" id="leads"></ul>
+            <p class="empty" id="leads-empty" hidden>Nenhum pedido novo.</p>
+        </section>
+
+        <section id="tab-dinheiro" class="pane" hidden>
+            <div class="month">
+                <button type="button" class="link" id="m-prev" aria-label="Mês anterior">←</button>
+                <strong id="m-label"></strong>
+                <button type="button" class="link" id="m-next" aria-label="Próximo mês">→</button>
+            </div>
+            <div class="stats" id="stats"></div>
+            <ul class="jobs" id="money-list"></ul>
+        </section>
+    </main>
+</div>
+
+<!-- FORMULÁRIO DE TRABALHO -->
+<dialog id="dlg-job" class="dlg">
+    <form method="dialog" id="form-job" novalidate>
+        <h2 id="job-title">Novo trabalho</h2>
+        <div class="grid">
+            <label class="f full">Cliente<input name="cliente" required autocomplete="off" placeholder="Nome do cliente"></label>
+            <label class="f full">WhatsApp do cliente<input name="whatsapp" inputmode="tel" autocomplete="off" placeholder="(86) 9xxxx-xxxx"></label>
+            <label class="f">Tipo
+                <select name="tipo">
+                    <option>Casamento</option><option>Aniversário</option><option>Chá de revelação</option>
+                    <option>Show</option><option>Show de humor</option><option>Comercial</option>
+                    <option>Institucional</option><option>Político</option><option>Outro</option>
+                </select>
+            </label>
+            <label class="f">Status
+                <select name="status">
+                    <option value="pedido">Pedido</option><option value="confirmado">Confirmado</option>
+                    <option value="gravado">Gravado</option><option value="editando">Editando</option>
+                    <option value="entregue">Entregue</option><option value="cancelado">Cancelado</option>
+                </select>
+            </label>
+            <label class="f">Data<input type="date" name="data" required></label>
+            <label class="f">Hora<input type="time" name="hora"></label>
+            <label class="f full">Local<input name="local" autocomplete="off" placeholder="Endereço ou nome do local"></label>
+            <label class="f">Valor (R$)<input name="valor" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+            <label class="f">Sinal pago (R$)<input name="sinal" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+            <label class="f check full"><input type="checkbox" name="pago"> Pagamento completo recebido</label>
+            <label class="f full">Observações<textarea name="obs" rows="3" placeholder="Duração, entregáveis, detalhes combinados"></textarea></label>
+        </div>
+        <p class="err" id="job-err" hidden></p>
+        <div class="dlg-actions">
+            <button type="button" class="btn btn-ghost" id="job-cancel">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="job-del" hidden>Excluir</button>
+            <button type="submit" class="btn btn-solid" id="job-save">Salvar</button>
+        </div>
+    </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/firebase-config.js"></script>
+<script type="module" src="/admin/admin.js"></script>
+</body>
+</html>

@@ -1,32 +1,27 @@
-// firebase-init.js — módulo único de inicialização (Firestore)
-// firebase-config.js (script clássico) roda ANTES deste módulo e define
-// window.FIREBASE_CONFIG. Configure as chaves lá — ver README.
-//
-// Se firebase-config.js ainda estiver com os valores placeholder, este
-// arquivo simplesmente não inicializa nada — o site funciona 100% sem
-// Firebase; o formulário de lead só deixa de salvar uma cópia extra (o
-// WhatsApp continua funcionando normal).
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {
-    getFirestore, collection, addDoc, serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+// firebase-init.js — salva o pedido do orçamento no Firestore (coleção "leads"), quando o Firebase está configurado.
+// O Firebase só é baixado NO MOMENTO de salvar um pedido (depois do resultado do orçamento): fora do caminho crítico,
+// sem custo para quem só olha o site. Se firebase-config.js ainda tem os valores de exemplo, nada é baixado e o
+// WhatsApp continua funcionando normalmente.
+const configurado = () => {
+    const c = window.FIREBASE_CONFIG;
+    return !!c && !!c.apiKey && c.apiKey !== 'SUA_API_KEY_AQUI';
+};
 
-window.firebaseReady = false;
-
-const cfg = window.FIREBASE_CONFIG;
-const isPlaceholder = !cfg || cfg.apiKey === 'SUA_API_KEY_AQUI';
-
-if (!isPlaceholder) {
-    try {
-        const app = initializeApp(cfg);
-        window.db = getFirestore(app);
-        window.fb = { collection, addDoc, serverTimestamp };
-        window.firebaseReady = true;
-    } catch (err) {
-        console.warn('[firebase-init] Firebase não inicializado:', err?.message || err);
+let pronto = null;
+function iniciar() {
+    if (!pronto) {
+        pronto = Promise.all([
+            import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+            import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'),
+        ]).then(([app, fs]) => ({ fs, db: fs.getFirestore(app.initializeApp(window.FIREBASE_CONFIG)) }));
     }
-} else {
-    console.info('[firebase-init] FIREBASE_CONFIG ainda não configurado — leads não serão salvos no Firestore (o WhatsApp continua funcionando normalmente).');
+    return pronto;
 }
 
-window.dispatchEvent(new Event('firebase-ready'));
+// dados: { nome, contato, respostas, pacote, faixaPreco, fonte } — os mesmos campos que firestore.rules aceita.
+export async function salvarLead(dados) {
+    if (!configurado()) return false;
+    const { fs, db } = await iniciar();
+    await fs.addDoc(fs.collection(db, 'leads'), { ...dados, criadoEm: fs.serverTimestamp() });
+    return true;
+}

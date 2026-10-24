@@ -1,0 +1,223 @@
+{
+  "_como_editar": [
+    "Este arquivo manda no portfólio do site: o reel, a grade 'Ver todos os vídeos' e os links do Drive saem daqui.",
+    "Para adicionar um vídeo: copie um bloco de 'videos', troque slug/title/meta/cat e coloque os arquivos em media/reel/ (veja tools/otimizar-videos.sh).",
+    "clip:true  = existe media/reel/SLUG-card.mp4 (clipe curto que toca no reel).",
+    "poster:true = existe media/reel/SLUG.webp (capa).",
+    "preview:true = existe media/reel/SLUG-preview.mp4 (versão média para o tela cheia). Opcional.",
+    "yt = ID do vídeo no YouTube (não listado). Com yt, o tela cheia toca o vídeo completo em qualidade total, sem pesar o site.",
+    "drive = link do arquivo no Drive (Compartilhar > Qualquer pessoa com o link). Vazio = abre a pasta da categoria.",
+    "destaque:true = aparece no reel. Todos aparecem em 'Ver todos os vídeos'."
+  ],
+  "driveRoot": "https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link",
+  "categories": [
+    {
+      "id": "shows-de-humor",
+      "label": "Shows de Humor",
+      "drive": ""
+    },
+    {
+      "id": "bastidores",
+      "label": "Bastidores",
+      "drive": ""
+    },
+    {
+      "id": "comerciais",
+      "label": "Comerciais",
+      "drive": ""
+    },
+    {
+      "id": "documentario",
+      "label": "Documentário",
+      "drive": ""
+    },
+    {
+      "id": "concessionarias",
+      "label": "Concessionárias",
+      "drive": ""
+    },
+    {
+      "id": "eventos-culturais",
+      "label": "Eventos Culturais",
+      "drive": ""
+    },
+    {
+      "id": "casamentos",
+      "label": "Casamentos",
+      "drive": ""
+    },
+    {
+      "id": "barbearias-e-estetica",
+      "label": "Barbearias & Estética",
+      "drive": ""
+    },
+    {
+      "id": "institucionais",
+      "label": "Institucionais",
+      "drive": ""
+    },
+    {
+      "id": "eventos-pessoais",
+      "label": "Eventos pessoais",
+      "drive": ""
+    }
+  ],
+  "videos": [
+    {
+      "slug": "drinks",
+      "title": "Bar de Drinks",
+      "meta": "4K · 0:38",
+      "cat": "comerciais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "casamento",
+      "title": "Casamento",
+      "meta": "4K · 0:37",
+      "cat": "casamentos",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "jr-drinks",
+      "title": "Jr. Drinks & Coquetéis",
+      "meta": "4K · 0:56",
+      "cat": "comerciais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "projeto-07",
+      "title": "Evento Corporativo",
+      "meta": "4K · 0:37",
+      "cat": "institucionais",
+      "hevc": true,
+      "destaque": false,
+      "clip": false,
+      "poster": false,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "criativo",
+      "title": "Criativo",
+      "meta": "4K · 0:42",
+      "cat": "comerciais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "master-barbearia",
+      "title": "Master Barbearia",
+      "meta": "Full HD · 0:30",
+      "cat": "barbearias-e-estetica",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "show",
+      "title": "Show",
+      "meta": "Full HD · 1:09",
+      "cat": "eventos-culturais",
+      "hevc": false,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "professor-caio",
+      "title": "Professor Caio",
+      "meta": "Full HD · 1:22",
+      "cat": "institucionais",
+      "hevc": true,
+      "destaque": false,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "frutos-de-goias",
+      "title": "Frutos de Goiás",
+      "meta": "4K · 1:00",
+      "cat": "comerciais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "campus-party",
+      "title": "Campus Party",
+      "meta": "Full HD · 0:37",
+      "cat": "eventos-culturais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "projeto-08",
+      "title": "Aniversário",
+      "meta": "4K · 1:18",
+      "cat": "eventos-pessoais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "projeto-09",
+      "title": "Político",
+      "meta": "Full HD · 0:25",
+      "cat": "institucionais",
+      "hevc": true,
+      "destaque": true,
+      "clip": true,
+      "poster": true,
+      "preview": true,
+      "yt": "",
+      "drive": ""
+    }
+  ]
+}

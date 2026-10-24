@@ -338,9 +338,9 @@ em{font-style:normal}
 .reel-track{display:flex;gap:var(--gap);width:max-content;padding-left:var(--pad);will-change:transform}
 .reel-card{--s:1;--p:0;--rx:0deg;--ry:0deg;position:relative;flex:none;width:var(--card-w);transform-origin:50% 55%}
 .reel-card.fx{transform:perspective(1100px) translateY(calc(var(--p)*-10px)) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--s))}
-.reel-btn{display:block;width:100%;text-align:left;-webkit-tap-highlight-color:transparent}
+.reel-btn{position:relative;display:block;width:100%;text-align:left;-webkit-tap-highlight-color:transparent}
 .reel-frame{position:relative;display:block;aspect-ratio:9/16;overflow:hidden;border-radius:var(--r-sm);background:var(--ink) center/cover no-repeat;border:1px solid var(--line)}
-.reel-card.fx .reel-frame{border-color:color-mix(in srgb,var(--orange) calc(var(--p)*75%),var(--line));box-shadow:0 calc(8px + var(--p)*30px) calc(20px + var(--p)*56px) calc(var(--p)*-16px) rgba(255,106,42,calc(var(--p)*.42))}
+.reel-card.fx .reel-btn::before{content:'';position:absolute;left:0;top:0;width:100%;aspect-ratio:9/16;border-radius:var(--r-sm);box-shadow:0 34px 70px -22px rgba(255,106,42,.55),0 0 0 1px rgba(255,106,42,.8);opacity:var(--p);pointer-events:none;will-change:opacity}
 .reel-frame video,.reel-frame img.reel-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s var(--ease)}
 .reel-frame video.is-live,.reel-frame img.reel-vid.is-live{opacity:1}
 .reel-frame::before{content:'';position:absolute;inset:0;z-index:1;background:var(--black);opacity:calc(.5 - var(--p)*.5);pointer-events:none}
@@ -382,6 +382,12 @@ html.reel-lock{overflow:hidden}
 
 @media (max-width:899px){
   .reel-stage{height:min(calc(100svh - 170px),calc(94vw*16/9))}
+}
+/* toque (sem mouse): sem lupa/inclinação/brilho — a faixa só desliza, o que mantém o celular fluido */
+@media not all and (hover:hover) and (pointer:fine){
+  .reel-frame::before{opacity:.1}
+  .reel-frame::after{display:none}
+  .reel-cap{opacity:.9}
 }
 
 /* movimento reduzido / economia de dados: a faixa começa parada e rolável; o botão Reproduzir liga o movimento */
@@ -469,3 +475,43 @@ html.reel-lock{overflow:hidden}
   .qs-star svg,.qs-spark svg,.qs-rec i{animation:none}
   .qs-window{transform:none!important}
 }
+
+
+/* 11b ── v16 · tela cheia com YouTube/Drive, grade "Ver todos os vídeos", troca de texto do orçamento ───────── */
+.reel-stage{background-size:cover;background-position:center}
+.reel-stage video[hidden],.reel-yt[hidden],.reel-empty[hidden],.reel-drive[hidden]{display:none}
+.reel-yt{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.reel-empty{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;padding:24px;text-align:center;font-family:var(--display);font-size:clamp(16px,2.6vw,22px);letter-spacing:.02em;text-transform:uppercase;color:var(--white)}
+.reel-empty b{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--orange);color:#050505;font-size:20px}
+.reel-drive{position:absolute;top:calc(18px + var(--safe-t));left:clamp(16px,3vw,36px);display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 18px;border-radius:var(--r-pill);border:1px solid var(--line-2);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(10,10,10,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .3s var(--ease),color .3s var(--ease)}
+.reel-drive:hover{background:var(--white);color:#050505}
+
+.vgrid{margin-top:clamp(32px,5vw,64px)}
+.vgrid-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);flex-wrap:wrap}
+.vgrid-title{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gray)}
+.vgrid-title b{color:var(--orange);font-weight:600}
+.vgrid-body{margin-top:var(--s5)}
+.vgrid-body[hidden]{display:none}
+.vchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--s5)}
+.vchip{min-height:40px;padding:0 16px;border-radius:var(--r-pill);border:1px solid var(--line-2);font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--gray);transition:background .25s,color .25s,border-color .25s}
+.vchip small{opacity:.6;margin-left:4px;font-size:11px}
+.vchip:hover{color:var(--white);border-color:var(--white)}
+.vchip.is-on{background:var(--white);border-color:var(--white);color:#050505}
+.vgrid-list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:640px){.vgrid-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1000px){.vgrid-list{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}}
+.vtile{display:block;width:100%;text-align:left;-webkit-tap-highlight-color:transparent}
+.vtile-img{position:relative;display:block;aspect-ratio:9/16;overflow:hidden;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--ink)}
+.vtile-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.vtile:hover .vtile-img img{transform:scale(1.04)}
+.vtile-ph{position:absolute;inset:0;display:grid;place-items:center;padding:16px;text-align:center;font-family:var(--display);font-size:15px;line-height:1.15;text-transform:uppercase;color:var(--gray);background:linear-gradient(160deg,#16120f,#0b0b0b)}
+.vtile-play{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;display:grid;place-items:center;border-radius:50%;background:var(--orange);color:#050505;opacity:0;transform:scale(.7);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.vtile-play svg{width:16px;height:16px;margin-left:2px}
+.vtile:hover .vtile-play,.vtile:focus-visible .vtile-play{opacity:1;transform:none}
+@media (hover:none){.vtile-play{opacity:.92;transform:none;width:40px;height:40px;margin:-20px 0 0 -20px}}
+.vtile-cap{display:block;margin-top:10px}
+.vtile-cap strong{display:block;font-family:var(--display);font-weight:400;font-size:13px;letter-spacing:.02em;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vtile-cap em{display:block;font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.result-summary{transition:opacity .22s var(--ease)}
+.result-summary.is-swap{opacity:0}

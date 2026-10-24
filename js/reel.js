@@ -13,33 +13,32 @@ import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 const FULL_BASE = '';
 
 const AUTO = 40;               // px/s — velocidade automática
+const MAX_PLAY = FINE ? 4 : 2; // vídeos tocando ao mesmo tempo (celular aguenta poucos decodificadores)
+const FX = FINE;               // efeitos de lupa/inclinação/brilho só com mouse: no toque eles repintavam a tela a cada frame
 const GROW = 0.36;             // quanto o vídeo sob o cursor cresce (0.36 = +36%)
 // Sempre começa tocando, em qualquer aparelho (decisão do projeto: o reel é o portfólio e precisa estar em movimento
 // quando a pessoa chega). São vídeos mudos e leves; o botão Pausar continua disponível para quem não quiser movimento.
 
-export function initReel() {
+export function initReel(manifest) {
   const root = $('[data-reel]');
-  if (!root) return;
+  if (!root || !manifest || !manifest.videos.length) return null;
   const view = $('[data-reel-view]', root), track = $('[data-reel-track]', root);
   const counter = $('[data-reel-n]', root);
   const originals = $$('.reel-card', track);
-  const N = originals.length;
-  if (!N) return;
+  const N = originals.length;                 // cards no reel (destaques)
+  if (!N) root.hidden = true;                 // sem destaques: só a grade e o tela cheia funcionam
 
-  // ── dados de cada vídeo (vêm do HTML) ─────────────────────────
-  const data = originals.map((li, i) => {
-    const b = $('.reel-btn', li), v = $('video', li);
-    li.dataset.i = i;
-    return {
-      slug: b.dataset.slug, title: b.dataset.title, meta: b.dataset.meta,
-      hevc: b.dataset.hevc === '1', preview: b.dataset.preview, clip: v.dataset.src, poster: v.getAttribute('poster') || ''
-    };
-  });
+  // ── dados de TODOS os vídeos (data/videos.json): o tela cheia navega por eles ──
+  const data = manifest.videos.map(v => ({
+    slug: v.slug, title: v.title, meta: v.meta, hevc: !!v.hevc, yt: v.yt || '', driveUrl: v.driveUrl || '',
+    preview: v.previewUrl, clip: v.clipUrl, poster: v.posterUrl
+  }));
+  const M = data.length;
 
   // ── cards, clones (loop contínuo) e vídeos ────────────────────
   const makeCard = el => {
     const c = {
-      el, i: +el.dataset.i, video: $('video', el), frame: $('.reel-frame', el), img: null, imgFailed: false, on: false, fx: false,
+      el, i: +el.dataset.i, pos: +el.dataset.pos || 0, video: $('video', el), hasClip: !!$('video', el).dataset.src, frame: $('.reel-frame', el), img: null, imgFailed: false, on: false, fx: false,
       left: 0, w: 1, s: 1, p: 0, rx: 0, ry: 0, mx: 50, my: 40, shown: ''
     };
     c.video.__card = c;
@@ -76,14 +75,14 @@ export function initReel() {
   let lightboxOpen = false;
   const canPlayNow = v => visibleVideos.has(v) && !lightboxOpen && !userPaused;
   const tryPlay = v => {
-    if (!canPlayNow(v) || (v.__card && v.__card.img)) return;
+    if (!canPlayNow(v) || (v.__card && v.__card.img) || !v.getAttribute('src')) return;
     v.play().then(() => setTimeout(() => { if (v.paused && v.readyState >= 2 && canPlayNow(v)) setBlocked(); }, 900),
                   e => { if (e && e.name === 'NotAllowedError') setBlocked(); });
   };
 
   // autoplay bloqueado (iPhone em baixo consumo): o card passa a usar <img src="clipe.mp4"> (Safari anima sozinho)
   const useImage = c => {
-    if (c.img || c.imgFailed) return;
+    if (c.img || c.imgFailed || !c.video.dataset.src) return;
     const img = document.createElement('img');
     img.className = 'reel-vid'; img.alt = ''; img.decoding = 'async'; img.draggable = false;
     img.addEventListener('load', () => img.classList.add('is-live'));
@@ -96,6 +95,7 @@ export function initReel() {
     c.video.style.display = 'none'; c.video.after(img); c.frame.classList.add('as-img');
   };
   const loadVideo = c => {
+    if (!c.video.dataset.src) return;                // card só com capa (sem clipe)
     if (isBlocked()) { useImage(c); return; }
     const v = c.video;
     if (c.img || v.getAttribute('src')) return;
@@ -114,16 +114,24 @@ export function initReel() {
 
   // distância (px) do card até a borda da tela: negativo = aparece na tela
   const edgeGap = c => { const center = c.left - x + c.w / 2; return Math.max(-(center + c.w / 2), center - c.w / 2 - viewW); };
+  // Só os MAX_PLAY cards mais perto do centro tocam; mais 1-2 vizinhos ficam carregados (pausados) e o resto é descarregado.
   const manage = () => {
     if (lightboxOpen) return;
+    const near = [];
     for (const c of cards) {
+      if (!c.hasClip) continue;
       const gap = edgeGap(c);
-      if (gap < c.w * 1.1) { if (!c.on) { c.on = true; loadVideo(c); } }
-      else if (gap > c.w * 2.4 && c.on) { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); }
-      if (!c.on) continue;
-      if (gap < 0) { visibleVideos.add(c.video); if (c.video.paused && !c.img) tryPlay(c.video); }
-      else { visibleVideos.delete(c.video); if (!c.video.paused) c.video.pause(); }
+      if (gap < c.w * 1.1) near.push({ c, gap, d: Math.abs(c.left - x + c.w / 2 - viewW / 2) });
+      else if (c.on) { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); }
     }
+    near.sort((p, q) => p.d - q.d);
+    near.forEach(({ c, gap }, k) => {
+      if (k > MAX_PLAY + 1) { if (c.on) { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); } return; }
+      if (k <= MAX_PLAY && !c.on) { c.on = true; loadVideo(c); }
+      if (!c.on) return;
+      if (k < MAX_PLAY && gap < 0) { visibleVideos.add(c.video); if (c.video.paused && !c.img) tryPlay(c.video); }
+      else { visibleVideos.delete(c.video); if (!c.video.paused) c.video.pause(); }
+    });
   };
   const unloadAll = () => cards.forEach(c => { c.on = false; visibleVideos.delete(c.video); unloadVideo(c); });
   // alguns celulares só liberam o play depois de um toque: tenta de novo a cada gesto
@@ -214,6 +222,7 @@ export function initReel() {
     let best = null, bestD = Infinity;
     for (const c of cards) {
       const center = c.left - x + c.w / 2;
+      if (!FX) { const dd = Math.abs(center - viewW / 2); if (dd < bestD) { bestD = dd; best = c; } continue; }   // toque: só a faixa anda
       if (center < -c.w * 1.6 || center > viewW + c.w * 1.6) { // fora da tela: volta ao normal e sai da camada 3D
         if (c.fx) { c.fx = false; c.el.classList.remove('fx'); c.s = 1; c.p = 0; c.rx = 0; c.ry = 0; c.el.style.cssText = ''; c.shown = ''; }
         continue;
@@ -237,7 +246,7 @@ export function initReel() {
       }
       if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = c; }
     }
-    if (best && counter && best.i !== counterIdx) { counterIdx = best.i; counter.textContent = pad(best.i + 1); }
+    if (best && counter && best.pos !== counterIdx) { counterIdx = best.pos; counter.textContent = pad(best.pos + 1); }
 
     if (cursor) {
       cx += (cTx - cx) * Math.min(1, dt * 18); cy += (cTy - cy) * Math.min(1, dt * 18);
@@ -340,23 +349,29 @@ export function initReel() {
   dlg.className = 'reel-dialog'; dlg.setAttribute('aria-label', 'Vídeo em tela cheia');
   dlg.innerHTML = `
     <button class="reel-x" type="button" aria-label="Fechar">Fechar <span aria-hidden="true">✕</span></button>
-    <figure class="reel-stage"><video playsinline controls controlsList="nodownload"></video></figure>
+    <a class="reel-drive" target="_blank" rel="noopener" hidden>Original no Drive <span aria-hidden="true">↗</span></a>
+    <figure class="reel-stage">
+      <video playsinline controls controlsList="nodownload"></video>
+      <iframe class="reel-yt" title="Vídeo completo" hidden allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <a class="reel-empty" target="_blank" rel="noopener" hidden><span>Vídeo completo no Drive</span><b aria-hidden="true">↗</b></a>
+    </figure>
     <div class="reel-ctl">
       <button class="reel-nav" type="button" data-d="-1" aria-label="Vídeo anterior">←</button>
       <p class="reel-now"><b></b><strong></strong><small></small></p>
       <button class="reel-nav" type="button" data-d="1" aria-label="Próximo vídeo">→</button>
     </div>`;
   document.body.appendChild(dlg);
-  const stage = $('.reel-stage', dlg), lv = $('video', dlg);
+  const stage = $('.reel-stage', dlg), lv = $('video', dlg), ytf = $('.reel-yt', dlg), empty = $('.reel-empty', dlg), driveBtn = $('.reel-drive', dlg);
   const nowN = $('.reel-now b', dlg), nowT = $('.reel-now strong', dlg), nowM = $('.reel-now small', dlg);
-  let cur = -1;
+  let cur = -1, originEl = null;
   const EASE = 'cubic-bezier(.22,1,.36,1)';
 
   const canHevc = () => {
     const p = document.createElement('video');
     return !!(p.canPlayType('video/mp4; codecs="hvc1.1.6.L153.B0"') || p.canPlayType('video/mp4; codecs="hvc1.2.4.L153.B0"'));
   };
-  const sourceFor = d => (FULL_BASE && (!d.hevc || canHevc())) ? `${FULL_BASE}${d.slug}.mp4` : d.preview;
+  // ordem de tentativa: original em alta (FULL_BASE) → prévia média → clipe curto do card
+  const sourcesFor = d => [(FULL_BASE && (!d.hevc || canHevc())) ? `${FULL_BASE}${d.slug}.mp4` : '', d.preview, d.clip].filter(Boolean);
 
   // escolhe a cópia do card mais perto do centro da tela (a faixa tem 3 conjuntos)
   const frameOf = i => {
@@ -373,22 +388,40 @@ export function initReel() {
     lv.muted = false;
     lv.play().catch(() => { lv.muted = true; lv.play().catch(() => {}); });
   };
+  const showEmpty = d => {
+    lv.hidden = true; empty.hidden = false; empty.href = d.driveUrl || '#';
+    stage.style.backgroundImage = d.poster ? `linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url(${d.poster})` : '';
+  };
   const load = (i, dir = 0) => {
     cur = i; const d = data[i];
-    lv.onerror = () => {
-      const fb = new URL(d.preview, document.baseURI).href;
-      if (lv.src !== fb) { lv.src = fb; play(); }
-    };
-    lv.poster = d.poster; lv.src = sourceFor(d); play();
-    nowN.textContent = `${pad(i + 1)} / ${pad(N)}`; nowT.textContent = d.title; nowM.textContent = d.meta;
+    lv.pause();
+    stage.style.backgroundImage = ''; empty.hidden = true;
+    if (d.yt) {                                   // vídeo completo no YouTube: qualidade total, sem pesar o site
+      lv.hidden = true; lv.removeAttribute('src'); lv.load();
+      ytf.hidden = false;
+      ytf.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(d.yt)}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+    } else {
+      ytf.hidden = true; ytf.src = 'about:blank';
+      const srcs = sourcesFor(d);
+      if (!srcs.length) { lv.removeAttribute('src'); lv.load(); showEmpty(d); }
+      else {
+        let k = 0;
+        lv.hidden = false;
+        lv.onerror = () => { if (++k < srcs.length) { lv.src = srcs[k]; play(); } else showEmpty(d); };
+        lv.poster = d.poster; lv.src = srcs[0]; play();
+      }
+    }
+    driveBtn.hidden = !d.driveUrl; driveBtn.href = d.driveUrl || '#';
+    nowN.textContent = `${pad(i + 1)} / ${pad(M)}`; nowT.textContent = d.title; nowM.textContent = d.meta;
     if (dir && !REDUCE) stage.animate([{ opacity: 0, transform: `translateX(${dir * 40}px) scale(.96)` }, { opacity: 1, transform: 'none' }], { duration: 520, easing: EASE });
   };
 
-  const open = i => {
+  const open = (i, fromEl) => {
     if (dlg.open) return;
+    originEl = fromEl || null;
     lightboxOpen = true; hovering = false; if (cursor) cursor.classList.remove('on');
     unloadAll();
-    const from = (frameOf(i) || view).getBoundingClientRect();
+    const from = (fromEl || frameOf(i) || view).getBoundingClientRect();
     dlg.classList.remove('is-closing');
     dlg.showModal(); document.documentElement.classList.add('reel-lock');
     load(i);
@@ -403,15 +436,15 @@ export function initReel() {
 
   const finish = () => {
     dlg.close(); document.documentElement.classList.remove('reel-lock');
-    lv.pause(); lv.removeAttribute('src'); lv.load();
+    lv.pause(); lv.removeAttribute('src'); lv.load(); ytf.src = 'about:blank'; ytf.hidden = true; lv.hidden = false;
     lightboxOpen = false; cur = -1; hovering = false; hotCard = null;
     manage();
     wake();
   };
   const close = () => {
     if (!dlg.open || dlg.classList.contains('is-closing')) return;
-    lv.pause();
-    const target = frameOf(cur);
+    lv.pause(); ytf.src = 'about:blank';
+    const target = (originEl && originEl.isConnected) ? originEl : frameOf(cur);
     if (REDUCE || !target) return finish();
     dlg.classList.add('is-closing');
     const from = stage.getBoundingClientRect(), to = target.getBoundingClientRect();
@@ -420,7 +453,7 @@ export function initReel() {
     a.finished.then(() => { a.cancel(); finish(); }, finish);
   };
 
-  const step = d => { if (cur < 0) return; load((cur + d + N) % N, d); };
+  const step = d => { if (cur < 0) return; originEl = null; load((cur + d + M) % M, d); };
 
   track.addEventListener('click', e => {
     const b = e.target.closest('.reel-btn'); if (!b) return;
@@ -442,12 +475,13 @@ export function initReel() {
     if (cursor) view.classList.add('has-cursor');
     buildClones(); measure(); manage(); syncToggle(); wake();
   };
-  if (toggle) toggle.addEventListener('click', () => {
+  if (N && toggle) toggle.addEventListener('click', () => {
     if (!motion) { start(); return; }
     userPaused = !userPaused;
     if (userPaused) cards.forEach(c => c.video.pause()); else cards.forEach(c => tryPlay(c.video));
     syncToggle(); wake();
   });
   syncToggle();
-  start();
+  if (N) start();
+  return { open };
 }

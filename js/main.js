@@ -7,6 +7,7 @@ import { initDock } from './dock.js';
 import { initGlow } from './glow-card.js';
 import { initFolio } from './portfolio.js';
 import { initReel } from './reel.js';
+import { loadManifest, renderReel, applyDriveLinks, initGrid } from './videos.js';
 import { initTechText } from './tech-text.js';
 import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
@@ -17,7 +18,16 @@ initParallax();
 initDock();
 initGlow();
 initFolio();
-initReel();
+
+// Portfólio: tudo sai de data/videos.json (reel, grade "Ver todos", links do Drive).
+loadManifest().then(m => {
+  if (!m) return;                      // sem o arquivo, os painéis continuam abrindo o Drive geral
+  applyDriveLinks(m);
+  renderReel(m);
+  const reel = initReel(m);
+  initGrid(m, (i, el) => reel && reel.open(i, el));
+});
+
 initTechText();
 initQuemSou();
 

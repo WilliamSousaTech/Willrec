@@ -8,3 +8,8 @@
   Cache-Control: public, max-age=3600, must-revalidate
 /*.css
   Cache-Control: public, max-age=3600, must-revalidate
+/data/*
+  Cache-Control: public, max-age=300, must-revalidate
+/admin/*
+  Cache-Control: no-cache
+  X-Robots-Tag: noindex, nofollow

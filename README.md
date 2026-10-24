@@ -25,32 +25,21 @@ motor principal e Groq/Llama 3.3 como fallback automático.
 
 ---
 
-## 🧠 Como o orçamento funciona
+## 🧠 Como o orçamento funciona (v16)
 
 ```
-Frontend (script.js)
-    │
-    ▼ POST { respostas }
-api/quote.js       ──── Gemini 2.0 Flash (motor principal)
-    │
-    └── se erro/timeout ──► api/quote-groq.js ──── Groq Llama 3.3 70B (fallback)
-                                │
-                                └── se erro/timeout ──► calculateFallback()
-                                                          cálculo local em
-                                                          script.js — o site
-                                                          NUNCA fica sem
-                                                          responder um preço
+Navegador (script.js)  ──►  js/pricing.js   preço e textos por REGRA: instantâneo, igual em qualquer aparelho
+        │
+        └─ em paralelo ──►  api/quote.js    Gemini só reescreve o RESUMO (timeout 4 s).
+                                            Se falhar, demorar ou citar outro valor em R$, o resumo padrão fica.
 ```
 
-Casos de **Político/Institucional** e **Freelancer com parceria recorrente**
-não passam pela IA — são resolvidos direto no frontend com a regra fixa
-"sob consulta", exatamente como pedido no briefing original (mais rápido e
-sem depender de API pra esses dois casos).
-
-As chaves de API nunca ficam expostas no frontend — tudo passa pelas funções
-serverless da Vercel.
-
----
+- **O preço nunca vem da IA.** Fica em `js/pricing.js`, o mesmo arquivo no navegador e no servidor.
+- **Comercial/Empresa e Político/Institucional** não têm preço no site: o quiz pergunta o perfil e o nome e leva para o WhatsApp.
+  (Freelancer com parceria recorrente também é "sob consulta".)
+- **Casamento e aniversário com cobertura completa** (Reels + Stories em tempo real, ou pacote completo) em **dia inteiro**:
+  faixa a partir de **R$500**. Só um vídeo (bruto ou Reels editados) segue a tabela normal por horas (a partir de ~R$150–200).
+- O servidor só aceita respostas que existam nas opções do quiz (nada de texto livre indo para a IA).
 
 ## 📁 Estrutura do projeto
 
@@ -112,11 +101,9 @@ No painel do Vercel → **Settings → Environment Variables**, adicione:
 | Variável | Onde conseguir | Obrigatória? |
 |---|---|---|
 | `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/app/apikey) — grátis | Sim (motor principal) |
-| `GROQ_API_KEY` | [Groq Console](https://console.groq.com) — grátis | Recomendada (fallback) |
+| `GEMINI_MODEL` | opcional — troque o modelo se o padrão (`gemini-2.0-flash`) for aposentado | Não |
 
-> Sem essas variáveis, o site continua funcionando: depois de duas falhas de
-> API ele cai automaticamente no cálculo local (`calculateFallback` em
-> `script.js`) e o cliente ainda recebe uma faixa de preço.
+> Sem a chave, o site continua funcionando igual: o preço e o resumo padrão vêm de `js/pricing.js`.
 
 Depois de salvar, vá em **Deployments → Redeploy**.
 
@@ -165,18 +152,23 @@ Se pular esse passo, tudo bem — o site funciona 100% normal sem Firebase.
 
 ## 💰 Editando a precificação
 
-Toda a lógica de preço vive em **três lugares que precisam ficar
-sincronizados** quando você mudar sua tabela de custos:
+Tudo em **um** lugar: o bloco `PRECOS` de `js/pricing.js` (tabelas por duração, transporte, urgência, entregável,
+taxa de equipamento, piso e a regra de "evento grande" de R$500). Não existe mais cópia da tabela em outros arquivos.
 
-1. `api/quote.js` → bloco `BUSINESS_CONTEXT` (o que a IA principal lê)
-2. `api/quote-groq.js` → bloco `BUSINESS_CONTEXT` (o que o fallback lê)
-3. `script.js` → objeto `PRICING_CONFIG` (o cálculo local de emergência)
+- `equipamentoAlugado: true` soma 10–20% sobre o subtotal. Se o equipamento já é seu, troque para `false`.
+- `eventoGrande.horas` define em quais durações o piso de R$500 vale (hoje: só "Dia inteiro").
+- `PERFIS_SOB_CONSULTA` lista quem não tem preço no site.
 
-Quando você tiver equipamento próprio (em vez de alugado/emprestado), mude
-`equipamentoAlugado: false` em `PRICING_CONFIG` e ajuste o texto equivalente
-nos dois arquivos de `api/`.
+## 🎬 Portfólio (`data/videos.json`)
 
----
+Reel, grade "Ver todos os vídeos" e links do Drive saem de `data/videos.json`. Para cada vídeo: `clip`/`poster`/`preview`
+dizem quais arquivos existem em `media/reel/`; `yt` (ID do YouTube não listado) faz o tela cheia tocar o vídeo completo em
+qualidade total; `drive` é o link do arquivo no Drive (vazio = pasta da categoria). Gerar os arquivos leves:
+`bash tools/otimizar-videos.sh PASTA_DOS_ORIGINAIS` (precisa do ffmpeg).
+
+## 🗓️ Painel privado (`/admin`)
+
+Agenda de trabalhos, pedidos do orçamento, dinheiro do mês e lembretes. Configuração passo a passo em **LEIA-ME_PAINEL.md**.
 
 ## 🔒 Segurança
 
@@ -194,7 +186,8 @@ nos dois arquivos de `api/`.
 - [ ] Trocar `DRIVE_LINK` em `script.js` pelo link real do portfólio
 - [ ] Substituir os depoimentos de exemplo em `index.html` (seção
       `#depoimentos`) por avaliações reais de clientes
-- [ ] Configurar `GEMINI_API_KEY` e `GROQ_API_KEY` na Vercel
+- [ ] Configurar `GEMINI_API_KEY` na Vercel (opcional: sem ela o resumo padrão é usado)
+- [ ] Configurar o painel `/admin` (LEIA-ME_PAINEL.md) e preencher os links do Drive/YouTube em `data/videos.json`
 - [ ] (Opcional) Configurar Firebase em `firebase-config.js`
 
 ---

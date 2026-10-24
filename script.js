@@ -1,143 +1,19 @@
 // script.js — Will Rec
-// Header/nav, quiz de orçamento inteligente (Gemini → Groq → cálculo local),
-// captura de lead (Firestore opcional) e links de WhatsApp/Drive.
+// Quiz de orçamento inteligente, captura de lead (Firestore opcional) e links de WhatsApp.
+// O PREÇO vem de js/pricing.js (regras, sai na hora). A IA (api/quote.js) só reescreve o resumo em texto.
+import { PERFIS_SOB_CONSULTA, ehSobConsulta, orcamentoPadrao } from './js/pricing.js';
 
 // ════════════════════════════════════════════════════════════════════
 // CONFIGURAÇÃO — edite aqui
+// (links do Drive por categoria e por vídeo ficam em data/videos.json)
 // ════════════════════════════════════════════════════════════════════
 const CONFIG = {
     // Número de WhatsApp com DDI+DDD, só dígitos.
     WHATSAPP_NUMBER: '5586995419670',
     WHATSAPP_DEFAULT_MSG: 'Olá, Will! Vim pelo site e quero saber mais sobre seus serviços.',
     DRIVE_LINK: 'https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link',
-    // Link da pasta de CADA categoria do portfólio. Cole entre as aspas; vazio = abre o acervo geral (DRIVE_LINK).
-    DRIVE_LINKS: {
-        'shows-de-humor': '',            // Shows de Humor
-        'bastidores': '',            // Bastidores
-        'comerciais': '',            // Comerciais
-        'documentario': '',            // Documentário
-        'concessionarias': '',            // Concessionárias
-        'eventos-culturais': '',            // Eventos Culturais
-        'casamentos': '',            // Casamentos
-        'barbearias-e-estetica': '',            // Barbearias e Estética
-        'institucionais': '',            // Institucionais
-    },
+    IA_TIMEOUT_MS: 5000,
 };
-
-// ════════════════════════════════════════════════════════════════════
-// 7.1 / 7.2 / 7.5 — MOTOR DE PREÇO LOCAL (3ª camada de fallback)
-// Usado só se Gemini E Groq falharem — garante que o orçamento SEMPRE
-// responde. Edite esses números quando sua situação de equipamento ou
-// piso de mercado mudar (fica igual ao bloco 7.1/7.2 do prompt original).
-// ════════════════════════════════════════════════════════════════════
-const PRICING_CONFIG = {
-    equipamentoAlugado: true,        // true = ainda depende de equipamento de terceiro (aplica taxa abaixo)
-    equipamentoTaxa: [0.10, 0.20],   // 10% a 20% sobre o subtotal
-    pisoAbsoluto: 150,
-    transporte: {
-        'Teresina, mesma região': [10, 15],
-        'Teresina, outra região': [15, 25],
-        'Fora de Teresina': [25, 40],
-    },
-    urgenciaEssaSemana: [0.10, 0.15],
-    entregavelAdicional: {
-        'Só o vídeo bruto': [0, 0],
-        'Reels editados': [0, 0],              // já é o "1 vídeo/reels editado" padrão — R$150 é o próprio piso, não soma em cima
-        'Reels + Stories em tempo real': [70, 100],
-        'Pacote completo com roteiro e direção de arte': [100, 150],
-    },
-    baseEventoPessoal: {
-        'Até 2h': [150, 200],
-        '2 a 4h': [180, 260],
-        'Dia inteiro': [280, 420],
-    },
-    baseComercial: {
-        'Até 2h': [300, 400],
-        '2 a 4h': [380, 520],
-        'Dia inteiro': [450, 650],
-    },
-    baseFreelancerAvulso: {
-        'Até 2h': [150, 200],
-        '2 a 4h': [180, 240],
-        'Dia inteiro': [220, 300],
-    },
-};
-
-function calculateFallback(respostas) {
-    const { perfil, horas, local, prazo, entregavel } = respostas;
-    let baseTable, pacote;
-
-    if (perfil === 'Evento Pessoal') { baseTable = PRICING_CONFIG.baseEventoPessoal; pacote = 'Cobertura de Evento'; }
-    else if (perfil === 'Comercial/Empresa') { baseTable = PRICING_CONFIG.baseComercial; pacote = 'Pacote Comercial'; }
-    else { baseTable = PRICING_CONFIG.baseFreelancerAvulso; pacote = 'Freela Avulso'; }
-
-    let [min, max] = baseTable[horas] || baseTable['2 a 4h'];
-
-    const [tMin, tMax] = PRICING_CONFIG.transporte[local] || [0, 0];
-    min += tMin; max += tMax;
-
-    const [eMin, eMax] = PRICING_CONFIG.entregavelAdicional[entregavel] || [0, 0];
-    min += eMin; max += eMax;
-    if (entregavel === 'Pacote completo com roteiro e direção de arte') pacote = 'Pacote Comercial';
-
-    if (prazo === 'Essa semana') {
-        const [uMin, uMax] = PRICING_CONFIG.urgenciaEssaSemana;
-        min += min * uMin; max += max * uMax;
-    }
-
-    if (PRICING_CONFIG.equipamentoAlugado) {
-        const [qMin, qMax] = PRICING_CONFIG.equipamentoTaxa;
-        min += min * qMin; max += max * qMax;
-    }
-
-    min = Math.max(Math.round(min / 5) * 5, PRICING_CONFIG.pisoAbsoluto);
-    max = Math.max(Math.round(max / 5) * 5, min + 20);
-
-    const faixa = `R$${min}-${max}`;
-    const resumo = `Pelo que você me contou (${describeAnswers(respostas)}), a faixa fica em torno de ${faixa}. É uma estimativa rápida — o valor fechado a gente combina certinho no WhatsApp.`;
-
-    return { pacote, faixa_preco: faixa, resumo, mensagem_whatsapp: buildWhatsappMessage(respostas, faixa) };
-}
-
-function describeAnswers(r) {
-    const parts = [];
-    if (r.subtipo) parts.push(r.subtipo.toLowerCase());
-    if (r.horas) parts.push(r.horas.toLowerCase());
-    if (r.local) parts.push(r.local.toLowerCase());
-    return parts.join(', ');
-}
-
-function buildWhatsappMessage(r, faixa) {
-    const nome = (state.lead.nome || '').trim();
-    const linhas = [
-        `Olá, Will!${nome ? ` Meu nome é ${nome}.` : ''} Vim pelo site e fiz o orçamento inteligente:`,
-        `• Perfil: ${r.perfil}${r.subtipo ? ' — ' + r.subtipo : ''}`,
-    ];
-    if (r.horas) linhas.push(`• Duração: ${r.horas}`);
-    if (r.local) linhas.push(`• Local: ${r.local}`);
-    if (r.prazo) linhas.push(`• Prazo: ${r.prazo}`);
-    if (r.entregavel) linhas.push(`• Entrega: ${r.entregavel}`);
-    linhas.push(`Faixa estimada: ${faixa}`);
-    linhas.push('Podemos conversar sobre os detalhes?');
-    return linhas.join('\n');
-}
-
-function consultaMessage(kind) {
-    const nome = (state.lead.nome || '').trim();
-    if (kind === 'politico') {
-        return `Olá, Will!${nome ? ` Meu nome é ${nome}.` : ''} Quero conversar sobre uma parceria institucional.`;
-    }
-    // recorrente
-    const r = state.respostas;
-    const linhas = [
-        `Olá, Will!${nome ? ` Meu nome é ${nome}.` : ''} Quero fechar uma parceria recorrente mensal.`,
-    ];
-    if (r.horas) linhas.push(`• Duração média por job: ${r.horas}`);
-    if (r.local) linhas.push(`• Local: ${r.local}`);
-    if (r.entregavel) linhas.push(`• Entrega: ${r.entregavel}`);
-    linhas.push('Podemos combinar os detalhes?');
-    return linhas.join('\n');
-}
 
 // ════════════════════════════════════════════════════════════════════
 // QUIZ — perguntas e fluxo condicional (seção 6 do briefing)
@@ -159,14 +35,8 @@ function getSubtipoConfig(perfil) {
 
 const STEP_ORDER = ['perfil', 'subtipo', 'horas', 'local', 'prazo', 'entregavel', 'lead'];
 
-function isConsultaOnly(r) {
-    if (r.perfil === 'Político/Institucional') return true;
-    if (r.perfil === 'Freelancer/Criador de Conteúdo' && r.subtipo === 'Sim') return true;
-    return false;
-}
-
 function getFlow(perfil) {
-    if (perfil === 'Político/Institucional') return ['perfil', 'lead'];
+    if (PERFIS_SOB_CONSULTA.includes(perfil)) return ['perfil', 'lead'];   // político e comercial: combinado no WhatsApp
     return STEP_ORDER;
 }
 
@@ -175,6 +45,7 @@ let state = {
     respostas: { perfil: null, subtipo: null, horas: null, local: null, prazo: null, entregavel: null },
     lead: { nome: '', contato: '' },
     result: null,
+    run: 0,
 };
 
 function resetDownstream() {
@@ -337,7 +208,7 @@ function wireBack() {
 }
 
 function restartQuiz() {
-    state = { stepIndex: 0, respostas: { perfil: null, subtipo: null, horas: null, local: null, prazo: null, entregavel: null }, lead: { nome: '', contato: '' }, result: null };
+    state = { stepIndex: 0, respostas: { perfil: null, subtipo: null, horas: null, local: null, prazo: null, entregavel: null }, lead: { nome: '', contato: '' }, result: null, run: state.run + 1 };
     render();
 }
 
@@ -359,92 +230,59 @@ async function goNext() {
     }
 }
 
+const dormir = ms => new Promise(r => setTimeout(r, ms));
+
+// A IA só devolve o texto do resumo. Qualquer falha → null (o resumo padrão já está na tela).
+async function buscarResumoIA(respostas, nome) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), CONFIG.IA_TIMEOUT_MS);
+    try {
+        const res = await fetch('/api/quote', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ respostas, nome }), signal: controller.signal,
+        });
+        if (!res.ok) return null;
+        const j = await res.json();
+        return j && j.source === 'gemini' && typeof j.resumo === 'string' ? j : null;
+    } catch { return null; } finally { clearTimeout(timer); }
+}
+
 async function resolveResult() {
     const r = state.respostas;
-
-    if (isConsultaOnly(r)) {
-        const kind = r.perfil === 'Político/Institucional' ? 'politico' : 'recorrente';
-        const pacote = kind === 'politico' ? 'Parceria Institucional' : 'Parceria Recorrente';
-        const resumo = kind === 'politico'
-            ? 'Esse tipo de parceria eu negocio direto, sem faixa fechada — vou te chamar no WhatsApp pra alinharmos os detalhes.'
-            : 'Parceria mensal é combinado à parte: geralmente fica entre R$700 e R$950/mês, em vários pagamentos ao longo do mês, mas isso varia com o combinado — bora fechar no WhatsApp.';
-        const quote = { pacote, faixa_preco: 'sob consulta', resumo, mensagem_whatsapp: consultaMessage(kind), source: 'regra-fixa' };
-        state.result = quote;
-        renderResult(quote);
-        saveLead(quote);
-        return;
-    }
-
+    const nome = state.lead.nome;
+    const quote = orcamentoPadrao(r, nome);            // preço e textos por regra: instantâneo e sempre igual
+    const run = ++state.run;
     const stopLoading = renderLoading();
-    try {
-        const quote = await fetchQuote(r);
-        stopLoading();
-        state.result = quote;
-        renderResult(quote);
-        saveLead(quote);
-    } catch (err) {
-        stopLoading();
-        console.error('Falha total ao calcular orçamento:', err);
-        renderError('Deu ruim aqui na hora de calcular.');
-    }
+    const ia = ehSobConsulta(r) ? Promise.resolve(null) : buscarResumoIA(r, nome);
+    await dormir(700);                                  // a claquete aparece um instante, o resultado não depende da IA
+    stopLoading();
+    if (run !== state.run) return;                      // a pessoa refez o quiz nesse meio-tempo
+    state.result = quote;
+    renderResult(quote);
+    saveLead(quote);
+    ia.then(j => {
+        if (!j || run !== state.run || j.faixa_preco !== quote.faixa_preco) return;   // a IA nunca muda o preço
+        const el = root.querySelector('.result-summary');
+        if (!el) return;
+        el.classList.add('is-swap');
+        setTimeout(() => { el.textContent = j.resumo; el.classList.remove('is-swap'); }, 220);
+    });
 }
 
 // ════════════════════════════════════════════════════════════════════
-// CHAMADA DE IA — Gemini (principal) → Groq (fallback) → local (seção acima)
-// ════════════════════════════════════════════════════════════════════
-async function fetchWithTimeout(url, respostas, ms) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), ms);
-    try {
-        return await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ respostas }),
-            signal: controller.signal,
-        });
-    } finally {
-        clearTimeout(timeout);
-    }
-}
-
-async function fetchQuote(respostas) {
-    try {
-        const res = await fetchWithTimeout('/api/quote', respostas, 12_000);
-        if (res.ok) return await res.json();
-        console.warn('[quote] Gemini respondeu com erro, tentando Groq…', res.status);
-    } catch (err) {
-        console.warn('[quote] Gemini falhou, tentando Groq…', err?.message || err);
-    }
-
-    try {
-        const res = await fetchWithTimeout('/api/quote-groq', respostas, 12_000);
-        if (res.ok) return await res.json();
-        console.warn('[quote] Groq também respondeu com erro, usando cálculo local…', res.status);
-    } catch (err) {
-        console.warn('[quote] Groq também falhou, usando cálculo local…', err?.message || err);
-    }
-
-    return { source: 'local', ...calculateFallback(respostas) };
-}
-
-// ════════════════════════════════════════════════════════════════════
-// LEAD → FIRESTORE (opcional, não bloqueia o fluxo se não configurado)
+// LEAD → FIRESTORE (opcional; o Firebase só é baixado aqui, e não bloqueia o fluxo)
 // ════════════════════════════════════════════════════════════════════
 function saveLead(quote) {
-    if (!window.firebaseReady || !window.db) return;
-    try {
-        window.fb.addDoc(window.fb.collection(window.db, 'leads'), {
+    import('./firebase-init.js')
+        .then(m => m.salvarLead({
             nome: state.lead.nome,
             contato: state.lead.contato,
             respostas: state.respostas,
             pacote: quote.pacote,
             faixaPreco: quote.faixa_preco,
-            fonte: quote.source || 'ia',
-            criadoEm: window.fb.serverTimestamp(),
-        }).catch(err => console.warn('[saveLead] falha ao salvar:', err?.message || err));
-    } catch (err) {
-        console.warn('[saveLead] falha ao salvar:', err?.message || err);
-    }
+            fonte: quote.source || 'regra',
+        }))
+        .catch(err => console.warn('[saveLead] falha ao salvar:', err?.message || err));
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -467,10 +305,7 @@ if (root) render();
 document.querySelectorAll('[data-wa-link]').forEach(a => {
     a.href = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(CONFIG.WHATSAPP_DEFAULT_MSG)}`;
 });
-document.querySelectorAll('[data-drive-link]').forEach(a => {
-    const key = a.dataset.driveLink;
-    a.href = (key && CONFIG.DRIVE_LINKS[key]) || CONFIG.DRIVE_LINK;
-});
+document.querySelectorAll('[data-drive-link]').forEach(a => { a.href = CONFIG.DRIVE_LINK; });   // js/videos.js refina por categoria
 
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();

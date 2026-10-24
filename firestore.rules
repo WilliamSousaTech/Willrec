@@ -1,15 +1,22 @@
 rules_version = '2';
 
-// Regras do Firestore para o site Will Rec.
-// Cole isso em: Firebase Console > Firestore Database > Regras > Publicar.
+// Regras do Firestore para o site Will Rec (v16).
+// Cole em: Firebase Console > Firestore Database > Regras > Publicar.
 //
-// Qualquer visitante pode CRIAR um lead (é o formulário público do site), mas:
-//  - só com os campos que o site realmente envia (nada além disso),
-//  - com tipos e tamanhos limitados (evita lixo e documentos gigantes),
-//  - com data gerada pelo servidor (não dá para forjar).
-// Ninguém lê, edita ou apaga leads pelo app — só você, pelo painel do Firebase Console.
+// O e-mail em admin() é o da conta Google do painel (o mesmo de ADMIN_EMAILS em firebase-config.js).
+//
+// leads  — qualquer visitante pode CRIAR (formulário do orçamento), só com os campos que o site envia, com tipos e
+//          tamanhos limitados e data do servidor. Só você (admin) lê, atualiza (status) e apaga.
+// jobs   — trabalhos/agenda: só você.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function admin() {
+      return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email in ['williamsousa.tech@gmail.com'];
+    }
+
     match /leads/{leadId} {
       allow create: if request.resource.data.keys().hasAll(['nome', 'contato', 'criadoEm'])
                     && request.resource.data.keys().hasOnly(['nome', 'contato', 'respostas', 'pacote', 'faixaPreco', 'fonte', 'criadoEm'])
@@ -24,7 +31,11 @@ service cloud.firestore {
                     && (!('faixaPreco' in request.resource.data) || (request.resource.data.faixaPreco is string && request.resource.data.faixaPreco.size() < 100))
                     && (!('fonte' in request.resource.data) || (request.resource.data.fonte is string && request.resource.data.fonte.size() < 40))
                     && request.resource.data.criadoEm == request.time;
-      allow read, update, delete: if false;
+      allow read, update, delete: if admin();
+    }
+
+    match /jobs/{jobId} {
+      allow read, write: if admin();
     }
   }
 }
