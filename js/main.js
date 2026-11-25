@@ -6,7 +6,8 @@
 import { $, $$ } from './util.js';
 import { initTheme } from './theme.js?v=22';
 import { initTextEffect } from './text-effect.js';
-import { initHero, initParallax } from './parallax.js?v=24';
+import { initHero, initParallax } from './parallax.js?v=25';
+import { initNav, goTo } from './nav.js?v=25';
 import { initDock } from './dock.js';
 import { initGlow } from './glow-card.js';
 import { loadManifest, applyDriveLinks, initGrid, initHighlights, fillCounts } from './videos.js?v=23';
@@ -17,6 +18,7 @@ import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 
 initTheme();
+initNav();
 initTextEffect();
 initHero();
 initParallax();
@@ -45,6 +47,10 @@ loadManifest().then(m => {
   };
   fromHash();
   addEventListener('hashchange', fromHash);
+  // endereço com #secao (ex.: link compartilhado para #orcamento): o feed e a grade acabaram de entrar
+  // e empurraram a página; corrige a posição sem animação.
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h && !h.startsWith('v-')) requestAnimationFrame(() => goTo(h, { instant: true, focus: false }));
 });
 
 initTechText();
@@ -84,7 +90,7 @@ $$('[data-lazy-video]').forEach(v => {
 
   // botão de play: só aparece se vídeo E imagem animada falharem
   const btn = document.createElement('button');
-  btn.type = 'button'; btn.className = 'media-toggle';
+  btn.type = 'button'; btn.className = 'media-toggle'; btn.setAttribute('aria-label', 'Reproduzir vídeo');
   btn.innerHTML = '<span aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 2.5v15l13-7.5z"/></svg></span>';
   fig.appendChild(btn);
   const sync = last => {

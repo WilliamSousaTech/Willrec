@@ -21,7 +21,7 @@
   --orange-soft:#fff2ea;
   --surface:#ffffff;             /* cartões (orçamento, prints) */
   --soft:#efefef; --soft-h:#e2e2e2;   /* botões secundários (como os cinzas do Instagram) */
-  --bar-bg:rgba(255,255,255,.93); --glass:rgba(255,255,255,.95);
+  --bar-bg:#ffffff; --glass:#ffffff;
   --dim:#ffffff;                 /* véu sobre os Reels fora de foco (computador) */
   color-scheme:light;
   --ring:linear-gradient(45deg,#ffb547 0%,#ff6a2a 46%,#e2366f 100%);
@@ -51,6 +51,9 @@ em{font-style:normal}
 .skip:focus{top:calc(12px + var(--safe-t))}
 .wrap{width:100%;max-width:1200px;margin-inline:auto;padding-inline:var(--pad)}
 .sec{position:relative;padding-block:clamp(72px,11vw,150px)}
+/* menu e links internos: a seção para logo abaixo da barra de cima; o foco vai para ela sem contorno */
+main>section:not(.hero){scroll-margin-top:calc(var(--bar-h) + var(--safe-t))}
+main>section[tabindex="-1"]:focus{outline:none}
 .sec-alt{background:var(--bg-2);border-block:1px solid var(--line)}
 
 .label{display:flex;align-items:center;gap:var(--s3);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-ink);margin-bottom:var(--s5)}
@@ -84,7 +87,7 @@ em{font-style:normal}
 .btn-soft:hover,.btn-pill.outline:hover{background:var(--soft-h);box-shadow:none}
 .btn-dark{background:#0a0a0a;color:#fff}   /* sempre preto (fica sobre a faixa laranja) */
 .btn-dark:hover{background:#2a2a2a;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
-.btn-glass{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.5);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn-glass{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.5)}
 .btn-glass:hover{background:#fff;color:var(--ink);box-shadow:none}
 .btn-sm{min-height:44px;padding:0 16px;font-size:14px;border-radius:10px}
 .btn-lg{min-height:56px;padding:0 30px;font-size:16px;border-radius:14px}
@@ -110,7 +113,7 @@ em{font-style:normal}
 
 /* 4 ── BARRA SUPERIOR + DOCK ──────────────────────────────────── */
 .bar{position:fixed;inset:0 0 auto 0;z-index:50;height:calc(var(--bar-h) + var(--safe-t));padding:var(--safe-t) var(--pad) 0;display:flex;align-items:center;justify-content:space-between;gap:var(--s4);color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,0));transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
-.bar.is-solid{color:var(--ink);background:var(--bar-bg);-webkit-backdrop-filter:saturate(1.8) blur(16px);backdrop-filter:saturate(1.8) blur(16px);box-shadow:0 1px 0 var(--line)}
+.bar.is-solid{color:var(--ink);background:var(--bar-bg);box-shadow:0 1px 0 var(--line)}
 .bar-brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--display);font-size:20px;letter-spacing:-.02em}
 .bar-cta{min-height:44px}
 .bar-tools{display:flex;align-items:center;gap:6px}
@@ -126,7 +129,7 @@ em{font-style:normal}
 .theme-anim,.theme-anim *,.theme-anim *::before,.theme-anim *::after{transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),fill .35s,stroke .35s !important}
 
 /* Dock: pílula flutuante no computador; barra de abas fixa embaixo no celular (como o app do Instagram) */
-.dock{position:fixed;left:50%;bottom:calc(16px + var(--safe-b));translate:-50% 0;z-index:60;display:flex;align-items:flex-end;gap:4px;padding:6px;border-radius:var(--r-pill);background:var(--glass);border:1px solid var(--line-2);box-shadow:var(--shadow-1);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease) .5s,transform .7s var(--ease) .5s}
+.dock{position:fixed;left:50%;bottom:calc(16px + var(--safe-b));translate:-50% 0;z-index:60;display:flex;align-items:flex-end;gap:4px;padding:6px;border-radius:var(--r-pill);background:var(--glass);border:1px solid var(--line-2);box-shadow:var(--shadow-1);opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease) .5s,transform .7s var(--ease) .5s}
 .js-ready .dock,html:not(.js) .dock{opacity:1;transform:none}
 .dock-item{--s:1;position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:var(--muted);transform:scale(var(--s));transform-origin:50% 100%;transition:color .25s,background .25s}
 .dock-item svg{width:22px;height:22px}
@@ -148,9 +151,6 @@ em{font-style:normal}
 @supports (height:100lvh){:root{--stage-h:100lvh;--pin:64svh}}
 .hero{position:relative;height:max(560px,100vh);height:max(560px,100svh);background:#1d140d;color:#fff}
 .js .hero{height:calc(max(560px,var(--stage-h)) + var(--pin))}
-.hero-snap{position:absolute;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
-.hero-snap-a{top:0}
-.hero-snap-b{top:var(--pin)}
 .stage{
   --q:1; --p:0; --k:1; --g:1; --n:1; --t:1; --c:1;     /* sem JS: passo 2 */
   --dx:0px; --dy:0px; --travel:.3;                     /* do WILLREC grande até o nome menor (medido no JS) */
@@ -184,7 +184,7 @@ em{font-style:normal}
 .hero-top>*{grid-area:1/1}
 .hero-k{opacity:calc(1 - var(--k));transform:translate3d(0,calc(var(--k)*-14px),0)}
 /* o nome menor chega vindo da direção do grande, diminuindo até o tamanho final */
-.hero-name{font-family:var(--display);font-size:clamp(52px,5.4vw,88px);line-height:.84;letter-spacing:-.045em;white-space:nowrap;color:#fff;text-shadow:0 8px 36px rgba(0,0,0,.35);opacity:var(--n);transform:translate3d(calc((1 - var(--n))*var(--dx)*-.16),calc((1 - var(--n))*var(--dy)*-.16),0) scale(calc(1 + (1 - var(--n))*.34));filter:blur(calc((1 - var(--n))*6px))}
+.hero-name{font-family:var(--display);font-size:clamp(52px,5.4vw,88px);line-height:.84;letter-spacing:-.045em;white-space:nowrap;color:#fff;text-shadow:0 8px 36px rgba(0,0,0,.35);opacity:var(--n);transform:translate3d(calc((1 - var(--n))*var(--dx)*-.16),calc((1 - var(--n))*var(--dy)*-.16),0) scale(calc(1 + (1 - var(--n))*.34))}
 .kicker{display:flex;align-items:center;gap:1.1em;font-size:12px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.66);white-space:nowrap}
 .kicker span{transition:color .45s var(--ease)}
 .kicker span+span::before{content:'';display:inline-block;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.55);margin-right:1.2em;vertical-align:middle}
@@ -198,6 +198,37 @@ em{font-style:normal}
 /* botões invisíveis não recebem toque (só depois que aparecem); pelo teclado, o foco neles rola até o passo 2 */
 .js .hero-actions{pointer-events:none}
 .js .stage.is-b .hero-actions{pointer-events:auto}
+/* o que se mexe na rolada vai para a GPU: só muda posição/opacidade, nada é repintado a cada quadro */
+.type,.hero-k,.hero-name,.tagline,.hero-pitch,.hero-actions,.hud{will-change:transform,opacity}
+.shade::after{will-change:opacity}
+
+/* 5b ── troca do nome presa à rolagem, sem atraso (Safari 26+, Chrome 115+)
+   Com animation-timeline: scroll(), o navegador calcula cada quadro direto da posição da rolagem — o nome
+   acompanha o dedo, sem esperar o JavaScript (era isso que dava as "travadinhas"). Os trechos (animation-range)
+   são os mesmos da lista TRACKS do js/parallax.js; onde não há suporte, o JS escreve as variáveis acima. */
+@supports (animation-timeline:scroll()){
+  @media (prefers-reduced-motion:no-preference) and (max-aspect-ratio:1/1),(prefers-reduced-motion:no-preference) and (min-height:501px){
+    .sda .h-layer{animation:h-zoom linear both;animation-timeline:scroll(root block);animation-range:0px var(--pin)}
+    .sda .h-layer img{transform-origin:var(--h-origin);animation:h-exit linear both;animation-timeline:scroll(root block);animation-range:var(--pin) calc(var(--pin) + max(560px,var(--stage-h)))}
+    .sda .hud{animation:hud-out linear both;animation-timeline:scroll(root block);animation-range:var(--pin) calc(var(--pin) + max(560px,var(--stage-h)))}
+    .sda .hero-k{animation:k-out var(--ease-o) both;animation-timeline:scroll(root block);animation-range:0px calc(var(--pin)*.2)}
+    .sda .type{animation:wm-out var(--ease-o) both;animation-timeline:scroll(root block);animation-range:0px calc(var(--pin)*.34)}
+    .sda .hero-name{animation:n-in var(--ease-o) both;animation-timeline:scroll(root block);animation-range:calc(var(--pin)*.08) calc(var(--pin)*.42)}
+    .sda .shade::after{animation:fade-in var(--ease-o) both;animation-timeline:scroll(root block);animation-range:calc(var(--pin)*.08) calc(var(--pin)*.42)}
+    .sda .tagline{animation:t-in var(--ease-o) both;animation-timeline:scroll(root block);animation-range:calc(var(--pin)*.2) calc(var(--pin)*.54)}
+    .sda .hero-pitch,.sda .hero-actions{animation:c-in var(--ease-o) both;animation-timeline:scroll(root block);animation-range:calc(var(--pin)*.32) calc(var(--pin)*.66)}
+  }
+}
+:root{--ease-o:cubic-bezier(.33,1,.68,1)}
+@keyframes h-zoom{from{transform:none}to{transform:translate3d(0,2.4svh,0) scale(1.12)}}
+@keyframes h-exit{from{transform:none}to{transform:translate3d(0,20svh,0) scale(1.1)}}
+@keyframes hud-out{0%{opacity:1;transform:none}31%{opacity:0}100%{opacity:0;transform:translate3d(0,-8svh,0)}}
+@keyframes k-out{from{opacity:1;transform:none}to{opacity:0;transform:translate3d(0,-14px,0)}}
+@keyframes wm-out{from{opacity:1;transform:none}to{opacity:0;transform:translate3d(calc(var(--dx)*var(--travel)),calc(var(--dy)*var(--travel)),0) scale(.58)}}
+@keyframes n-in{from{opacity:0;transform:translate3d(calc(var(--dx)*-.16),calc(var(--dy)*-.16),0) scale(1.34)}to{opacity:1;transform:none}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes t-in{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:none}}
+@keyframes c-in{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
 .hud-scroll{position:absolute;left:50%;translate:-50% 0;bottom:calc(92px + var(--safe-b));display:flex;align-items:center;gap:var(--s3);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.8);transition:opacity .5s}
 .hud-scroll i{display:block;width:42px;height:2px;border-radius:2px;background:rgba(255,255,255,.3);position:relative;overflow:hidden}
 .hud-scroll i::after{content:'';position:absolute;inset:0 auto 0 0;width:14px;background:var(--orange);animation:scan 2s var(--ease) infinite}
@@ -242,7 +273,7 @@ em{font-style:normal}
 .hl-label{max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600;color:var(--ink-2)}
 
 /* abas Reels / Grade */
-.feed-tabs{position:sticky;top:var(--bar-h);z-index:30;margin-top:clamp(18px,3vw,30px);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line-2)}
+.feed-tabs{position:sticky;top:var(--bar-h);z-index:30;margin-top:clamp(18px,3vw,30px);background:var(--glass);border-top:1px solid var(--line-2)}
 .feed-tabs-in{display:flex;justify-content:center;gap:clamp(40px,10vw,64px);max-width:975px}
 .feed-tabs [role=tab]{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:var(--tabs-h);padding:0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .25s}
 .feed-tabs [role=tab] svg{width:18px;height:18px;flex:none}
@@ -264,13 +295,13 @@ em{font-style:normal}
 .rl-media::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(0,0,0,.72) 0,rgba(0,0,0,.24) 30%,rgba(0,0,0,0) 48%),linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,0) 16%)}
 .rl-tap{position:absolute;inset:0;z-index:2;display:grid;place-items:center;-webkit-tap-highlight-color:transparent;cursor:pointer}
 .rl-tap:focus-visible{outline:3px solid #fff;outline-offset:-6px;border-radius:var(--r)}
-.rl-state{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;opacity:0;transform:scale(.8);transition:opacity .25s var(--ease),transform .35s var(--ease);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.rl-state{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;opacity:0;transform:scale(.8);transition:opacity .25s var(--ease),transform .35s var(--ease)}
 .rl-state svg{width:30px;height:30px;margin-left:4px}
 .rl.is-paused .rl-state{opacity:1;transform:none}
 /* carregando: anel girando no centro */
 .rl.is-active.is-buffering:not(.is-paused) .rl-media::before{content:'';position:absolute;left:50%;top:50%;z-index:3;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .8s linear infinite;pointer-events:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-.rl-snd{position:absolute;z-index:4;top:10px;right:10px;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .25s,transform .25s var(--ease)}
+.rl-snd{position:absolute;z-index:4;top:10px;right:10px;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;transition:background .25s,transform .25s var(--ease)}
 .rl-snd svg{width:20px;height:20px}
 .rl-snd:hover{background:rgba(0,0,0,.65)}
 .rl-snd:active{transform:scale(.92)}
@@ -329,11 +360,11 @@ html.reel-lock{overflow:hidden}
 .reel-yt{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 .reel-empty{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;padding:24px;text-align:center;font-family:var(--display);font-size:clamp(16px,2.6vw,22px);text-transform:uppercase;color:#fff}
 .reel-empty b{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--orange);color:#0a0a0a;font-size:20px}
-.reel-x,.reel-drive{position:absolute;top:calc(16px + var(--safe-t));display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.28);font-size:14px;font-weight:600;background:rgba(20,20,20,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .3s var(--ease),color .3s var(--ease)}
+.reel-x,.reel-drive{position:absolute;top:calc(16px + var(--safe-t));display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.28);font-size:14px;font-weight:600;background:rgba(20,20,20,.72);transition:background .3s var(--ease),color .3s var(--ease)}
 .reel-x{right:clamp(14px,3vw,32px)}
 .reel-drive{left:clamp(14px,3vw,32px)}
 .reel-x:hover,.reel-drive:hover{background:#fff;color:var(--ink)}
-.reel-ctl{position:absolute;left:50%;bottom:calc(18px + var(--safe-b));translate:-50% 0;display:flex;align-items:center;gap:var(--s3);padding:6px;border-radius:16px;background:rgba(20,20,20,.72);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.reel-ctl{position:absolute;left:50%;bottom:calc(18px + var(--safe-b));translate:-50% 0;display:flex;align-items:center;gap:var(--s3);padding:6px;border-radius:16px;background:rgba(20,20,20,.84);border:1px solid rgba(255,255,255,.14)}
 .reel-nav{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;font-size:18px;transition:background .3s var(--ease),color .3s var(--ease),transform .3s var(--ease)}
 .reel-nav:hover{background:var(--orange);color:#0a0a0a}
 .reel-nav:active{transform:scale(.92)}
@@ -383,6 +414,8 @@ html.reel-lock{overflow:hidden}
 .qs-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .qs.is-snap .qs-flash{opacity:.9;transition:none}
 [data-qs-drag]{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;--tilt:0deg;rotate:var(--tilt)}
+/* no celular, arrastar para cima/baixo em cima de um adesivo rola a página (não "trava"); de lado, mexe o adesivo */
+@media (pointer:coarse){[data-qs-drag]{touch-action:pan-y}}
 [data-qs-drag].is-drag{cursor:grabbing;z-index:6}
 [data-qs-drag].is-drop{transition:rotate .6s cubic-bezier(.34,1.56,.64,1),translate .5s var(--ease)}
 .qs-star,.qs-spark{position:absolute;z-index:4;display:grid;place-items:center;filter:drop-shadow(0 6px 0 rgba(20,24,30,.18))}
@@ -460,6 +493,7 @@ html.reel-lock{overflow:hidden}
 .perf-dot{width:16px;height:4px;border-radius:2px;background:var(--line-2);transition:background .3s,width .3s var(--ease)}
 .perf-dot.done{background:var(--orange)}
 .perf-dot.active{background:var(--ink);width:26px}
+.quiz-q:focus,.quiz-result:focus{outline:none}
 .quiz-q{font-family:var(--display);font-size:clamp(24px,3vw,36px);line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin-bottom:var(--s6)}
 .quiz-options{display:grid;gap:10px;margin-bottom:var(--s6)}
 .quiz-opt{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;padding:14px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line-2);text-align:left;font-size:15.5px;font-weight:500;color:var(--ink);transition:border-color .25s,background .25s,box-shadow .25s}
@@ -585,7 +619,6 @@ html.reel-lock{overflow:hidden}
 @media (min-aspect-ratio:1/1) and (max-height:500px){
   .js .hero{height:max(560px,100vh);height:max(560px,100svh)}
   .js .stage{position:absolute;inset:0;height:auto}
-  .hero-snap{display:none}
 }
 @media (max-width:420px){
   .hide-sm{display:none}
@@ -602,14 +635,9 @@ html.reel-lock{overflow:hidden}
   .ig-head{column-gap:16px}
   .ig-stats{gap:12px}
 }
-/* celular: o feed "trava" em cada vídeo ao rolar, como no Reels (proximity: só perto de um vídeo) */
-@media (hover:none) and (pointer:coarse){
-  html{scroll-snap-type:y proximity}
-  .rl,.rl-end{scroll-snap-align:start}
-  /* abertura: a rolada para no passo 1 (topo) ou no passo 2 (nome menor + botões) */
-  .js .hero-snap{scroll-snap-align:start}
-  .rl-end{scroll-margin-top:calc(var(--bar-h) + var(--tabs-h) + 12px)}
-}
+/* Sem "encaixe" (scroll-snap) na página: no iPhone ele fazia os botões do menu voltarem para o início
+   e deixava a rolada "puxando". A rolagem é livre, como no feed do Instagram; o vídeo mais visível toca sozinho. */
+.rl-end{scroll-margin-top:calc(var(--bar-h) + var(--tabs-h) + 12px)}
 
 
 /* 13 ── TEMA ESCURO (botão sol/lua na barra · escolha salva no aparelho) ─────────────
@@ -622,7 +650,7 @@ html.reel-lock{overflow:hidden}
   --ink:#f5f5f5; --ink-2:#e4e4e4; --muted:#a8a8a8;            /* #a8a8a8 no preto: 9:1 */
   --line:#1f1f1f; --line-2:#323232;
   --orange-lg:#ff7a3d; --orange-ink:#ff8a52; --orange-soft:rgba(255,106,42,.14);   /* laranja de texto no preto: 7:1+ */
-  --bar-bg:rgba(0,0,0,.86); --glass:rgba(10,10,10,.92); --dim:#000000;
+  --bar-bg:#000000; --glass:#0a0a0a; --dim:#000000;
   --shadow-1:0 1px 2px rgba(0,0,0,.5),0 10px 28px -12px rgba(0,0,0,.8);
   --shadow-2:0 2px 6px rgba(0,0,0,.5),0 28px 56px -20px rgba(0,0,0,.9);
 }
@@ -640,8 +668,6 @@ html.reel-lock{overflow:hidden}
   /* abertura sem prender a rolagem: já mostra o passo 2 */
   .js .hero{height:max(560px,100vh);height:max(560px,100svh)}
   .js .stage{position:absolute;inset:0;height:auto}
-  .hero-snap{display:none}
-  .hero-name{filter:none}
   .h-cam{animation:none}
   .dock{opacity:1;transform:none}
   .qs-star svg,.qs-spark svg,.qs-rec i{animation:none}

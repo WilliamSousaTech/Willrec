@@ -44,19 +44,27 @@ export function initHero() {
     }
   };
 
-  let raf = 0, lastY = NaN;
+  // Navegador com animation-timeline (Safari 26+, Chrome 115+): o CSS anima direto da rolagem (styles.css, 5b),
+  // sem atraso. Aqui só liga/desliga os botões. Nos outros, o JS escreve as variáveis a cada quadro.
+  const CSS_SCROLL = document.documentElement.classList.contains('sda');   // marcado no <head> (index.html)
+  let raf = 0, lastY = NaN, written = false;
   const update = force => {
     raf = 0;
     const y = -hero.getBoundingClientRect().top;
     if (!force && y === lastY) return;
     lastY = y;
-    const q = pin > 1 ? clamp(y / pin) : 1;         // sem prender (movimento reduzido): já no passo 2
+    const q = pin > 1 ? clamp(y / pin) : 1;         // sem prender (movimento reduzido / celular deitado): já no passo 2
+    stage.classList.toggle('is-b', q > .45);        // botões só aceitam toque/foco quando já aparecem
+    if (hint) hint.classList.toggle('is-off', y > 8);
+    if (CSS_SCROLL && pin > 1) {                    // o CSS cuida da animação
+      if (written) { TRACKS.forEach(([k]) => st.removeProperty(k)); st.removeProperty('--q'); st.removeProperty('--p'); written = false; }
+      return;
+    }
     const p = clamp((y - pin) / sh);
     st.setProperty('--q', q.toFixed(4));
     st.setProperty('--p', p.toFixed(4));
     TRACKS.forEach(([k, a, b]) => st.setProperty(k, seg(q, a, b).toFixed(4)));
-    stage.classList.toggle('is-b', q > .45);        // botões só aceitam toque/foco quando já aparecem
-    if (hint) hint.classList.toggle('is-off', y > 8);
+    written = true;
   };
   const kick = () => { if (!raf) raf = requestAnimationFrame(() => update(false)); };
   const resize = () => { measure(); update(true); };

@@ -270,3 +270,20 @@ v24 — ABERTURA EM 2 PASSOS
   · Botões só aceitam toque quando já aparecem; pelo teclado, o foco neles rola até o passo 2.
   · Reduzir movimento ou celular deitado: sem prender, já no passo 2. Sem JS: passo 2.
   · Auditoria nos dois temas (1440/1280/820/390/360): axe 0, CLS ~0, sem rolagem lateral, sem erros.
+
+v25 — MENU CONSERTADO, ABERTURA SUAVE, VÍDEOS COM MÚSICA E REVISÃO GERAL
+  · Menu de baixo: no iPhone alguns itens voltavam para o início. Causa: o "encaixe" (scroll-snap) da página —
+    o Safari terminava a rolagem e puxava de volta para o ponto de encaixe da abertura/feed. O encaixe saiu e a
+    navegação interna agora é feita pelo js/nav.js: rola até a seção certa, para logo abaixo da barra de cima,
+    atualiza o endereço sem encher o histórico e move o foco para a seção (teclado/leitor de tela).
+  · Abertura sem "travadinhas": a troca do nome usa animation-timeline: scroll() (Safari 26+, Chrome 115+) — o
+    navegador calcula cada quadro direto da posição da rolagem, sem esperar o JavaScript. Nos outros navegadores o
+    js/parallax.js faz o mesmo. Saíram o desfoque animado do nome menor e o backdrop-filter das barras fixas
+    (topo, abas, menu de baixo, botões sobre o vídeo): desfoque em cima de foto/vídeo em movimento pesa no iPhone.
+    Barras agora sólidas, como no app do Instagram. Elementos da abertura vão para a GPU (will-change).
+  · Vídeos com música (novas edições do Will): Casamento (0:38), Sua Clínica em Cena (0:12) e Vídeo de Divulgação
+    (0:41), em 1080p com som; capas novas; mediaVersion 25.
+  · Revisão: tools/qa/revisar-site.py clica em todos os botões/links (89 verificações, todas OK) e QA_CHECKLIST.md
+    tem a lista completa. Correções: botão do vídeo do gimbal sem nome acessível; foco do orçamento pelo teclado;
+    aviso de erro do orçamento lido pelo leitor de tela; link do WhatsApp no <noscript>; adesivos do "Quem sou eu?"
+    não prendem a rolagem no celular; 404.html próprio; X-Frame-Options e Permissions-Policy; sitemap atualizado.

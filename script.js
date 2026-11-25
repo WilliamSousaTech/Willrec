@@ -126,7 +126,7 @@ function renderLead() {
             <label for="q-contato">WhatsApp ou Instagram</label>
             <input id="q-contato" type="text" placeholder="(86) 9xxxx-xxxx ou @seu.perfil" value="${escapeAttr(state.lead.contato)}" autocomplete="tel">
         </div>
-        <p class="quiz-error" id="q-lead-error" style="display:none">Preenche nome e contato pra eu conseguir te chamar.</p>
+        <p class="quiz-error" id="q-lead-error" role="alert" style="display:none">Preenche nome e contato pra eu conseguir te chamar.</p>
         <div class="quiz-nav">
             <button type="button" class="quiz-back" data-back>← Voltar</button>
             <button type="button" class="btn-pill quiz-next" data-lead-submit>Ver meu orçamento</button>
@@ -252,6 +252,7 @@ async function resolveResult() {
     const nome = state.lead.nome;
     const quote = orcamentoPadrao(r, nome);            // preço e textos por regra: instantâneo e sempre igual
     const run = ++state.run;
+    const kb = quizHasKeyboardFocus();
     const stopLoading = renderLoading();
     const ia = ehSobConsulta(r) ? Promise.resolve(null) : buscarResumoIA(r, nome);
     await dormir(700);                                  // a claquete aparece um instante, o resultado não depende da IA
@@ -259,6 +260,7 @@ async function resolveResult() {
     if (run !== state.run) return;                      // a pessoa refez o quiz nesse meio-tempo
     state.result = quote;
     renderResult(quote);
+    focusQuiz(kb);
     saveLead(quote);
     ia.then(j => {
         if (!j || run !== state.run || j.faixa_preco !== quote.faixa_preco) return;   // a IA nunca muda o preço
@@ -288,12 +290,25 @@ function saveLead(quote) {
 // ════════════════════════════════════════════════════════════════════
 // MASTER RENDER
 // ════════════════════════════════════════════════════════════════════
+// Quem responde pelo teclado continua com o foco no quiz (na nova pergunta), em vez de voltar ao começo da página.
+function quizHasKeyboardFocus() {
+    const a = document.activeElement;
+    try { return !!(a && root && root.contains(a) && a.matches(':focus-visible')); } catch { return false; }
+}
+function focusQuiz(kb) {
+    if (!kb) return;
+    const t = root.querySelector('.quiz-q, .quiz-result');
+    if (t) { t.setAttribute('tabindex', '-1'); t.focus(); }
+}
+
 function render() {
+    const kb = quizHasKeyboardFocus();
     const key = currentStepKey();
-    if (key === 'perfil') return renderQuestion(Q.perfil);
-    if (key === 'subtipo') return renderQuestion(getSubtipoConfig(state.respostas.perfil));
-    if (key === 'lead') return renderLead();
-    if (Q[key]) return renderQuestion(Q[key]);
+    if (key === 'perfil') renderQuestion(Q.perfil);
+    else if (key === 'subtipo') renderQuestion(getSubtipoConfig(state.respostas.perfil));
+    else if (key === 'lead') renderLead();
+    else if (Q[key]) renderQuestion(Q[key]);
+    focusQuiz(kb);
 }
 
 if (root) render();

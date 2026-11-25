@@ -76,6 +76,16 @@ e entram o nome menor, "Histórias reais. Imagem que permanece.", o texto e os b
 rolagem e escreve variáveis CSS (0 → 1); os tempos de cada parte ficam na lista `TRACKS` do mesmo arquivo, e quanto a
 página rola com a foto presa fica em `--pin` no `styles.css`. Com "reduzir movimento" (ou celular deitado) a abertura
 não prende a rolagem e já mostra o passo 2.
+No Safari 26+ e no Chrome, a animação é feita pelo próprio CSS (`animation-timeline: scroll()`, seção 5b do
+`styles.css`), presa à rolagem quadro a quadro — sem atraso. Os trechos de `animation-range` são os mesmos da lista
+`TRACKS`.
+
+**Navegação interna (v25):** `js/nav.js` cuida dos links `#secao` (menu de baixo, logo, botões): rola até a seção,
+para logo abaixo da barra e não enche o histórico. Não use `scroll-snap` na página: no iPhone ele fazia o menu
+voltar para o início.
+
+**Revisão antes de publicar:** siga o `QA_CHECKLIST.md` e rode `python3 tools/qa/revisar-site.py` (clica em todos
+os botões e links; com uma URL no fim, testa o site no ar).
 
 **Tema claro/escuro:** botão sol/lua na barra (js/theme.js). O padrão é o claro; a escolha de cada visitante fica
 salva no aparelho. As cores dos dois temas ficam no começo do `styles.css` (`:root` e `:root[data-theme="dark"]`).

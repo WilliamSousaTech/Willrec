@@ -16,7 +16,7 @@
     "feedMax = quantos destaques entram no feed (o resto fica na aba Grade). 0 = todos."
   ],
   "driveRoot": "https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link",
-  "mediaVersion": 23,
+  "mediaVersion": 25,
   "feedMax": 6,
   "categories": [
     {
@@ -154,7 +154,7 @@
     {
       "slug": "sua-clinica-em-cena",
       "title": "Sua Clínica em Cena",
-      "meta": "4K · 0:17",
+      "meta": "4K · 0:12",
       "cat": "comerciais",
       "formato": "9:16",
       "desc": "Vídeo para clínica odontológica: apresentação no consultório e o resultado do sorriso mostrado no tablet.",
@@ -266,7 +266,7 @@
     {
       "slug": "divulgacao-estante",
       "title": "Vídeo de Divulgação",
-      "meta": "Full HD · 0:41",
+      "meta": "4K · 0:41",
       "cat": "institucionais",
       "formato": "9:16",
       "desc": "Fala para a câmera gravada em meio à estante de livros, com livros em destaque e o anúncio das datas.",

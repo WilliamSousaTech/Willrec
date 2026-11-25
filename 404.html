@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Página não encontrada | WILLREC</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem("willrec-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+@font-face{font-family:"Archivo Black";src:url("/fonts/ArchivoBlack-Regular.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"Inter";src:url("/fonts/inter-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#fff;--ink:#0a0a0a;--muted:#666;--line:#dbdbdb;--orange:#ff6a2a;color-scheme:light}
+:root[data-theme="dark"]{--bg:#000;--ink:#f5f5f5;--muted:#a8a8a8;--line:#323232;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--ink:#f5f5f5;--muted:#a8a8a8;--line:#323232;color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+body{min-height:100svh;display:grid;place-items:center;padding:24px 16px;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;text-align:center}
+main{max-width:30em}
+.k{display:inline-flex;align-items:center;gap:.7em;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.k i{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:rec 1.4s steps(1) infinite}
+@keyframes rec{50%{opacity:.15}}
+h1{margin:18px 0 10px;font-family:"Archivo Black",system-ui,sans-serif;font-size:clamp(64px,20vw,140px);line-height:.85;letter-spacing:-.045em}
+p{color:var(--muted)}
+.a{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;font-weight:600;text-decoration:none;border:1px solid transparent}
+.btn-1{background:var(--orange);color:#0a0a0a}
+.btn-2{border-color:var(--line);color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.k i{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <p class="k"><i aria-hidden="true"></i>Erro 404</p>
+  <h1>WILLREC</h1>
+  <p>Essa página não existe ou mudou de lugar. Os trabalhos e o orçamento continuam no site.</p>
+  <div class="a">
+    <a class="btn btn-1" href="/">Voltar ao início</a>
+    <a class="btn btn-2" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+  </div>
+</main>
+</body>
+</html>
