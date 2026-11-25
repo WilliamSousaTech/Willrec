@@ -237,3 +237,13 @@ v20 — CLARO, COM CARA DE INSTAGRAM, VÍDEOS EM HD
   · Tema claro: fundo branco, texto preto, laranja da marca nos botões/anéis; laranja de texto #c2410c (5,2:1) e
     #ea580c para títulos grandes (3,6:1); faixa laranja no contato; tela cheia continua escura (vídeo em primeiro lugar).
   · Auditoria (1440/1280/820/390/360): axe 0, CLS ~0, toque ≥ 44px, sem rolagem lateral, sem erros nem 404.
+
+v21 — VÍDEOS REENVIADOS COM SOM
+  · Agora em HD 1080p com som (originais reenviados): Casamento (versão 4K, a com música), Jr. Drinks & Coquetéis
+    (versão 4K com logo e abertura com a equipe; vieram 3 versões), Bar de Drinks (versão 2K: a 4K veio com a mesma
+    trilha do Casamento), Master Barbearia, Político, Aniversário, Professor Caio (nova versão, 1:08) e Evento Corporativo
+    (estava sem vídeo; é a cobertura do evento do setor condominial). Novo: "Jogo de Futebol" (720p), categoria Esportes.
+  · Saíram as prévias/clipes antigos sem som desses vídeos. Ainda em 540p e sem som (originais não enviados):
+    Show, Criativo, Frutos de Goiás e Campus Party.
+  · Feed (6, todos em HD): Espetáculo de Ballet, Casamento, Jr. Drinks, 10 horas 4 lugares 1 celular, Sua Clínica em Cena,
+    Master Barbearia. Grade com 20 vídeos; capas novas (mediaVersion 21).
