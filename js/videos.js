@@ -28,15 +28,15 @@ export async function loadManifest() {
     const res = await fetch('data/videos.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(res.status);
     const m = await res.json();
-    const q = m.mediaVersion ? `?v=${encodeURIComponent(m.mediaVersion)}` : '';   // força baixar capas trocadas com o mesmo nome
+    const q = m.mediaVersion ? `?v=${encodeURIComponent(m.mediaVersion)}` : '';   // força baixar capas e vídeos trocados com o mesmo nome
     const cats = Object.fromEntries((m.categories || []).map(c => [c.id, c]));
     const videos = (m.videos || []).map((v, i) => {
       const ratio = ratioOf(v.formato), orient = orientOf(ratio);
       // tamanho de referência da capa (só a proporção importa: evita salto de layout enquanto carrega)
       const [pw, ph] = orient === 'h' ? [1920, Math.round(1920 / ratio)] : orient === 'q' ? [1080, 1080] : [1080, Math.round(1080 / ratio)];
-      const hdUrl = v.hd ? `${MEDIA}${v.slug}-hd.mp4` : '';
-      const previewUrl = v.preview ? `${MEDIA}${v.slug}-preview.mp4` : '';
-      const clipUrl = v.clip ? `${MEDIA}${v.slug}-card.mp4` : '';
+      const hdUrl = v.hd ? `${MEDIA}${v.slug}-hd.mp4${q}` : '';
+      const previewUrl = v.preview ? `${MEDIA}${v.slug}-preview.mp4${q}` : '';
+      const clipUrl = v.clip ? `${MEDIA}${v.slug}-card.mp4${q}` : '';
       return {
         ...v, i, ratio: +ratio.toFixed(4), orient, pw, ph, dur: durOf(v.meta),
         catLabel: (cats[v.cat] && cats[v.cat].label) || '',

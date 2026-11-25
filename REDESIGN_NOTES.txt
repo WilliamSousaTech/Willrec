@@ -256,3 +256,5 @@ v22 — TEMA CLARO/ESCURO + ÚLTIMOS VÍDEOS COM SOM
     "willrec-theme") e é aplicada no <head> antes de desenhar a página (não pisca). A cor da barra do navegador e a
     assinatura WILLREC (canvas) acompanham. Iguais nos dois temas: foto de abertura, faixa laranja, cartão "Quem sou eu?"
     e tela cheia. Auditoria nos dois temas: contraste e axe sem erros.
+  · Espetáculo de Ballet trocado pela versão longa com som (4K, 1:18), continua o 1º do feed.
+    Vídeos de media/reel também levam ?v=mediaVersion (troca com o mesmo nome chega para quem já assistiu).

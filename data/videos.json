@@ -16,7 +16,7 @@
     "feedMax = quantos destaques entram no feed (o resto fica na aba Grade). 0 = todos."
   ],
   "driveRoot": "https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link",
-  "mediaVersion": 22,
+  "mediaVersion": 23,
   "feedMax": 6,
   "categories": [
     {
@@ -90,7 +90,7 @@
     {
       "slug": "espetaculo-ballet",
       "title": "Espetáculo de Ballet",
-      "meta": "Full HD · 0:22",
+      "meta": "4K · 1:18",
       "cat": "eventos-culturais",
       "formato": "9:16",
       "desc": "Cobertura de espetáculo de ballet com o tema Elementos: cenário, bastidores e apresentações no palco.",

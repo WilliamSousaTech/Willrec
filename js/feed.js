@@ -9,7 +9,7 @@
 // Movimento reduzido ou autoplay bloqueado (iPhone em baixo consumo): nada toca sozinho; um toque dá o play.
 import { $, $$, REDUCE } from './util.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
-import { esc } from './videos.js?v=20';
+import { esc } from './videos.js?v=23';
 
 const ICON = {
   play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>',

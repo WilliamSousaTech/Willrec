@@ -221,5 +221,5 @@ ISC © 2026 — Will Rec
 
 O `vercel.json` guarda imagens/vídeos por 7 dias e CSS/JS por 1 hora no navegador. Se você substituir um arquivo
 mantendo o nome (ex.: `images/site/avatar.webp`, `styles.css`), aumente o número `?v=` onde ele é citado
-(`index.html` e, para módulos, `js/main.js`). Capas de vídeo: aumente `mediaVersion` no `data/videos.json`.
+(`index.html` e, para módulos, `js/main.js`). Capas e vídeos de `media/reel/`: aumente `mediaVersion` no `data/videos.json`.
 Arquivos com nome novo não precisam disso.
