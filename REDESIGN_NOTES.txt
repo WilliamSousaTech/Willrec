@@ -258,3 +258,15 @@ v22 — TEMA CLARO/ESCURO + ÚLTIMOS VÍDEOS COM SOM
     e tela cheia. Auditoria nos dois temas: contraste e axe sem erros.
   · Espetáculo de Ballet trocado pela versão longa com som (4K, 1:18), continua o 1º do feed.
     Vídeos de media/reel também levam ?v=mediaVersion (troca com o mesmo nome chega para quem já assistiu).
+
+v24 — ABERTURA EM 2 PASSOS
+  · Passo 1 (como estava ao abrir): foto + WILLREC grande entre o fundo e o Will + Visão · Ritmo · Histórias.
+    A frase e os botões não aparecem mais sozinhos ao abrir.
+  · Passo 2, na primeira rolada: o WILLREC grande diminui, anda em direção ao nome menor e some; o nome menor chega
+    no lugar do "Visão · Ritmo · Histórias", seguido de "Histórias reais. Imagem que permanece.", do texto de
+    videomaker e dos botões Ver trabalhos / Orçamento no WhatsApp. A foto continua aproximando e descendo.
+  · A foto fica presa (sticky) por 72% da altura da tela no celular (64% no computador). No celular a rolada
+    "encaixa" no passo 1 ou no passo 2 (scroll-snap proximity). Depois a abertura sobe e o perfil aparece.
+  · Botões só aceitam toque quando já aparecem; pelo teclado, o foco neles rola até o passo 2.
+  · Reduzir movimento ou celular deitado: sem prender, já no passo 2. Sem JS: passo 2.
+  · Auditoria nos dois temas (1440/1280/820/390/360): axe 0, CLS ~0, sem rolagem lateral, sem erros.

@@ -70,6 +70,13 @@ recorte `camarim-cut-*.webp`, que deixa o WILLREC atrás do Will) que aproxima e
 (foto com anel, números, bio, destaques por categoria e abas Reels/Grade). Fotos reais ampliadas 2x e em tamanhos
 responsivos (1200/1800/2400). Foto do perfil: `images/site/avatar.webp`.
 
+**Abertura em 2 passos (v24):** a foto fica presa na tela enquanto a pessoa rola (`position: sticky`).
+Passo 1: WILLREC grande + "Visão · Ritmo · Histórias". Na primeira rolada (passo 2), o WILLREC grande diminui e some,
+e entram o nome menor, "Histórias reais. Imagem que permanece.", o texto e os botões. O `js/parallax.js` só mede a
+rolagem e escreve variáveis CSS (0 → 1); os tempos de cada parte ficam na lista `TRACKS` do mesmo arquivo, e quanto a
+página rola com a foto presa fica em `--pin` no `styles.css`. Com "reduzir movimento" (ou celular deitado) a abertura
+não prende a rolagem e já mostra o passo 2.
+
 **Tema claro/escuro:** botão sol/lua na barra (js/theme.js). O padrão é o claro; a escolha de cada visitante fica
 salva no aparelho. As cores dos dois temas ficam no começo do `styles.css` (`:root` e `:root[data-theme="dark"]`).
 

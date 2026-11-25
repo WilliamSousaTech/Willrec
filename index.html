@@ -87,7 +87,7 @@
 <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" fetchpriority="high" imagesrcset="images/hero/camarim-1200.webp 1200w, images/hero/camarim-1800.webp 1800w, images/hero/camarim-2400.webp 2400w" imagesizes="(max-aspect-ratio: 1/1) 100vh, 100vw">
 <link rel="preload" as="image" fetchpriority="high" imagesrcset="images/hero/camarim-cut-1200.webp 1200w, images/hero/camarim-cut-1800.webp 1800w, images/hero/camarim-cut-2400.webp 2400w" imagesizes="(max-aspect-ratio: 1/1) 100vh, 100vw">
-<link rel="stylesheet" href="styles.css?v=22">
+<link rel="stylesheet" href="styles.css?v=24">
 </head>
 <body>
 <a class="skip" href="#portfolio">Pular para os trabalhos</a>
@@ -116,8 +116,12 @@
 
 <main id="topo">
 
-<!-- ══ ABERTURA — uma foto só: ao rolar ela aproxima e desce; o WILLREC fica entre o fundo e o Will ══ -->
+<!-- ══ ABERTURA em 2 passos — uma foto só, presa na tela enquanto você rola:
+     1) WILLREC grande (entre o fundo e o Will) + Visão · Ritmo · Histórias;
+     2) na primeira rolada: o nome menor + frase + texto + botões. A foto vai aproximando e descendo. ══ -->
 <section class="hero" id="inicio" aria-labelledby="hero-title" data-hero>
+  <span class="hero-snap hero-snap-a" aria-hidden="true"></span>
+  <span class="hero-snap hero-snap-b" aria-hidden="true"></span>
   <div class="stage" data-stage>
     <div class="h-cam">
       <div class="h-layer h-plate" aria-hidden="true">
@@ -133,13 +137,16 @@
     <div class="shade" aria-hidden="true"></div>
 
     <div class="hud">
-      <p class="kicker" data-kicker data-te="fade"><span>Visão</span><span>Ritmo</span><span>Histórias</span></p>
       <div class="hero-copy">
-        <p class="tagline" data-tagline data-te="blur">Histórias reais.<br>Imagem que permanece.</p>
-        <p class="hero-pitch" data-hero-cta>Videomaker mobile em Teresina-PI — cobertura de eventos, Reels em tempo real e vídeos comerciais.</p>
-        <div class="hero-actions" data-hero-cta>
+        <div class="hero-top">
+          <div class="hero-k"><p class="kicker" data-kicker data-te="fade"><span>Visão</span><span>Ritmo</span><span>Histórias</span></p></div>
+          <p class="hero-name" aria-hidden="true">WILLREC</p>
+        </div>
+        <p class="tagline">Histórias reais.<br>Imagem que permanece.</p>
+        <p class="hero-pitch">Videomaker mobile em Teresina-PI — cobertura de eventos, Reels em tempo real e vídeos comerciais.</p>
+        <div class="hero-actions">
           <a class="btn" href="#portfolio">Ver trabalhos</a>
-          <a class="btn btn-glass" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><span class="hide-sm">Orçamento no </span>WhatsApp</a>
+          <a class="btn btn-glass" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><span><span class="hide-sm">Orçamento no </span>WhatsApp</span></a>
         </div>
       </div>
       <p class="hud-scroll" data-hint><i></i>Role para ver os trabalhos</p>
@@ -357,7 +364,7 @@
 <!-- Firebase: configure suas chaves em firebase-config.js (opcional — ver README). O SDK só é baixado quando um pedido é salvo. -->
 <script src="firebase-config.js"></script>
 <script type="module" src="script.js"></script>
-<script type="module" src="js/main.js?v=23"></script>
+<script type="module" src="js/main.js?v=24"></script>
 
 </body>
 </html>
