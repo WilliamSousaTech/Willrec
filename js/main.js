@@ -6,8 +6,9 @@ import { initHero, initParallax } from './parallax.js';
 import { initDock } from './dock.js';
 import { initGlow } from './glow-card.js';
 import { initFolio } from './portfolio.js';
-import { initReel } from './reel.js';
-import { loadManifest, renderReel, applyDriveLinks, initGrid } from './videos.js';
+import { loadManifest, applyDriveLinks, initGrid } from './videos.js';
+import { createLightbox } from './lightbox.js';
+import { initFeed } from './feed.js';
 import { initTechText } from './tech-text.js';
 import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
@@ -19,13 +20,14 @@ initDock();
 initGlow();
 initFolio();
 
-// Portfólio: tudo sai de data/videos.json (reel, grade "Ver todos", links do Drive).
+// Portfólio: tudo sai de data/videos.json (feed de Reels, grade, links do Drive).
 loadManifest().then(m => {
   if (!m) return;                      // sem o arquivo, os painéis continuam abrindo o Drive geral
   applyDriveLinks(m);
-  renderReel(m);
-  const reel = initReel(m);
-  initGrid(m, (i, el) => reel && reel.open(i, el));
+  let feed = null;
+  const lightbox = createLightbox(m, { onOpen: () => feed && feed.suspend(), onClose: () => feed && feed.resume() });
+  feed = initFeed(m, lightbox);
+  initGrid(m, (i, el) => lightbox && lightbox.open(i, el));
 });
 
 initTechText();

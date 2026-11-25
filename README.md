@@ -161,7 +161,8 @@ taxa de equipamento, piso e a regra de "evento grande" de R$500). Não existe ma
 
 ## 🎬 Portfólio (`data/videos.json`)
 
-Reel, grade "Ver todos os vídeos" e links do Drive saem de `data/videos.json`. Para cada vídeo: `clip`/`poster`/`preview`
+O feed de Reels (logo depois da abertura), a aba Grade e os links do Drive saem de `data/videos.json`.
+Entram no feed os vídeos com `destaque: true` e `clip: true`, na ordem do arquivo: para mudar a ordem, mude a ordem dos blocos. Para cada vídeo: `clip`/`poster`/`preview`
 dizem quais arquivos existem em `media/reel/`; `yt` (ID do YouTube não listado) faz o tela cheia tocar o vídeo completo em
 qualidade total; `drive` é o link do arquivo no Drive (vazio = pasta da categoria). Gerar os arquivos leves:
 `bash tools/otimizar-videos.sh PASTA_DOS_ORIGINAIS` (precisa do ffmpeg).

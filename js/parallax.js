@@ -13,6 +13,8 @@ export function initHero() {
   const words = $$('[data-kicker] span', stage);
   const kicker = $('[data-kicker]', stage), tagline = $('[data-tagline]', stage);
   const hint = $('[data-hint]', stage), count = $('[data-count]', stage);
+  const ctas = $$('[data-hero-cta]', stage);                  // proposta de valor + botões
+  const phone = matchMedia('(max-aspect-ratio:1/1),(max-width:760px)');   // mesmo corte do CSS
   stage.style.setProperty('--k', REDUCE ? 0 : 1);
 
   let target = 0, cur = 0, raf = 0, shown = {};
@@ -34,11 +36,14 @@ export function initHero() {
     flag(kicker, 'is-off', p > .46);
     flag(tagline, 'is-in', p < .20 || p > .72);
     flag(hint, 'is-off', p > .03);
+    // somem durante a troca de cena; no desktop voltam na cena final (ao lado do WILLREC).
+    // No celular os botões ficam embaixo e não voltam, para não cobrir o close da cena 2.
+    ctas.forEach(el => flag(el, 'is-off', p >= .2 && !(p > .72 && !(phone.matches && el.classList.contains('hero-actions')))));   // some junto com o slogan
     if (count) count.textContent = p < .48 ? '01' : '02';
   };
 
   const loop = () => {
-    cur += (target - cur) * (REDUCE ? 1 : .11);
+    cur += (target - cur) * (REDUCE ? 1 : .18);
     if (Math.abs(target - cur) < .0005) cur = target;
     apply(cur);
     raf = cur === target ? 0 : requestAnimationFrame(loop);
@@ -56,8 +61,9 @@ export function initHero() {
       stage.classList.add('is-ready');
       document.documentElement.classList.add('js-ready');
       wm && wm.classList.add('is-in');
-      setTimeout(() => kicker && kicker.classList.add('is-in'), REDUCE ? 0 : 650);
-      setTimeout(() => tagline && cur < .2 && tagline.classList.add('is-in'), REDUCE ? 0 : 1000);
+      setTimeout(() => kicker && kicker.classList.add('is-in'), REDUCE ? 0 : 300);
+      setTimeout(() => tagline && cur < .2 && tagline.classList.add('is-in'), REDUCE ? 0 : 520);
+      setTimeout(() => ctas.forEach(el => el.classList.add('is-in')), REDUCE ? 0 : 760);
     });
   };
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(intro);

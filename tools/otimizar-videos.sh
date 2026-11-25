@@ -5,13 +5,14 @@
 #        (saída padrão: media/reel)         Precisa do ffmpeg instalado.
 #
 # Para cada arquivo  nome-do-video.mp4  gera:
-#   nome-do-video-card.mp4      clipe de 10 s, 540x960, 24 fps, sem áudio (~0,3 a 1 MB) → toca no reel
-#   nome-do-video.webp          capa 540x960                                              → capa do card e da grade
-#   nome-do-video-preview.mp4   (opcional, com --preview) versão 720x1280 com áudio       → tela cheia, se não usar YouTube
+#   nome-do-video-card.mp4      clipe de 10 s, lado maior 960 px, 24 fps, sem áudio (~0,3 a 1 MB) → toca no feed
+#   nome-do-video.webp          capa, lado maior 960 px                                            → capa do card e da grade
+#   nome-do-video-preview.mp4   (opcional, com --preview) lado maior 1280 px, com áudio           → tela cheia, se não usar YouTube
 #
 # O nome do arquivo vira o "slug" em data/videos.json (minúsculas, sem acento, hífen no lugar de espaço).
 # Depois de gerar, marque clip/poster/preview como true no data/videos.json.
-# Vídeo horizontal é cortado no centro para 9:16 (o site é todo vertical).
+# O formato ORIGINAL é mantido (vertical 9:16, horizontal 16:9, quadrado...): nada é cortado.
+# No fim, o script mostra o "formato" de cada vídeo para você colocar no data/videos.json.
 set -euo pipefail
 
 PREVIEW=0; ARGS=()
@@ -33,15 +34,21 @@ for f in "$IN"/*.mp4 "$IN"/*.mov "$IN"/*.m4v; do
   dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f" | cut -d. -f1); dur=${dur:-10}
   ini=$(( dur > 14 ? dur / 5 : 0 ))          # começa a ~20% do vídeo (evita a abertura), ou do início se for curto
   echo "▶ $base  →  $s"
+  FIT960="scale=w='if(gte(iw,ih),960,-2)':h='if(gte(iw,ih),-2,960)':flags=lanczos"     # lado maior = 960, sem cortar
   ffmpeg -v error -y -ss "$ini" -t 10 -i "$f" \
-    -vf "scale=540:960:force_original_aspect_ratio=increase:flags=lanczos,crop=540:960,fps=24,format=yuv420p" \
+    -vf "$FIT960,fps=24,format=yuv420p" \
     -c:v libx264 -profile:v main -preset slow -crf 28 -maxrate 900k -bufsize 1800k -g 48 -an -movflags +faststart "$OUT/$s-card.mp4"
   ffmpeg -v error -y -ss "$ini" -i "$f" -frames:v 1 \
-    -vf "scale=540:960:force_original_aspect_ratio=increase:flags=lanczos,crop=540:960" -c:v libwebp -quality 72 "$OUT/$s.webp"
+    -vf "$FIT960" -c:v libwebp -quality 72 "$OUT/$s.webp"
   if [[ $PREVIEW -eq 1 ]]; then
     ffmpeg -v error -y -i "$f" \
-      -vf "scale=720:1280:force_original_aspect_ratio=increase:flags=lanczos,crop=720:1280,fps=30,format=yuv420p" \
+      -vf "scale=w='if(gte(iw,ih),1280,-2)':h='if(gte(iw,ih),-2,1280)':flags=lanczos,fps=30,format=yuv420p" \
       -c:v libx264 -profile:v high -preset slow -crf 25 -maxrate 2500k -bufsize 5000k -c:a aac -b:a 96k -movflags +faststart "$OUT/$s-preview.mp4"
   fi
+  # formato para o data/videos.json (a partir do clipe gerado, já com a rotação do celular aplicada)
+  wh=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "$OUT/$s-card.mp4")
+  fmt=$(awk -F'x' '{r=$1/$2; if(r>1.7&&r<1.8)print "16:9"; else if(r>.55&&r<.58)print "9:16"; else if(r>.97&&r<1.03)print "1:1";
+        else if(r>.78&&r<.82)print "4:5"; else if(r>1.3&&r<1.36)print "4:3"; else if(r>.73&&r<.77)print "3:4"; else print $1":"$2}' <<<"$wh")
+  echo "   $wh  →  \"formato\": \"$fmt\""
 done
 echo; echo "Pronto. Arquivos em $OUT:"; ls -lh "$OUT" | awk 'NR>1{print "  "$5"  "$9}'

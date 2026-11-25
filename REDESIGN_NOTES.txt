@@ -173,3 +173,41 @@ v16 — PREÇO POR REGRA, PORTFÓLIO LEVE, PAINEL PRIVADO
    clip/poster no data/videos.json.
   Auditoria v16: o Firebase deixou de carregar com a página (firebase-init.js agora só baixa o SDK ao salvar um pedido, depois do
    resultado do orçamento); cabeçalhos de segurança básicos no vercel.json (nosniff, referrer, painel sem iframe); sitemap atualizado.
+
+
+PORTFÓLIO EM FEED DE REELS + ABERTURA MAIS CURTA (v17)
+  Ordem da página: Abertura → Portfólio (Reels) → Sobre → Serviços → Orçamento → Diferenciais → Feedbacks → Contato.
+  Abertura: o scroll caiu de ~4 telas para ~1,5 (--hero-run em styles.css); WILLREC e VISÃO · RITMO · HISTÓRIAS entram mais rápido.
+  Portfólio: a faixa horizontal de arrastar (js/reel.js) saiu. No lugar, um feed vertical estilo Instagram (js/feed.js):
+   · o vídeo no centro da tela toca sozinho, mudo e em loop; só um toca por vez; vizinhos pré-carregados, o resto descarregado;
+   · toque no vídeo pausa/continua; barra de progresso laranja; "Tela cheia" abre a versão mais longa (js/lightbox.js);
+   · "Quero assim" abre o WhatsApp citando o vídeo; "Drive" aparece quando o vídeo tem link próprio;
+   · abas Reels / Grade fixas no topo da seção; no desktop, índice lateral clicável e vídeo centralizado;
+   · no celular o feed "trava" em cada vídeo ao rolar (scroll-snap proximity), como no Reels;
+   · movimento reduzido: nada toca sozinho, a pessoa toca para assistir.
+  Os painéis por categoria (Drive) continuam no fim da seção.
+  Sobre: o vídeo "Will Rec em ação" volta a mostrar o quadro inteiro (16:9, sem cortar).
+  Peso ao abrir a página: ~0,7 MB (antes ~4,9 MB: o reel antigo baixava 3 vídeos de cara).
+  Fotos reais no lugar das imagens de IA (abertura, "Quem sou eu" e imagem de compartilhamento):
+   · abertura cena 1 = foto no banco do camarim; cena 2 = close olhando o celular (images/hero/will1-*, will2-*);
+     mesmo formato e posição do rosto das antigas, então a animação não mudou; fundo levemente desfocado e
+     escurecido (o Will fica nítido e com a cor original); no celular a cena 1 foi recentralizada (object-position 68%);
+   · "Quem sou eu": will-card-1 = foto vertical no banco, will-card-2 = close (sem tratamento, só recorte 4:5);
+   · og-willrec.jpg/.webp (link compartilhado no WhatsApp/Instagram) = foto do banco em 1200x630.
+
+REVISÃO DE UI/UX + PROPORÇÕES (v18)
+  Auditoria automática em 1440/1280/820/390/360 (proporção de cada imagem/vídeo, contraste WCAG, alvos de toque,
+  tamanho de texto, axe-core, CLS). Resultado: nenhuma imagem esticada; axe 27→0; contraste 10→0; toque no celular 10→0; CLS→0.
+  · Abertura: proposta de valor ("Videomaker mobile em Teresina-PI — cobertura de eventos, Reels em tempo real e vídeos comerciais")
+    + botões "Ver trabalhos" e "Orçamento no WhatsApp" (celular: embaixo, sobre as pernas, nunca no rosto). "Fale comigo" abre o WhatsApp.
+  · Portfólio: data/videos.json → "feedMax": 6 (destaques no feed; o resto na aba Grade) + card "Curtiu o que viu?" no fim do feed.
+    Cada vídeo tem "formato" ("9:16", "16:9", "1:1"...) e "desc" (descrição curta): feed, grade e tela cheia respeitam a proporção.
+    Horizontal: legenda e ações abaixo do quadro; na grade ocupa 2 colunas.
+  · tools/otimizar-videos.sh não corta mais vídeo horizontal (lado maior 960px no clipe/capa, 1280px na prévia) e mostra o "formato".
+  · Cores: --dim #7f7c77 (4,9:1), --orange-ink #e35b22 para texto laranja sobre o creme do "Quem sou eu".
+  · Textos informativos com no mínimo 12px; links/botões com área de toque ≥ 44px; índice do feed virou <nav>.
+
++7 VÍDEOS NOVOS (v19) — todos verticais 9:16, com descrição; arquivos em media/reel/ (clipe 540x960 sem áudio,
+  capa 540x960, versão completa 720x1280 com áudio). Feed (6): 10 horas 4 lugares 1 celular, Sua Clínica em Cena,
+  Espetáculo de Ballet, Casamento, Campus Weekend Piauí, Bar de Drinks. Na Grade também: Arena Disrupção,
+  Palestra: IA na Pesquisa, Vídeo de Divulgação. Ordem do feed = ordem dos blocos em data/videos.json.
