@@ -546,6 +546,12 @@ function mount(container, canvas, settings) {
     raf = requestAnimationFrame(tick);
   };
   wakeRef.current = wake;
+  // troca de tema: <el>.dispatchEvent(new CustomEvent('tt:set', { detail: { color } })) — refaz as letras com a nova cor
+  container.addEventListener('tt:set', e => {
+    settingsRef.current = { ...settingsRef.current, ...(e.detail || {}) };
+    layoutKey = '';
+    wake();
+  });
 
   const resize = () => {
     width = Math.max(1, container.clientWidth);
@@ -637,6 +643,7 @@ export function initTechText(root = document) {
     if (el.dataset.ttReady) return;
     el.dataset.ttReady = '1';
     const settings = readSettings(el);
+    if (document.documentElement.dataset.theme === 'dark' && el.dataset.colorDark) settings.color = el.dataset.colorDark;
     el.textContent = '';
     el.setAttribute('role', 'img');
     el.setAttribute('aria-label', settings.text);

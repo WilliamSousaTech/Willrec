@@ -9,7 +9,7 @@
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
 <meta name="geo.region" content="BR-PI">
 <meta name="geo.placename" content="Teresina">
-<script>document.documentElement.classList.add("js")</script>
+<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("willrec-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://willrec.vercel.app/">
 
@@ -87,7 +87,7 @@
 <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" fetchpriority="high" imagesrcset="images/hero/camarim-1200.webp 1200w, images/hero/camarim-1800.webp 1800w, images/hero/camarim-2400.webp 2400w" imagesizes="(max-aspect-ratio: 1/1) 100vh, 100vw">
 <link rel="preload" as="image" fetchpriority="high" imagesrcset="images/hero/camarim-cut-1200.webp 1200w, images/hero/camarim-cut-1800.webp 1800w, images/hero/camarim-cut-2400.webp 2400w" imagesizes="(max-aspect-ratio: 1/1) 100vh, 100vw">
-<link rel="stylesheet" href="styles.css?v=20">
+<link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
 <a class="skip" href="#portfolio">Pular para os trabalhos</a>
@@ -95,7 +95,13 @@
 <!-- ══ BARRA SUPERIOR — marca + CTA (transparente na abertura, branca depois) ══ -->
 <header class="bar">
     <a class="bar-brand" href="#inicio" aria-label="WILLREC — início">WILLREC</a>
-    <a class="btn btn-sm bar-cta" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener" aria-label="Fale comigo no WhatsApp">Fale comigo</a>
+    <div class="bar-tools">
+        <button type="button" class="theme-btn" data-theme-toggle aria-pressed="false" aria-label="Usar tema escuro" title="Tema escuro">
+            <svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7z"/></svg>
+            <svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+        </button>
+        <a class="btn btn-sm bar-cta" href="https://wa.me/5586995419670?text=Ol%C3%A1%2C%20Will!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20seus%20servi%C3%A7os." data-wa-link target="_blank" rel="noopener" aria-label="Fale comigo no WhatsApp">Fale comigo</a>
+    </div>
 </header>
 
 <!-- ══ DOCK — navegação (barra de abas no celular, como no app do Instagram) ══ -->
@@ -338,7 +344,7 @@
 
 <!-- ══ ASSINATURA · WILLREC interativo (canvas) ══ -->
 <section class="sig" aria-label="Assinatura WILLREC">
-    <div class="sig-stage tech-text" data-tech-text data-text="WILLREC" data-size="300" data-weight="400" data-spacing="-0.04" data-color="#111111" data-accent="#ff6a2a" data-reach="230">WILLREC</div>
+    <div class="sig-stage tech-text" data-tech-text data-text="WILLREC" data-size="300" data-weight="400" data-spacing="-0.04" data-color="#111111" data-color-dark="#f4f1ea" data-accent="#ff6a2a" data-reach="230">WILLREC</div>
     <p class="sig-hint" aria-hidden="true"><span class="sig-hint-fine">Passe o mouse e arraste as letras</span><span class="sig-hint-touch">Toque e arraste as letras</span></p>
 </section>
 
@@ -351,7 +357,7 @@
 <!-- Firebase: configure suas chaves em firebase-config.js (opcional — ver README). O SDK só é baixado quando um pedido é salvo. -->
 <script src="firebase-config.js"></script>
 <script type="module" src="script.js"></script>
-<script type="module" src="js/main.js?v=20"></script>
+<script type="module" src="js/main.js?v=22"></script>
 
 </body>
 </html>

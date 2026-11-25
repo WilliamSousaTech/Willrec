@@ -19,6 +19,11 @@
   --orange-lg:#ea580c;         /* laranja para TEXTO GRANDE no branco (3,6:1) */
   --orange-ink:#c2410c;        /* laranja para texto pequeno no branco (5,2:1) */
   --orange-soft:#fff2ea;
+  --surface:#ffffff;             /* cartões (orçamento, prints) */
+  --soft:#efefef; --soft-h:#e2e2e2;   /* botões secundários (como os cinzas do Instagram) */
+  --bar-bg:rgba(255,255,255,.93); --glass:rgba(255,255,255,.95);
+  --dim:#ffffff;                 /* véu sobre os Reels fora de foco (computador) */
+  color-scheme:light;
   --ring:linear-gradient(45deg,#ffb547 0%,#ff6a2a 46%,#e2366f 100%);
   --display:'Archivo Black',Impact,'Arial Black',sans-serif;
   --text:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
@@ -42,7 +47,7 @@ ul,ol{list-style:none}
 h1,h2,h3,h4{font-weight:400}
 em{font-style:normal}
 :focus-visible{outline:2px solid var(--orange-ink);outline-offset:3px;border-radius:6px}
-.skip{position:fixed;left:16px;top:-80px;z-index:200;background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r-pill);font-weight:600;transition:top .2s}
+.skip{position:fixed;left:16px;top:-80px;z-index:200;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:var(--r-pill);font-weight:600;transition:top .2s}
 .skip:focus{top:calc(12px + var(--safe-t))}
 .wrap{width:100%;max-width:1200px;margin-inline:auto;padding-inline:var(--pad)}
 .sec{position:relative;padding-block:clamp(72px,11vw,150px)}
@@ -75,9 +80,9 @@ em{font-style:normal}
 .btn:hover,.btn-pill:hover{background:#ff7f47;transform:translateY(-1px);box-shadow:0 8px 20px -10px rgba(255,106,42,.8)}
 .btn:active,.btn-pill:active{transform:none}
 .btn svg,.btn-pill svg{width:18px;height:18px;flex:none}
-.btn-soft,.btn-pill.outline{background:#efefef;color:var(--ink)}
-.btn-soft:hover,.btn-pill.outline:hover{background:#e2e2e2;box-shadow:none}
-.btn-dark{background:var(--ink);color:#fff}
+.btn-soft,.btn-pill.outline{background:var(--soft);color:var(--ink)}
+.btn-soft:hover,.btn-pill.outline:hover{background:var(--soft-h);box-shadow:none}
+.btn-dark{background:#0a0a0a;color:#fff}   /* sempre preto (fica sobre a faixa laranja) */
 .btn-dark:hover{background:#2a2a2a;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
 .btn-glass{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.5);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .btn-glass:hover{background:#fff;color:var(--ink);box-shadow:none}
@@ -100,24 +105,35 @@ em{font-style:normal}
 .social:hover i{transform:translate(3px,-3px)}
 
 /* 3.5 aviso curto ("Link copiado") */
-.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 24px + var(--safe-b));z-index:120;translate:-50% 12px;max-width:min(92vw,520px);padding:12px 18px;border-radius:12px;background:var(--ink);color:#fff;font-size:14px;font-weight:600;box-shadow:var(--shadow-2);opacity:0;pointer-events:none;transition:opacity .3s var(--ease),translate .3s var(--ease);overflow-wrap:anywhere}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 24px + var(--safe-b));z-index:120;translate:-50% 12px;max-width:min(92vw,520px);padding:12px 18px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;box-shadow:var(--shadow-2);opacity:0;pointer-events:none;transition:opacity .3s var(--ease),translate .3s var(--ease);overflow-wrap:anywhere}
 .toast.is-on{opacity:1;translate:-50% 0}
 
 /* 4 ── BARRA SUPERIOR + DOCK ──────────────────────────────────── */
 .bar{position:fixed;inset:0 0 auto 0;z-index:50;height:calc(var(--bar-h) + var(--safe-t));padding:var(--safe-t) var(--pad) 0;display:flex;align-items:center;justify-content:space-between;gap:var(--s4);color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,0));transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
-.bar.is-solid{color:var(--ink);background:rgba(255,255,255,.93);-webkit-backdrop-filter:saturate(1.8) blur(16px);backdrop-filter:saturate(1.8) blur(16px);box-shadow:0 1px 0 var(--line)}
+.bar.is-solid{color:var(--ink);background:var(--bar-bg);-webkit-backdrop-filter:saturate(1.8) blur(16px);backdrop-filter:saturate(1.8) blur(16px);box-shadow:0 1px 0 var(--line)}
 .bar-brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--display);font-size:20px;letter-spacing:-.02em}
 .bar-cta{min-height:44px}
+.bar-tools{display:flex;align-items:center;gap:6px}
+/* botão de tema (lua no claro, sol no escuro) */
+.theme-btn{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:inherit;transition:background .25s var(--ease),transform .4s var(--ease)}
+.theme-btn:hover{background:rgba(128,128,128,.18)}
+.theme-btn:active{transform:rotate(-25deg) scale(.92)}
+.theme-btn svg{width:22px;height:22px}
+.theme-btn .i-sun{display:none}
+:root[data-theme="dark"] .theme-btn .i-sun{display:block}
+:root[data-theme="dark"] .theme-btn .i-moon{display:none}
+/* troca suave de tema (só durante a troca, para não pesar o resto do tempo) */
+.theme-anim,.theme-anim *,.theme-anim *::before,.theme-anim *::after{transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),fill .35s,stroke .35s !important}
 
 /* Dock: pílula flutuante no computador; barra de abas fixa embaixo no celular (como o app do Instagram) */
-.dock{position:fixed;left:50%;bottom:calc(16px + var(--safe-b));translate:-50% 0;z-index:60;display:flex;align-items:flex-end;gap:4px;padding:6px;border-radius:var(--r-pill);background:rgba(255,255,255,.94);border:1px solid var(--line-2);box-shadow:var(--shadow-1);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease) .5s,transform .7s var(--ease) .5s}
+.dock{position:fixed;left:50%;bottom:calc(16px + var(--safe-b));translate:-50% 0;z-index:60;display:flex;align-items:flex-end;gap:4px;padding:6px;border-radius:var(--r-pill);background:var(--glass);border:1px solid var(--line-2);box-shadow:var(--shadow-1);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease) .5s,transform .7s var(--ease) .5s}
 .js-ready .dock,html:not(.js) .dock{opacity:1;transform:none}
-.dock-item{--s:1;position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:#5c5c5c;transform:scale(var(--s));transform-origin:50% 100%;transition:color .25s,background .25s}
+.dock-item{--s:1;position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;color:var(--muted);transform:scale(var(--s));transform-origin:50% 100%;transition:color .25s,background .25s}
 .dock-item svg{width:22px;height:22px}
 .dock-item:hover,.dock-item:focus-visible{color:var(--ink);background:var(--bg-3)}
 .dock-item[aria-current="true"]{color:var(--ink)}
 .dock-item[aria-current="true"]::after{content:'';position:absolute;bottom:3px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--orange)}
-.dock-tip{position:absolute;bottom:calc(100% + 12px);left:50%;translate:-50% 0;padding:5px 11px;border-radius:8px;background:var(--ink);color:#fff;font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transform:translateY(4px) scale(calc(1/var(--s)));transition:opacity .2s,transform .25s var(--ease)}
+.dock-tip{position:absolute;bottom:calc(100% + 12px);left:50%;translate:-50% 0;padding:5px 11px;border-radius:8px;background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transform:translateY(4px) scale(calc(1/var(--s)));transition:opacity .2s,transform .25s var(--ease)}
 .dock-item:focus-visible .dock-tip{opacity:1;transform:translateY(0) scale(calc(1/var(--s)))}
 @media (hover:hover) and (pointer:fine){.dock-item:hover .dock-tip{opacity:1;transform:translateY(0) scale(calc(1/var(--s)))}}
 
@@ -197,7 +213,7 @@ em{font-style:normal}
 .hl-label{max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600;color:var(--ink-2)}
 
 /* abas Reels / Grade */
-.feed-tabs{position:sticky;top:var(--bar-h);z-index:30;margin-top:clamp(18px,3vw,30px);background:rgba(255,255,255,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line-2)}
+.feed-tabs{position:sticky;top:var(--bar-h);z-index:30;margin-top:clamp(18px,3vw,30px);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line-2)}
 .feed-tabs-in{display:flex;justify-content:center;gap:clamp(40px,10vw,64px);max-width:975px}
 .feed-tabs [role=tab]{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:var(--tabs-h);padding:0 4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .25s}
 .feed-tabs [role=tab] svg{width:18px;height:18px;flex:none}
@@ -349,7 +365,7 @@ html.reel-lock{overflow:hidden}
 .qs-star:hover svg,.qs-spark:hover svg{animation-duration:3s}
 @keyframes qs-spin{to{transform:rotate(360deg)}}
 .qs-copy{position:relative}
-.qs-title{margin:0 0 var(--s4);font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:.95;text-transform:uppercase;letter-spacing:-.01em;color:var(--orange-lg);transform:skewX(-7deg);transform-origin:left bottom}
+.qs-title{margin:0 0 var(--s4);font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:.95;text-transform:uppercase;letter-spacing:-.01em;color:#ea580c;transform:skewX(-7deg);transform-origin:left bottom}
 .qs-copy p{margin:0 0 var(--s4);font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#2a2f38;max-width:56ch}
 .qs-copy mark{background:linear-gradient(transparent 58%,rgba(255,106,42,.35) 58%);color:inherit;padding:0 .1em;font-weight:600}
 .qs-chips{display:flex;flex-wrap:wrap;gap:10px;margin:var(--s5) 0 var(--s4);padding:0}
@@ -376,7 +392,7 @@ html.reel-lock{overflow:hidden}
 
 /* Depoimentos — prints reais em moldura de celular */
 .fb{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--s5);align-items:start}
-.fb-shot{--py:0px;translate:0 var(--py);border-radius:22px;overflow:hidden;background:#fff;border:1px solid var(--line-2);box-shadow:var(--shadow-2)}
+.fb-shot{--py:0px;translate:0 var(--py);border-radius:22px;overflow:hidden;background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-2)}
 .fb-shot img{width:100%;height:auto;aspect-ratio:864/1536;object-fit:cover}
 .fb-shot figcaption{padding:var(--s3) var(--s4);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line)}
 .fb-s1{grid-column:1/5;grid-row:1}
@@ -405,7 +421,7 @@ html.reel-lock{overflow:hidden}
 .foot{border-top:1px solid var(--line);padding:var(--s6) var(--pad) calc(var(--nav-h) + 96px + var(--safe-b));background:var(--bg-2);color:var(--muted);font-size:13px;text-align:center}
 
 /* 9 ── QUIZ (classes preservadas p/ script.js) ────────────────── */
-.quiz-card{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line-2);border-radius:20px;padding:clamp(22px,3.4vw,44px);box-shadow:var(--shadow-1)}
+.quiz-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line-2);border-radius:20px;padding:clamp(22px,3.4vw,44px);box-shadow:var(--shadow-1)}
 .quiz-card a{color:var(--orange-ink);font-weight:600}
 .quiz-card a.btn-pill{color:#0a0a0a}
 .quiz-slate{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);margin-bottom:var(--s6)}
@@ -417,7 +433,7 @@ html.reel-lock{overflow:hidden}
 .perf-dot.active{background:var(--ink);width:26px}
 .quiz-q{font-family:var(--display);font-size:clamp(24px,3vw,36px);line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin-bottom:var(--s6)}
 .quiz-options{display:grid;gap:10px;margin-bottom:var(--s6)}
-.quiz-opt{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;padding:14px 18px;border-radius:14px;background:#fff;border:1px solid var(--line-2);text-align:left;font-size:15.5px;font-weight:500;color:var(--ink);transition:border-color .25s,background .25s,box-shadow .25s}
+.quiz-opt{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:56px;padding:14px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line-2);text-align:left;font-size:15.5px;font-weight:500;color:var(--ink);transition:border-color .25s,background .25s,box-shadow .25s}
 .quiz-opt:hover{border-color:rgba(255,106,42,.6);background:var(--orange-soft)}
 .quiz-opt.selected{border-color:var(--orange);background:var(--orange-soft);box-shadow:inset 0 0 0 1px var(--orange)}
 .quiz-opt-check{width:22px;height:22px;border-radius:50%;background:var(--orange);display:grid;place-items:center;flex:none;opacity:0;transform:scale(.5);transition:opacity .2s,transform .3s var(--ease)}
@@ -425,12 +441,12 @@ html.reel-lock{overflow:hidden}
 .quiz-opt-check svg{width:12px;height:12px;stroke:#0a0a0a}
 .quiz-field{display:flex;flex-direction:column;gap:var(--s2);margin-bottom:var(--s5)}
 .quiz-field label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.quiz-field input{min-height:54px;padding:0 18px;border-radius:14px;background:#fff;border:1px solid var(--line-2);color:var(--ink);font-size:16px;transition:border-color .25s,box-shadow .25s}
+.quiz-field input{min-height:54px;padding:0 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line-2);color:var(--ink);font-size:16px;transition:border-color .25s,box-shadow .25s}
 .quiz-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,106,42,.2);outline:none}
 .quiz-field input::placeholder{color:#8a8a8a}
 .quiz-nav{display:flex;gap:var(--s3);align-items:center}
-.quiz-back{min-height:48px;padding:0 20px;border-radius:12px;background:#efefef;font-size:15px;font-weight:600;color:var(--ink);transition:background .25s}
-.quiz-back:hover{background:#e2e2e2}
+.quiz-back{min-height:48px;padding:0 20px;border-radius:12px;background:var(--soft);font-size:15px;font-weight:600;color:var(--ink);transition:background .25s}
+.quiz-back:hover{background:var(--soft-h)}
 .quiz-next{flex:1}
 .quiz-error{color:#b42318;font-size:14px;font-weight:600;margin-bottom:var(--s4)}
 .quiz-loading{display:flex;flex-direction:column;align-items:center;gap:var(--s5);padding:var(--s8) var(--s4);text-align:center}
@@ -497,7 +513,7 @@ html.reel-lock{overflow:hidden}
   .rl-act:hover svg{background:var(--orange);color:#0a0a0a}
   .rl-act--wa svg{color:var(--orange-ink)}
   /* vizinhos em segundo plano; o vídeo no ar ganha destaque */
-  .rl-media::before{content:'';position:absolute;inset:0;z-index:3;background:#fff;opacity:.55;pointer-events:none;transition:opacity .5s var(--ease)}
+  .rl-media::before{content:'';position:absolute;inset:0;z-index:3;background:var(--dim);opacity:.55;pointer-events:none;transition:opacity .5s var(--ease)}
   .rl.is-active .rl-media::before{opacity:0}
   .rl.is-active.is-buffering:not(.is-paused) .rl-media::before{opacity:1;background:none}
 }
@@ -505,7 +521,7 @@ html.reel-lock{overflow:hidden}
 @media (max-width:899px){
   :root{--nav-h:calc(56px + var(--safe-b))}
   /* barra de abas embaixo, de ponta a ponta */
-  .dock{left:0;right:0;bottom:0;translate:none;justify-content:space-around;align-items:center;gap:0;padding:4px 4px calc(4px + var(--safe-b));border-radius:0;border:0;border-top:1px solid var(--line-2);box-shadow:none;background:rgba(255,255,255,.96)}
+  .dock{left:0;right:0;bottom:0;translate:none;justify-content:space-around;align-items:center;gap:0;padding:4px 4px calc(4px + var(--safe-b));border-radius:0;border:0;border-top:1px solid var(--line-2);box-shadow:none;background:var(--glass)}
   .dock-item{width:48px;height:48px;border-radius:12px}
   .dock-item svg{width:24px;height:24px}
   .dock-item[aria-current="true"]::after{bottom:1px}
@@ -552,6 +568,26 @@ html.reel-lock{overflow:hidden}
   .rl,.rl-end{scroll-snap-align:start}
   .rl-end{scroll-margin-top:calc(var(--bar-h) + var(--tabs-h) + 12px)}
 }
+
+
+/* 13 ── TEMA ESCURO (botão sol/lua na barra · escolha salva no aparelho) ─────────────
+   Paleta do modo escuro do Instagram: preto puro, cinzas #121212/#262626, texto #f5f5f5.
+   A foto de abertura, a faixa laranja do contato, o cartão "Quem sou eu?" e o tela cheia são iguais nos dois temas. */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000; --bg-2:#0b0b0b; --bg-3:#1c1c1c;
+  --surface:#121212; --soft:#262626; --soft-h:#363636;
+  --ink:#f5f5f5; --ink-2:#e4e4e4; --muted:#a8a8a8;            /* #a8a8a8 no preto: 9:1 */
+  --line:#1f1f1f; --line-2:#323232;
+  --orange-lg:#ff7a3d; --orange-ink:#ff8a52; --orange-soft:rgba(255,106,42,.14);   /* laranja de texto no preto: 7:1+ */
+  --bar-bg:rgba(0,0,0,.86); --glass:rgba(10,10,10,.92); --dim:#000000;
+  --shadow-1:0 1px 2px rgba(0,0,0,.5),0 10px 28px -12px rgba(0,0,0,.8);
+  --shadow-2:0 2px 6px rgba(0,0,0,.5),0 28px 56px -20px rgba(0,0,0,.9);
+}
+:root[data-theme="dark"] .quiz-field input::placeholder{color:#7d7d7d}
+:root[data-theme="dark"] .fb-shot{border-color:var(--line-2)}
+:root[data-theme="dark"] .qs{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+:root[data-theme="dark"] .rl-media{box-shadow:0 0 0 1px rgba(255,255,255,.06),var(--shadow-1)}
 
 /* 12 ── MOVIMENTO REDUZIDO: conteúdo e navegação intactos ─────────── */
 @media (prefers-reduced-motion:reduce){

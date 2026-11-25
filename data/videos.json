@@ -16,7 +16,7 @@
     "feedMax = quantos destaques entram no feed (o resto fica na aba Grade). 0 = todos."
   ],
   "driveRoot": "https://drive.google.com/drive/folders/1e2cakWT7Kuvx8ew_lwIZw9r2uTTmuvDP?usp=drive_link",
-  "mediaVersion": 21,
+  "mediaVersion": 22,
   "feedMax": 6,
   "categories": [
     {
@@ -200,6 +200,38 @@
       "drive": ""
     },
     {
+      "slug": "show",
+      "title": "Show",
+      "meta": "Full HD · 1:09",
+      "cat": "eventos-culturais",
+      "formato": "9:16",
+      "desc": "Show de humor com personagens no palco e momentos com o público.",
+      "hevc": false,
+      "destaque": true,
+      "hd": true,
+      "clip": false,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
+      "slug": "frutos-de-goias",
+      "title": "Frutos de Goiás",
+      "meta": "4K · 1:00",
+      "cat": "comerciais",
+      "formato": "9:16",
+      "desc": "Vídeo para a Frutos de Goiás: sabores, produtos e o movimento da loja.",
+      "hevc": false,
+      "destaque": true,
+      "hd": true,
+      "clip": false,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
       "slug": "projeto-08",
       "title": "Aniversário",
       "meta": "4K · 1:19",
@@ -296,6 +328,22 @@
       "drive": ""
     },
     {
+      "slug": "campus-party",
+      "title": "Campus Party",
+      "meta": "Full HD · 0:37",
+      "cat": "eventos-culturais",
+      "formato": "9:16",
+      "desc": "Cobertura de evento de tecnologia: entrada, Palco Tech, palestras e público.",
+      "hevc": false,
+      "destaque": true,
+      "hd": true,
+      "clip": false,
+      "poster": true,
+      "preview": false,
+      "yt": "",
+      "drive": ""
+    },
+    {
       "slug": "futebol",
       "title": "Jogo de Futebol",
       "meta": "HD · 0:40",
@@ -344,20 +392,6 @@
       "drive": ""
     },
     {
-      "slug": "show",
-      "title": "Show",
-      "meta": "Full HD · 1:09",
-      "cat": "eventos-culturais",
-      "hevc": false,
-      "destaque": true,
-      "hd": false,
-      "clip": true,
-      "poster": true,
-      "preview": true,
-      "yt": "",
-      "drive": ""
-    },
-    {
       "slug": "criativo",
       "title": "Criativo",
       "meta": "4K · 0:42",
@@ -368,34 +402,6 @@
       "clip": true,
       "poster": true,
       "preview": false,
-      "yt": "",
-      "drive": ""
-    },
-    {
-      "slug": "frutos-de-goias",
-      "title": "Frutos de Goiás",
-      "meta": "4K · 1:00",
-      "cat": "comerciais",
-      "hevc": true,
-      "destaque": true,
-      "hd": false,
-      "clip": true,
-      "poster": true,
-      "preview": false,
-      "yt": "",
-      "drive": ""
-    },
-    {
-      "slug": "campus-party",
-      "title": "Campus Party",
-      "meta": "Full HD · 0:37",
-      "cat": "eventos-culturais",
-      "hevc": true,
-      "destaque": true,
-      "hd": false,
-      "clip": true,
-      "poster": true,
-      "preview": true,
       "yt": "",
       "drive": ""
     }

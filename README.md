@@ -70,6 +70,9 @@ recorte `camarim-cut-*.webp`, que deixa o WILLREC atrás do Will) que aproxima e
 (foto com anel, números, bio, destaques por categoria e abas Reels/Grade). Fotos reais ampliadas 2x e em tamanhos
 responsivos (1200/1800/2400). Foto do perfil: `images/site/avatar.webp`.
 
+**Tema claro/escuro:** botão sol/lua na barra (js/theme.js). O padrão é o claro; a escolha de cada visitante fica
+salva no aparelho. As cores dos dois temas ficam no começo do `styles.css` (`:root` e `:root[data-theme="dark"]`).
+
 ---
 
 ## 🚀 Deploy no Vercel

@@ -247,3 +247,12 @@ v21 — VÍDEOS REENVIADOS COM SOM
     Show, Criativo, Frutos de Goiás e Campus Party.
   · Feed (6, todos em HD): Espetáculo de Ballet, Casamento, Jr. Drinks, 10 horas 4 lugares 1 celular, Sua Clínica em Cena,
     Master Barbearia. Grade com 20 vídeos; capas novas (mediaVersion 21).
+
+v22 — TEMA CLARO/ESCURO + ÚLTIMOS VÍDEOS COM SOM
+  · Show, Frutos de Goiás e Campus Party agora em HD 1080p com som (saíram as versões antigas sem som).
+    Só o Criativo continua em 540p sem som (original não enviado).
+  · Botão sol/lua na barra superior: tema escuro no estilo do modo escuro do Instagram (preto, cinzas #121212/#262626,
+    texto #f5f5f5, laranja de texto #ff8a52). Padrão: claro. A escolha fica salva no aparelho (localStorage
+    "willrec-theme") e é aplicada no <head> antes de desenhar a página (não pisca). A cor da barra do navegador e a
+    assinatura WILLREC (canvas) acompanham. Iguais nos dois temas: foto de abertura, faixa laranja, cartão "Quem sou eu?"
+    e tela cheia. Auditoria nos dois temas: contraste e axe sem erros.

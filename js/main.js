@@ -1,8 +1,9 @@
 // WILLREC — ponto de entrada.
-// Abertura (uma foto que aproxima e desce) · perfil estilo Instagram (destaques, Reels, Grade) · Dock · GlowCard.
-// ?v=20 nos módulos que mudaram: o navegador não reaproveita a cópia antiga (cache de 1h no vercel.json).
+// Abertura (uma foto que aproxima e desce) · perfil estilo Instagram (destaques, Reels, Grade) · Dock · GlowCard · tema claro/escuro.
+// ?v=20/?v=22 nos módulos que mudaram: o navegador não reaproveita a cópia antiga (cache de 1h no vercel.json).
 // util.js e autoplay.js ficam sem versão: são compartilhados e precisam ser a MESMA instância.
 import { $, $$ } from './util.js';
+import { initTheme } from './theme.js?v=22';
 import { initTextEffect } from './text-effect.js';
 import { initHero, initParallax } from './parallax.js?v=20';
 import { initDock } from './dock.js';
@@ -10,10 +11,11 @@ import { initGlow } from './glow-card.js';
 import { loadManifest, applyDriveLinks, initGrid, initHighlights, fillCounts } from './videos.js?v=20';
 import { createLightbox } from './lightbox.js?v=20';
 import { initFeed } from './feed.js?v=20';
-import { initTechText } from './tech-text.js';
+import { initTechText } from './tech-text.js?v=22';
 import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
 
+initTheme();
 initTextEffect();
 initHero();
 initParallax();
