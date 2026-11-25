@@ -1,14 +1,16 @@
 // WILLREC — ponto de entrada do sistema de movimento.
 // TextEffect · Parallax · Dock · GlowCard · SocialHover (CSS puro) + Portfólio.
+// ?v=19 nos módulos que mudaram: o navegador não reaproveita a cópia antiga (cache de 1h no vercel.json).
+// util.js e autoplay.js ficam sem versão: são compartilhados e precisam ser a MESMA instância.
 import { $$, REDUCE } from './util.js';
 import { initTextEffect } from './text-effect.js';
-import { initHero, initParallax } from './parallax.js';
+import { initHero, initParallax } from './parallax.js?v=19';
 import { initDock } from './dock.js';
 import { initGlow } from './glow-card.js';
 import { initFolio } from './portfolio.js';
-import { loadManifest, applyDriveLinks, initGrid } from './videos.js';
-import { createLightbox } from './lightbox.js';
-import { initFeed } from './feed.js';
+import { loadManifest, applyDriveLinks, initGrid } from './videos.js?v=19';
+import { createLightbox } from './lightbox.js?v=19';
+import { initFeed } from './feed.js?v=19';
 import { initTechText } from './tech-text.js';
 import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';

@@ -208,3 +208,9 @@ ISC © 2026 — Will Rec
 - Added supplied visual image to the identity section.
 - Rebuilt testimonials using the two real client feedback images.
 - Removed placeholder testimonial copy in favor of real feedback-based presentation.
+
+## ♻️ Cache (ao trocar arquivos com o MESMO nome)
+
+O `vercel.json` guarda imagens/vídeos por 7 dias e CSS/JS por 1 hora no navegador. Se você substituir um arquivo
+mantendo o nome (ex.: `images/hero/will1-cutout.webp`, `styles.css`), aumente o número `?v=` onde ele é citado
+(`index.html` e, para módulos, `js/main.js`). Arquivos com nome novo não precisam disso.
