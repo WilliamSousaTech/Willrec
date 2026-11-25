@@ -1,71 +1,46 @@
 // Parallax — dois usos, uma linguagem:
-//  1) initHero: o scroll é a câmera. Um único progresso (0→1) vira três fases (--a dolly, --b pan, --c assentar)
-//     e o CSS distribui velocidades diferentes por camada (fundo < personagem < tipografia).
+//  1) initHero: uma foto só. Ao rolar, a foto vai aproximando (zoom) e descendo, com o WILLREC entre o fundo e o Will.
+//     Um único progresso (--p: 0 no topo → 1 quando a abertura sai da tela) e o CSS faz o resto.
+//     Na abertura: WILLREC → Visão · Ritmo · Histórias (acendem em sequência) → frase → botões. Rápido, sem travar a rolagem.
 //  2) initParallax: deslocamento vertical sutil em [data-parallax].
 // Só anima enquanto há movimento: nada de rAF infinito.
-import { $, $$, clamp, ease, pad, REDUCE } from './util.js';
-
-const seg = (p, a, b) => clamp((p - a) / (b - a));
+import { $, $$, clamp, REDUCE } from './util.js';
 
 export function initHero() {
   const hero = $('[data-hero]'), stage = $('[data-stage]');
   if (!hero || !stage) return;
-  const words = $$('[data-kicker] span', stage);
-  const kicker = $('[data-kicker]', stage), tagline = $('[data-tagline]', stage);
-  const hint = $('[data-hint]', stage), count = $('[data-count]', stage);
-  const ctas = $$('[data-hero-cta]', stage);                  // proposta de valor + botões
-  const phone = matchMedia('(max-aspect-ratio:1/1),(max-width:760px)');   // mesmo corte do CSS
-  stage.style.setProperty('--k', REDUCE ? 0 : 1);
+  const kicker = $('[data-kicker]', stage), words = $$('[data-kicker] span', stage);
+  const tagline = $('[data-tagline]', stage), ctas = $$('[data-hero-cta]', stage), hint = $('[data-hint]', stage);
 
-  let target = 0, cur = 0, raf = 0, shown = {};
-  const set = (k, v) => { if (shown[k] !== v) { shown[k] = v; stage.style.setProperty(k, v); } };
-  const flag = (el, cls, on) => { if (el && el.classList.contains(cls) !== on) el.classList.toggle(cls, on); };
-
-  const measure = () => {
-    const run = Math.max(1, hero.offsetHeight - innerHeight);
-    target = clamp(-hero.getBoundingClientRect().top / run);
+  let raf = 0, last = -1;
+  const update = () => {
+    raf = 0;
+    const h = hero.offsetHeight || innerHeight;
+    const p = REDUCE ? 0 : clamp(-hero.getBoundingClientRect().top / h);
+    if (Math.abs(p - last) < .0004) return;
+    last = p;
+    stage.style.setProperty('--p', p.toFixed(4));
+    if (hint) hint.classList.toggle('is-off', p > .02);
   };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(update); };
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', kick, { passive: true });
+  update();
 
-  const apply = p => {
-    set('--a', ease(seg(p, 0, .30)).toFixed(4));
-    set('--b', ease(seg(p, .32, .64)).toFixed(4));
-    set('--c', seg(p, .64, .94).toFixed(4));
-    // VISÃO → RITMO → HISTÓRIAS acendem em sequência durante o dolly.
-    const idx = p < .10 ? 0 : p < .20 ? 1 : 2;
-    words.forEach((w, i) => { flag(w, 'on', p < .30 && i === idx); flag(w, 'done', p >= .30 || i < idx); });
-    flag(kicker, 'is-off', p > .46);
-    flag(tagline, 'is-in', p < .20 || p > .72);
-    flag(hint, 'is-off', p > .03);
-    // somem durante a troca de cena; no desktop voltam na cena final (ao lado do WILLREC).
-    // No celular os botões ficam embaixo e não voltam, para não cobrir o close da cena 2.
-    ctas.forEach(el => flag(el, 'is-off', p >= .2 && !(p > .72 && !(phone.matches && el.classList.contains('hero-actions')))));   // some junto com o slogan
-    if (count) count.textContent = p < .48 ? '01' : '02';
-  };
-
-  const loop = () => {
-    cur += (target - cur) * (REDUCE ? 1 : .18);
-    if (Math.abs(target - cur) < .0005) cur = target;
-    apply(cur);
-    raf = cur === target ? 0 : requestAnimationFrame(loop);
-  };
-  const onScroll = () => { measure(); if (!raf) raf = requestAnimationFrame(loop); };
-
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll, { passive: true });
-  measure(); cur = target; apply(cur);
-
-  // Abertura: WILLREC primeiro, depois a assinatura (visão · ritmo · histórias).
-  const intro = () => {
-    const wm = $('.wordmark', stage);
-    requestAnimationFrame(() => {
-      stage.classList.add('is-ready');
-      document.documentElement.classList.add('js-ready');
-      wm && wm.classList.add('is-in');
-      setTimeout(() => kicker && kicker.classList.add('is-in'), REDUCE ? 0 : 300);
-      setTimeout(() => tagline && cur < .2 && tagline.classList.add('is-in'), REDUCE ? 0 : 520);
-      setTimeout(() => ctas.forEach(el => el.classList.add('is-in')), REDUCE ? 0 : 760);
-    });
-  };
+  const intro = () => requestAnimationFrame(() => {
+    stage.classList.add('is-ready');
+    document.documentElement.classList.add('js-ready');
+    const wm = $('.wordmark', stage); if (wm) wm.classList.add('is-in');
+    const t0 = REDUCE ? 0 : 280, dt = REDUCE ? 0 : 300;
+    if (kicker) setTimeout(() => kicker.classList.add('is-in'), t0);
+    words.forEach((w, i) => setTimeout(() => {
+      words.forEach((x, j) => { x.classList.toggle('on', j === i); x.classList.toggle('done', j < i); });
+    }, t0 + dt * i));
+    const end = t0 + dt * words.length;
+    setTimeout(() => words.forEach(x => { x.classList.remove('on'); x.classList.add('done'); }), end + 500);
+    if (tagline) setTimeout(() => tagline.classList.add('is-in'), end);
+    setTimeout(() => ctas.forEach(el => el.classList.add('is-in')), end + 180);
+  });
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(intro);
 }
 

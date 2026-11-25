@@ -63,14 +63,12 @@ willrec/
 A Home recebeu uma direção visual inspirada na referência fornecida, com linguagem
 premium/cinematográfica, foco em tipografia, composição e hierarquia.
 
-### Regra de imagens
+### Visual (v20)
 
-O Hero usa somente duas fotografias:
-- `images/site/willrec-hero-background.webp`: foto maior, exclusivamente como fundo.
-- `A Hero usa imagens dedicadas para desktop e mobile (`images/site/hero-desktop-willrec.webp` e `images/site/hero-mobile-willrec.webp`) para preservar o enquadramento em cada breakpoint.
-
-Essas duas fotografias não são reutilizadas visualmente em outras seções. O restante
-do portfólio mantém suas imagens próprias, sem substituir categorias por repetições.
+Site claro, com cara de perfil do Instagram: abertura com **uma foto só** (`images/hero/camarim-*.webp` +
+recorte `camarim-cut-*.webp`, que deixa o WILLREC atrás do Will) que aproxima e desce ao rolar; depois, o perfil
+(foto com anel, números, bio, destaques por categoria e abas Reels/Grade). Fotos reais ampliadas 2x e em tamanhos
+responsivos (1200/1800/2400). Foto do perfil: `images/site/avatar.webp`.
 
 ---
 
@@ -161,11 +159,18 @@ taxa de equipamento, piso e a regra de "evento grande" de R$500). Não existe ma
 
 ## 🎬 Portfólio (`data/videos.json`)
 
-O feed de Reels (logo depois da abertura), a aba Grade e os links do Drive saem de `data/videos.json`.
-Entram no feed os vídeos com `destaque: true` e `clip: true`, na ordem do arquivo: para mudar a ordem, mude a ordem dos blocos. Para cada vídeo: `clip`/`poster`/`preview`
-dizem quais arquivos existem em `media/reel/`; `yt` (ID do YouTube não listado) faz o tela cheia tocar o vídeo completo em
-qualidade total; `drive` é o link do arquivo no Drive (vazio = pasta da categoria). Gerar os arquivos leves:
-`bash tools/otimizar-videos.sh PASTA_DOS_ORIGINAIS` (precisa do ffmpeg).
+O feed de Reels, a aba Grade, os destaques (círculos por categoria) e os links do Drive saem de `data/videos.json`.
+**A ordem do arquivo é a ordem do site: os melhores vídeos primeiro.** Os `feedMax` primeiros com `destaque: true`
+formam o feed; todos aparecem na Grade; cada destaque usa como capa o primeiro vídeo da categoria.
+
+- `hd: true` → existe `media/reel/SLUG-hd.mp4` (vídeo completo 1080p com som): toca no feed e no tela cheia.
+- `preview: true` → versão antiga e mais leve (`SLUG-preview.mp4`), usada quando não há HD.
+- `clip: true` → clipe curto sem som (`SLUG-card.mp4`), último recurso.
+- `poster: true` → capas `SLUG.webp` (grande) e `SLUG-sm.webp` (grade e destaques).
+- `yt` (ID do YouTube não listado) faz o tela cheia tocar pelo YouTube; `drive` mostra o botão Drive no vídeo.
+
+Gerar os arquivos a partir dos ORIGINAIS: `bash tools/otimizar-videos.sh PASTA_DOS_ORIGINAIS` (precisa do ffmpeg).
+Quanto melhor o original (exportado em 1080p ou 4K, sem passar pelo WhatsApp), melhor fica no site.
 
 ## 🗓️ Painel privado (`/admin`)
 
@@ -212,5 +217,6 @@ ISC © 2026 — Will Rec
 ## ♻️ Cache (ao trocar arquivos com o MESMO nome)
 
 O `vercel.json` guarda imagens/vídeos por 7 dias e CSS/JS por 1 hora no navegador. Se você substituir um arquivo
-mantendo o nome (ex.: `images/hero/will1-cutout.webp`, `styles.css`), aumente o número `?v=` onde ele é citado
-(`index.html` e, para módulos, `js/main.js`). Arquivos com nome novo não precisam disso.
+mantendo o nome (ex.: `images/site/avatar.webp`, `styles.css`), aumente o número `?v=` onde ele é citado
+(`index.html` e, para módulos, `js/main.js`). Capas de vídeo: aumente `mediaVersion` no `data/videos.json`.
+Arquivos com nome novo não precisam disso.

@@ -1,16 +1,15 @@
-// WILLREC — ponto de entrada do sistema de movimento.
-// TextEffect · Parallax · Dock · GlowCard · SocialHover (CSS puro) + Portfólio.
-// ?v=19 nos módulos que mudaram: o navegador não reaproveita a cópia antiga (cache de 1h no vercel.json).
+// WILLREC — ponto de entrada.
+// Abertura (uma foto que aproxima e desce) · perfil estilo Instagram (destaques, Reels, Grade) · Dock · GlowCard.
+// ?v=20 nos módulos que mudaram: o navegador não reaproveita a cópia antiga (cache de 1h no vercel.json).
 // util.js e autoplay.js ficam sem versão: são compartilhados e precisam ser a MESMA instância.
-import { $$, REDUCE } from './util.js';
+import { $, $$ } from './util.js';
 import { initTextEffect } from './text-effect.js';
-import { initHero, initParallax } from './parallax.js?v=19';
+import { initHero, initParallax } from './parallax.js?v=20';
 import { initDock } from './dock.js';
 import { initGlow } from './glow-card.js';
-import { initFolio } from './portfolio.js';
-import { loadManifest, applyDriveLinks, initGrid } from './videos.js?v=19';
-import { createLightbox } from './lightbox.js?v=19';
-import { initFeed } from './feed.js?v=19';
+import { loadManifest, applyDriveLinks, initGrid, initHighlights, fillCounts } from './videos.js?v=20';
+import { createLightbox } from './lightbox.js?v=20';
+import { initFeed } from './feed.js?v=20';
 import { initTechText } from './tech-text.js';
 import { initQuemSou } from './quem-sou.js';
 import { probeAutoplay, onBlocked, setBlocked, isBlocked } from './autoplay.js';
@@ -20,16 +19,29 @@ initHero();
 initParallax();
 initDock();
 initGlow();
-initFolio();
 
-// Portfólio: tudo sai de data/videos.json (feed de Reels, grade, links do Drive).
+// Portfólio: tudo sai de data/videos.json (feed de Reels, grade, destaques, links do Drive).
 loadManifest().then(m => {
-  if (!m) return;                      // sem o arquivo, os painéis continuam abrindo o Drive geral
+  if (!m) return;                      // sem o arquivo, o perfil continua com o link do Drive
   applyDriveLinks(m);
+  fillCounts(m);
   let feed = null;
   const lightbox = createLightbox(m, { onOpen: () => feed && feed.suspend(), onClose: () => feed && feed.resume() });
+  const open = (i, el, opts) => lightbox && lightbox.open(i, el, opts);
   feed = initFeed(m, lightbox);
-  initGrid(m, (i, el) => lightbox && lightbox.open(i, el));
+  initGrid(m, open);
+  initHighlights(m, open);
+  // link direto para um vídeo (botão "Enviar"): ...#v-slug abre o vídeo em tela cheia
+  const fromHash = () => {
+    const h = decodeURIComponent(location.hash || '');
+    const v = h.startsWith('#v-') && m.videos.find(x => `#v-${x.slug}` === h);
+    if (!v || !v.playUrl) return;
+    const card = document.getElementById(`v-${v.slug}`);
+    if (card) card.scrollIntoView({ block: 'center' });
+    setTimeout(() => open(v.i, card && $('.rl-media', card)), 400);
+  };
+  fromHash();
+  addEventListener('hashchange', fromHash);
 });
 
 initTechText();
@@ -95,7 +107,7 @@ $$('[data-lazy-video]').forEach(v => {
   ['touchstart', 'touchend', 'pointerdown', 'click'].forEach(t => addEventListener(t, retry, { passive: true }));
 });
 
-// Barra superior ganha fundo depois do hero.
-const bar = document.querySelector('.bar');
-const onScroll = () => bar && bar.classList.toggle('is-solid', scrollY > innerHeight * .9);
+// Barra superior: transparente sobre a foto de abertura, branca depois dela.
+const bar = $('.bar'), hero = $('[data-hero]');
+const onScroll = () => bar && bar.classList.toggle('is-solid', scrollY > ((hero && hero.offsetHeight) || innerHeight) - 72);
 addEventListener('scroll', onScroll, { passive: true }); onScroll();

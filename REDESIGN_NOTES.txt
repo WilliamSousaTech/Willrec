@@ -211,3 +211,29 @@ REVISÃO DE UI/UX + PROPORÇÕES (v18)
   capa 540x960, versão completa 720x1280 com áudio). Feed (6): 10 horas 4 lugares 1 celular, Sua Clínica em Cena,
   Espetáculo de Ballet, Casamento, Campus Weekend Piauí, Bar de Drinks. Na Grade também: Arena Disrupção,
   Palestra: IA na Pesquisa, Vídeo de Divulgação. Ordem do feed = ordem dos blocos em data/videos.json.
+
+v20 — CLARO, COM CARA DE INSTAGRAM, VÍDEOS EM HD
+  Pedido: vídeos com mais qualidade; abertura com uma foto só que aproxima e desce; site claro (menos preto),
+  profissional e com cara de Instagram; feed começando pelos vídeos mais estéticos/bem editados.
+  · Vídeos: os 7 com original disponível agora têm versão HD 1080x1920 (H.264 CRF 23, até 30 fps, som AAC 160k):
+    media/reel/SLUG-hd.mp4. Antes o feed tocava clipes 540x960 a ~0,8 Mbps (borrados no celular) e o tela cheia 720p.
+    O feed agora toca o vídeo INTEIRO (não um trecho de 10 s), mudo, com botão de som no canto (ligou uma vez, os
+    próximos já tocam com som); toque pausa; "Enviar" compartilha um link direto (…/#v-slug abre o vídeo).
+    Os 11 vídeos antigos só existem no site em 540p (os originais não estão no projeto): para ficarem em HD,
+    é preciso reenviar os originais e rodar tools/otimizar-videos.sh (agora gera HD + capas).
+  · Ordem (data/videos.json, os melhores primeiro): Espetáculo de Ballet, 10 horas 4 lugares 1 celular, Casamento,
+    Jr. Drinks & Coquetéis, Sua Clínica em Cena, Bar de Drinks (= feed), depois Vídeo de Divulgação, Show, Arena Disrupção,
+    Criativo, Campus Weekend Piauí, Master Barbearia, Palestra: IA na Pesquisa, Frutos de Goiás, Aniversário,
+    Professor Caio, Campus Party, Político. Critério: cor, composição, ritmo de cortes e acabamento (folhas de contato
+    + métricas de cortes/min e cor); os HD ficam nas posições 1, 2 e 5 para a primeira impressão ser nítida.
+  · Abertura: uma foto (camarim, ampliada 2x com IA LapSRN e levemente clareada) em 1200/1800/2400 px; o WILLREC fica
+    entre a foto e o recorte do Will (images/hero/camarim-cut-*.webp); ao rolar, a foto aproxima (até 1,24x) e desce,
+    sem travar a rolagem. Visão · Ritmo · Histórias acendem em sequência ao abrir.
+  · Perfil estilo Instagram logo depois: foto com anel, @willrec_oficial, 18 vídeos · +50 projetos · 100% mobile
+    (o número de vídeos sai do videos.json), bio, botões Pedir orçamento / Mensagem / Seguir, destaques por categoria
+    (abrem os vídeos da categoria como stories: barras no topo, toque à direita/esquerda, passa sozinho) e abas Reels/Grade
+    (grade de 3 colunas no celular, 4 no computador, duração no canto). Barra de navegação embaixo no celular, como no app.
+    Os painéis "Por categoria" (Drive) saíram: os destaques fazem esse papel; o acervo no Drive ficou no link da bio e no contato.
+  · Tema claro: fundo branco, texto preto, laranja da marca nos botões/anéis; laranja de texto #c2410c (5,2:1) e
+    #ea580c para títulos grandes (3,6:1); faixa laranja no contato; tela cheia continua escura (vídeo em primeiro lugar).
+  · Auditoria (1440/1280/820/390/360): axe 0, CLS ~0, toque ≥ 44px, sem rolagem lateral, sem erros nem 404.
