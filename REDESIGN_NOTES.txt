@@ -287,3 +287,10 @@ v25 — MENU CONSERTADO, ABERTURA SUAVE, VÍDEOS COM MÚSICA E REVISÃO GERAL
     tem a lista completa. Correções: botão do vídeo do gimbal sem nome acessível; foco do orçamento pelo teclado;
     aviso de erro do orçamento lido pelo leitor de tela; link do WhatsApp no <noscript>; adesivos do "Quem sou eu?"
     não prendem a rolagem no celular; 404.html próprio; X-Frame-Options e Permissions-Policy; sitemap atualizado.
+
+v26 — ORDEM DO PORTFÓLIO (pedido do Will)
+  · Principais (feed de Reels, nesta ordem): Casamento, Jr. Drinks & Coquetéis, Aniversário, Master Barbearia,
+    Professor Caio, Palestra: IA na Pesquisa. Professor Caio passou a destaque. O resto segue na Grade, na ordem
+    de antes (Espetáculo de Ballet logo depois dos principais).
+  · Os destaques (círculos) usam o primeiro vídeo de cada categoria nessa ordem.
+  · tools/qa/revisar-site.py: espera a rolagem suave terminar e confere o "Quero assim" pelo título do 1º vídeo.

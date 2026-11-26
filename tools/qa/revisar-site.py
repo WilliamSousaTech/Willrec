@@ -71,7 +71,15 @@ R = []
 def check(view, name, ok, detail=''):
     R.append((view, name, bool(ok), detail)); print(f"  [{'OK ' if ok else 'ERR'}] {name}" + (f" — {detail}" if detail and not ok else ''), flush=True)
 
-async def wait_scroll(pg, ms=1600): await pg.wait_for_timeout(ms)
+async def wait_scroll(pg, ms=1600):
+    """espera a rolagem suave terminar (posição parada por 300 ms; no máximo ms + 2,5 s)"""
+    await pg.wait_for_timeout(250)
+    last, still, waited = None, 0, 250
+    while waited < ms + 2500:
+        y = await pg.evaluate('scrollY')
+        still = still + 100 if y == last else 0
+        if still >= 300: break
+        last = y; await pg.wait_for_timeout(100); waited += 100
 async def dialog_open(pg): return await pg.evaluate("!!document.querySelector('dialog.reel-dialog[open]')")
 
 async def run(b, w, h, theme):
@@ -186,8 +194,9 @@ async def run(b, w, h, theme):
     full = await pg.evaluate("(()=>{const d=document.querySelector('dialog.reel-dialog');return {open:d.open,t:d.querySelector('video').currentTime}})()")
     check(view, '"Tela cheia" abre o vídeo (continua de onde estava)', full['open'] and full['t'] > 0.2, full)
     await pg.keyboard.press('Escape'); await pg.wait_for_timeout(700)
-    wa = await pg.evaluate("document.querySelector('.feed-list .rl .rl-act--wa').href")
-    check(view, '"Quero assim" abre o WhatsApp citando o vídeo', 'wa.me/5586995419670?text=' in wa and 'Espet' in wa, wa[:90])
+    wa, first = await pg.evaluate("[document.querySelector('.feed-list .rl .rl-act--wa').href, document.querySelector('.feed-list .rl .rl-title').textContent.trim()]")
+    from urllib.parse import unquote
+    check(view, '"Quero assim" abre o WhatsApp citando o vídeo', 'wa.me/5586995419670?text=' in wa and first in unquote(wa), [first, wa[:90]])
     await tap('.feed-list .rl [data-share]'); await pg.wait_for_timeout(700)
     tst = await pg.evaluate("(()=>{const t=document.querySelector('.toast');return t?[t.textContent,t.classList.contains('is-on')]:null})()")
     check(view, '"Enviar" copia/compartilha o link do vídeo', tst and tst[1], tst)
